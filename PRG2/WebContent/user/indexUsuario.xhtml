@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Usuario</title>
+	<script
+		src="http://maps.google.com/maps/api/js?key=AIzaSyA1opnM7mBfL7yM6IQ3sxXFzZqAcQZinaU"
+		type="text/javascript"></script>
+</h:head>
+<h:body>
+
+	<div class="ui-g">
+		<div class="ui-g-12" />
+	</div>
+	<div class="ui-g">
+		<div class="ui-g-12" />
+	</div>
+	<div class="ui-g">
+		<div class="ui-g-5" />
+		<div class="ui-g-4">
+			<p:graphicImage url="/resources/img/prime/Logo.jpg" height="100"
+				width="100" />
+		</div>
+		<div class="ui-g-3" />
+	</div>
+	<p:tabView orientation="left">
+
+		<p:tab title="Inicio ">
+			<p:panel header="Lista de tus laminas faltantes ">
+				<h:form>
+					<p:dataGrid paginator="true" var="lam" id="laminas"
+						value="#{missingsheetBean.faltantes}" layout="grid" columns="5"
+						rows="100">
+						<p:panel header="#{lam.numberSheets}">
+							<h:panelGrid columns="2">
+								<h:outputText value="Te falta!"
+									rendered="#{'0' eq lam.countSheets}" />
+								<h:outputText value="Ya la tienes!"
+									rendered="#{'1' eq lam.countSheets}" />
+
+								<h:commandLink
+									action="#{missingsheetBean.adicionarMissingsheet}" rendered="#{'1' eq lam.countSheets}">
+									<p:graphicImage url="/resources/img/export/save.png" width="24" />
+									<f:setPropertyActionListener value="#{lam}"
+										target="#{missingsheetBean.selectedMissingSheet}" 
+										/>
+								</h:commandLink>
+								
+								<h:commandLink
+									action="#{missingsheetBean.adicionarMissingsheet}" rendered="#{'0' eq lam.countSheets}">
+									<p:graphicImage url="/resources/img/export/delete.png" width="24" />
+									<f:setPropertyActionListener value="#{lam}"
+										target="#{missingsheetBean.selectedMissingSheet}" />
+								</h:commandLink>
+							</h:panelGrid>
+						</p:panel>
+					</p:dataGrid>
+				</h:form>
+			</p:panel>
+		</p:tab>
+
+		<p:tab title="Buscar ">
+
+			<p:dataTable var="user" value="#{missingsheetBean.usuarios}"
+				paginator="true" cellpadding="5" border="1" rows="6">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Id" />
+					</f:facet>
+					<h:outputText value="#{user.id}" />
+				</p:column>
+
+				<p:column sortBy="#{user.userName}">
+					<f:facet name="header">
+						<h:outputText value="User Name" />
+					</f:facet>
+					<h:outputText value="#{user.userName}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Full Name" />
+					</f:facet>
+					<h:outputText value="#{user.fullName}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="E-mail" />
+					</f:facet>
+					<h:outputText value="#{user.emailAddress}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Phone Number" />
+					</f:facet>
+					<h:outputText value="#{user.phoneNumber}" />
+				</p:column>
+
+
+			</p:dataTable>
+
+		</p:tab>
+
+		<p:tab title="Perfil">
+			<div class="ui-g-4">
+
+				<h:form>
+					<p:panelGrid columns="2">
+						<f:facet name="header">
+							<p:graphicImage url="/resources/img/prime/usuario.png" />
+						</f:facet>
+
+						<h:outputText value="Usuario:" />
+						<p:inputText value="#{userBean.usuario.userName}" disabled="true" />
+
+						<h:outputText value="Nombre: " />
+						<p:inputText value="#{userBean.usuario.fullName}" />
+
+						<h:outputText value="Correo: " />
+						<p:inputText value="#{userBean.usuario.emailAddress}" />
+
+						<h:outputText value="Telefono: " />
+						<p:inputText value="#{userBean.usuario.phoneNumber}" />
+
+					</p:panelGrid>
+
+					<p:commandButton action="#{userBean.modificarUsuario}"
+						value="Modificar Informacion" />
+
+				</h:form>
+			</div>
+
+			<div class="ui-g-8">
+				<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID"
+					style="width:100%;height:400px" />
+
+			</div>
+		</p:tab>
+
+		<p:tab title="Prueba ">Prueba </p:tab>
+
+	</p:tabView>
+</h:body>
+</html>

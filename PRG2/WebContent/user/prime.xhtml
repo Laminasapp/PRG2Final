@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<title>index</title>
+</h:head>
+
+<h:body style="zoom:80%">
+	<div class="ui-g">
+		<div class="ui-g-4" />
+		<div class="ui-g-4" align="center">
+			<p:graphicImage url="/resources/img/prime/Logo.jpg" height="200"
+				width="440" />
+		</div>
+		<div class="ui-g-4" />
+	</div>
+
+	<div class="ui-g">
+		<div class="ui-g-4" />
+		<div class="ui-g-4">
+
+			<h1 align="center">Bienvenido a LaminasApp</h1>
+			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+			<h:form>
+				<h:panelGrid id="grid" columns="2" style="margin: 0 auto">
+					<p:outputLabel for="login" value="Usuario: " />
+					<p:inputText id="login" value="#{userBean.login}" required="true"
+						requiredMessage="El usuario es requerido">
+						<f:validateLength maximum="8" minimum="6" />
+					</p:inputText>
+
+					<p:outputLabel for="contra" value="Contraseña: " />
+					<p:password id="contra" value="#{userBean.contra}" required="true"
+						requiredMessage="La contraseña es requerida">
+						<f:validateLength maximum="8" minimum="6" />
+					</p:password>
+				</h:panelGrid>
+
+				<!-- <h:panelGrid columns="1" style="margin: 0 auto">
+					<p:captcha label="Captcha" required="true" language="es" />
+				</h:panelGrid> -->
+
+				<h:panelGrid columns="1" cellpadding="2" style="margin: 0 auto">
+					<p:commandButton value="Iniciar Sesión" id="btnForm"
+						action="#{userBean.verificarIngreso}" update="growl" ajax="false" />
+				</h:panelGrid>
+
+			</h:form>
+
+			<h:form>
+				<h:panelGrid columns="1" cellpadding="2" style="margin: 0 auto">
+					<p:commandButton value="Registrarse"
+						action="#{userBean.prepararAdicionarUsuario}" ajax="false" />
+				</h:panelGrid>
+
+				<h:panelGrid columns="1" cellpadding="2" style="margin: 0 auto">
+					<h:outputLink value="javascript:void(0)" onclick="PF('dialog').show()">  
+							¿Olvidaste tu contraseña?
+						</h:outputLink>
+				</h:panelGrid>
+			</h:form>
+		</div>
+
+		<div class="ui-g-4" />
+	</div>
+
+	<h:form>
+		<p:dialog header="Recuperar Contraseña" widgetVar="dialog" resizable="false">
+			<h:panelGrid columns="2">
+				<h:outputLabel for="elCorreo"> Correo: </h:outputLabel>
+				<p:inputText id="elCorreo" value="#{userBean.usuario.emailAddress}" required="true" />
+				<p:commandButton value="Recuperar" action="#{userBean.recuperarContrasenia}" onclick="PF('dialog').hide()" />
+			</h:panelGrid>
+		</p:dialog>
+	</h:form>
+
+</h:body>
+</html>

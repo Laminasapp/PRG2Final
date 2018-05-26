@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+</h:head>
+<h:body>
+
+	<div class="ui-g">
+		<div class="ui-g-4"></div>
+		<div class="ui-g-8">
+
+			<h1>Resgistrate aqui</h1>
+
+			<p:growl id="growl" showDetail="true" life="3000" />
+			<h:form>
+
+				<p:panelGrid columns="2">
+
+					<p:outputLabel for="userName" value="Nombre de Usuario: " />
+					<p:inputText id="userName" value="#{userBean.usuario.userName}"
+						required="true"
+						requiredMessage="Nombre de Usuario: Campo obligatorio">
+						<f:validateLength maximum="8" />
+					</p:inputText>
+
+					<p:outputLabel for="fullName" value="Nombre Completo: " />
+					<p:inputText id="fullName" value="#{userBean.usuario.fullName}"
+						required="true"
+						requiredMessage="Nombre Completo: Campo obligatorio">
+						<p:keyFilter regEx="/[a-z ]/i" />
+					</p:inputText>
+
+
+					<p:outputLabel for="email" value="Correo: " />
+					<p:inputText id="email" value="#{userBean.usuario.emailAddress}"
+						required="true" requiredMessage="Correo: Campo obligatorio" />
+
+					<p:outputLabel for="telefono" value="Numero de telefono: " />
+					<p:inputText id="telefono" value="#{userBean.usuario.phoneNumber}"
+						required="true"
+						requiredMessage="Numero de telefono: Campo obligatorio">
+						<p:keyFilter regEx="/[0-9]/i" />
+					</p:inputText>
+				</p:panelGrid>
+
+				<p:captcha label="Captcha" required="true" />
+				<p:commandButton action="#{userBean.adicionarUsuario}"
+					value="Insertar Nuevo Usuario" ajax="false" />
+			</h:form>
+
+			<h:form>
+				<br />
+				<p:commandButton action="prime.xhtml" value="Volver" />
+			</h:form>
+
+		</div>
+	</div>
+</h:body>
+</html>
