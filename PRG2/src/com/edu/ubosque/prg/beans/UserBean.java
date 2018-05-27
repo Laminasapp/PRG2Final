@@ -31,6 +31,7 @@ public class UserBean implements Serializable
 	private static final long serialVersionUID = 1L;
 	final static Logger logger = Logger.getLogger(UserBean.class);
 	private User usuario;
+	private User usuarioTemporal;
 	private DataModel<User> listaUsuarios;
 	
 	private String login;
@@ -48,7 +49,7 @@ public class UserBean implements Serializable
 			
 			usuario = dao.getUsuario(login, contra);
 			
-			if (usuario != null && usuario.getUserType().equals("USER"))
+			if (usuario != null)
 			{
 				dialogCambioContrasenia();
 			}
@@ -63,6 +64,7 @@ public class UserBean implements Serializable
 		{
 			contra = Util.getStringMessageDigest(contra, Util.MD5);
 			usuario = dao.getUsuario(login);
+			usuarioTemporal = dao.getUsuario(login);
 			
 			if (usuario != null && usuario.getUserType().equals("ADMIN") && contra.equals(usuario.getPassword()))
 			{
@@ -151,6 +153,8 @@ public class UserBean implements Serializable
 		UserDAO dao = new UserDAOImpl();
 		dao.update(usuario);
 		
+		hacerAuditoria("Update", usuario.getId(), "user");
+		
 		PrimeFaces.current().dialog().closeDynamic(PrimeFaces.current().dialog());
 	}
 	
@@ -197,7 +201,7 @@ public class UserBean implements Serializable
 		
 		Util.darMensaje("Ha sido registrado", "Revise su correo para su contraseña");
 		
-		hacerAuditoria("Crear", 1, "user");
+		hacerAuditoria("Crear", usuario.getId(), "user");
 		
 		nuevoUsuario();
 		
@@ -206,27 +210,15 @@ public class UserBean implements Serializable
 	
 	public void prepararModificarUsuario()
 	{
-		usuario = (User) (listaUsuarios.getRowData());
-		
-		Map<String, Object> opciones = new HashMap<String, Object>();
-		opciones.put("modal", true);
-		opciones.put("draggable", false);
-		opciones.put("resizable", false);
-		opciones.put("width", 640);
-		opciones.put("height", 340);
-		opciones.put("contentWidth", "100%");
-		opciones.put("contentHeight", "100%");
-		opciones.put("headerElement", "customheader");
-		
-		PrimeFaces.current().dialog().openDynamic("registroUsuariosAdmin", opciones, null);
+		usuarioTemporal = (User) (listaUsuarios.getRowData());
 	}
 	
 	public void modificarUsuario()
 	{
 		UserDAO dao = new UserDAOImpl();
-		dao.update(usuario);
+		dao.update(usuarioTemporal);
 		
-		PrimeFaces.current().dialog().closeDynamic(PrimeFaces.current().dialog());
+		hacerAuditoria("Update", usuarioTemporal.getId(), "user");
 	}
 	
 	@PostConstruct
@@ -296,4 +288,13 @@ public class UserBean implements Serializable
 		return listaUsuarios;
 	}
 	
+	public User getUsuarioTemporal()
+	{
+		return usuarioTemporal;
+	}
+	
+	public void setUsuarioTemporal(User usuarioTemporal)
+	{
+		this.usuarioTemporal = usuarioTemporal;
+	}
 }

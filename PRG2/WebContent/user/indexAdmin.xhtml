@@ -18,33 +18,39 @@
 		</div>
 		<div class="ui-g-4" />
 	</div>
-
+	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
 	<p:tabView orientation="left">
 
 		<p:tab title="Inicio "> Inicio </p:tab>
-		<p:tab title="Auditorias" >
+		<p:tab title="Auditorias">
 
 			<h:form>
 				<p:panel id="basic" header="Listado de auditorias">
 
 					<p:dataTable paginator="true" var="aud" id="auditoria"
 						value="#{auditBean.listarAuditoria}" cellpadding="5" border="1"
-						rows="6">
+						rows="9">
 
 						<f:facet name="header">
-							<h:commandLink>
+							<h:commandLink id="excelAudit">
 								<p:graphicImage url="/resources/img/export/xls-icon.png"
 									width="24" />
 								<p:dataExporter type="xls" target="auditoria"
 									fileName="AuditoriaEXCEL" />
 							</h:commandLink>
 
-							<h:commandLink>
+							<p:tooltip for="excelAudit" value="Descargar esta tabla en Excel"
+								position="top" />
+
+							<h:commandLink id="pdfAudit">
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
 								<p:dataExporter type="pdf" target="auditoria"
 									fileName="AuditoriaPDF" />
 							</h:commandLink>
+
+							<p:tooltip for="pdfAudit" value="Descargar esta tabla en PDF"
+								position="top" />
 						</f:facet>
 
 						<p:column>
@@ -98,27 +104,32 @@
 		</p:tab>
 
 
-		<p:tab title="Usuarios ">
+		<p:tab id="tabUser" title="Usuarios ">
 			<h:form id="form">
 				<p:panel id="basic" header="Listado de usuarios ">
 
 					<p:dataTable var="user" value="#{userBean.listarUsuarios}"
-						sortMode="multiple" paginator="true" rows="3" border="1"
+						sortMode="multiple" paginator="true" rows="8" border="1"
 						id="users" tableStyle="width:auto">
 
 						<f:facet name="header">
-							<h:commandLink>
+							<h:commandLink id="excelUser">
 								<p:graphicImage url="/resources/img/export/xls-icon.png"
 									width="24" />
 								<p:dataExporter type="xls" target="users"
 									fileName="UsuarioEXCEL" />
 							</h:commandLink>
+							<p:tooltip for="excelUser" value="Descargar esta tabla en Excel"
+								position="top" />
 
-							<h:commandLink>
+							<h:commandLink id="pdfUser">
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
 								<p:dataExporter type="pdf" target="users" fileName="UsuarioPDF" />
 							</h:commandLink>
+
+							<p:tooltip for="pdfUser" value="Descargar esta tabla en PDF"
+								position="top" />
 						</f:facet>
 
 						<p:column>
@@ -159,7 +170,8 @@
 
 						<p:column headerText="Modificar" exportable="false">
 							<p:commandButton action="#{userBean.prepararModificarUsuario}"
-								update="users" value="Modificar">
+								onclick="PF('dialog').show()" value="Modificar"
+								update="@([id$=grid])">
 							</p:commandButton>
 						</p:column>
 
@@ -167,13 +179,59 @@
 							<p:commandButton action="#{userBean.cambiarEstado}"
 								update="users" value="Cambiar Estado" />
 						</p:column>
-
 					</p:dataTable>
+
+
 				</p:panel>
 			</h:form>
 
+			<h:form id="form2">
+				<p:dialog widgetVar="dialog" modal="true" resizable="false"
+					draggable="false" closable="false">
+					<p:panelGrid id="grid" columns="3">
+
+						<p:outputLabel for="userName" value="Login: " />
+						<p:inputText id="userName"
+							value="#{userBean.usuarioTemporal.userName}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="8" />
+						</p:inputText>
+						<p:message for="userName" />
+
+						<p:outputLabel for="fullName" value="Nombre Completo: " />
+						<p:inputText id="fullName"
+							value="#{userBean.usuarioTemporal.fullName}" required="true"
+							requiredMessage="Campo obligatorio">
+							<p:keyFilter regEx="/[a-z_\ ]/i" />
+						</p:inputText>
+						<p:message for="fullName" />
+
+						<p:outputLabel for="email" value="Correo: " />
+						<p:inputText id="email"
+							value="#{userBean.usuarioTemporal.emailAddress}" required="true"
+							requiredMessage="Campo obligatorio" />
+						<p:message for="email" />
+
+						<p:outputLabel for="telefono" value="Numero de telefono: " />
+						<p:inputText id="telefono"
+							value="#{userBean.usuarioTemporal.phoneNumber}" required="true"
+							requiredMessage="Campo obligatorio">
+							<p:keyFilter regEx="/[0-9_]/i" />
+						</p:inputText>
+						<p:message for="telefono" />
+
+					</p:panelGrid>
+
+					<h:panelGrid columns="2">
+						<p:commandButton action="#{userBean.modificarUsuario}"
+							value="Modificar Usuario" update="@([id$=users])" />
+						<p:commandButton onclick="PF('dialog').hide()" value="Cerrar"
+							update="@([id$=grid])" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
 		</p:tab>
-		<p:tab title="Prueba ">Prueba </p:tab>
+		<p:tab title="Prueba "> Prueba </p:tab>
 
 	</p:tabView>
 

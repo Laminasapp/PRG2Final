@@ -11,12 +11,12 @@
 	<title>index</title>
 </h:head>
 
-<h:body style="zoom:80%">
+<h:body>
 	<div class="ui-g">
 		<div class="ui-g-4" />
 		<div class="ui-g-4" align="center">
-			<p:graphicImage url="/resources/img/prime/Logo.jpg" height="200"
-				width="440" />
+			<p:graphicImage url="/resources/img/prime/Logo.jpg" height="90%"
+				width="90%" />
 		</div>
 		<div class="ui-g-4" />
 	</div>
@@ -29,17 +29,15 @@
 			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
 
 			<h:form>
-				<h:panelGrid id="grid" columns="2" style="margin: 0 auto">
+				<h:panelGrid columns="2" style="margin: 0 auto">
 					<p:outputLabel for="login" value="Usuario: " />
 					<p:inputText id="login" value="#{userBean.login}" required="true"
 						requiredMessage="El usuario es requerido">
-						<f:validateLength maximum="8" minimum="6" />
 					</p:inputText>
 
 					<p:outputLabel for="contra" value="Contraseña: " />
 					<p:password id="contra" value="#{userBean.contra}" required="true"
 						requiredMessage="La contraseña es requerida">
-						<f:validateLength maximum="8" minimum="6" />
 					</p:password>
 				</h:panelGrid>
 
@@ -47,21 +45,23 @@
 					<p:captcha label="Captcha" required="true" language="es" />
 				</h:panelGrid> -->
 
-				<h:panelGrid columns="1" cellpadding="2" style="margin: 0 auto">
+				<h:panelGrid columns="2" cellpadding="2" style="margin: 0 auto">
 					<p:commandButton value="Iniciar Sesión" id="btnForm"
 						action="#{userBean.verificarIngreso}" update="growl" ajax="false" />
+
+					<h:panelGrid columns="1" cellpadding="2" style="margin: 0 auto">
+						<p:commandButton value="Registrarse"
+							action="#{userBean.prepararAdicionarUsuario}" ajax="false"
+							immediate="true" />
+					</h:panelGrid>
 				</h:panelGrid>
 
 			</h:form>
 
 			<h:form>
 				<h:panelGrid columns="1" cellpadding="2" style="margin: 0 auto">
-					<p:commandButton value="Registrarse"
-						action="#{userBean.prepararAdicionarUsuario}" ajax="false" />
-				</h:panelGrid>
-
-				<h:panelGrid columns="1" cellpadding="2" style="margin: 0 auto">
-					<h:outputLink value="javascript:void(0)" onclick="PF('dialog').show()">  
+					<h:outputLink value="javascript:void(0)"
+						onclick="PF('dialog').show()">  
 							¿Olvidaste tu contraseña?
 						</h:outputLink>
 				</h:panelGrid>
@@ -72,11 +72,15 @@
 	</div>
 
 	<h:form>
-		<p:dialog header="Recuperar Contraseña" widgetVar="dialog" resizable="false">
-			<h:panelGrid columns="2">
+		<p:dialog header="Recuperar Contraseña" widgetVar="dialog"
+			resizable="false" draggable="false" modal="true">
+			<h:panelGrid id="grid" columns="2">
 				<h:outputLabel for="elCorreo"> Correo: </h:outputLabel>
-				<p:inputText id="elCorreo" value="#{userBean.usuario.emailAddress}" required="true" />
-				<p:commandButton value="Recuperar" action="#{userBean.recuperarContrasenia}" onclick="PF('dialog').hide()" />
+				<p:inputText id="elCorreo" value="#{userBean.usuario.emailAddress}"
+					required="true" />
+				<p:commandButton value="Recuperar"
+					action="#{userBean.recuperarContrasenia}"
+					onclick="PF('dialog').hide()" update="grid"/>
 			</h:panelGrid>
 		</p:dialog>
 	</h:form>
