@@ -23,9 +23,6 @@ public class RepeatedsheetBean {
 	final static Logger logger = Logger.getLogger(RepeatedsheetBean.class);
 	private Repeatedsheet repeatedsheet;
 	private DataModel listaRepeatedsheet;
-
-	@ManagedProperty(value="#{userBean}")
-	private UserBean user;
 	
 	public String adicionarRepeatedsheet() {
 		RepeatedsheetDAO dao = new RepeatedsheetDAOImpl();
@@ -44,7 +41,6 @@ public class RepeatedsheetBean {
 	@PostConstruct
 	public void init(){
 		repeatedsheet = new Repeatedsheet();
-		repeatedsheet.setUserId(user.getUsuario().getId());
 //		dialogNuevaRS();
 	}
 	
