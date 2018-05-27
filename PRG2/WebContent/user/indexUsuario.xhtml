@@ -33,8 +33,8 @@
 			<p:panel header="Lista de tus laminas faltantes ">
 				<h:form>
 					<p:dataGrid paginator="true" var="lam" id="laminas"
-						value="#{missingsheetBean.listarMissingsheet}" layout="grid" columns="5"
-						rows="100">
+						value="#{missingsheetBean.listarMissingsheet}" layout="grid"
+						columns="5" rows="100">
 						<p:panel header="#{lam.numberSheets}">
 							<h:panelGrid columns="2">
 								<h:outputText value="Te falta!"
@@ -66,60 +66,89 @@
 		</p:tab>
 
 		<p:tab title="Buscar ">
+			<h:form>
+				<p:tabView dynamic="true" cache="true" effect="fold">
 
-			<p:tabView dynamic="true" cache="true" effect="fold">
+					<p:tab title="Nueva lamina repetida">
 
-				<p:tab title="Buscar Usuarios que tienen laminas que me sirven">
-
-					<p:dataTable var="user" value="#{missingsheetBean.usuarios}"
-						paginator="true" cellpadding="5" border="1" rows="6">
-
-						<p:column>
+						<p:dataTable var="rs"
+							value="#{repeatedsheetBean.listarRepeatedsheet}" paginator="true"
+							rows="10">
+							
 							<f:facet name="header">
-								<h:outputText value="Id" />
+							<h:commandLink id="imgRS" action="#{repeatedsheetBean.prepararAdicionarRS}">
+							<p:graphicImage url="/resources/img/export/pdf-icon.png"
+									width="24" />
+							</h:commandLink>
+							<p:tooltip for="imgRS" value="Nueva Lamina Repetida"
+								position="top" />
+								<h:outputText value="Falta el boton de agregar lamina"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{user.id}" />
-						</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText Value="Numero de la lamina" />
+								</f:facet>
+								<h:outputText value="#{rs.numberSheets}"></h:outputText>
+							</p:column>
+							<p:column>
+								<f:facet name="header">
+									<h:outputText Value="Numero de veces repetidas" />
+								</f:facet>
+								<h:outputText value="#{rs.countSheets}"></h:outputText>
+							</p:column>
 
-						<p:column sortBy="#{user.userName}">
-							<f:facet name="header">
-								<h:outputText value="User Name" />
-							</f:facet>
-							<h:outputText value="#{user.userName}" />
-						</p:column>
+						</p:dataTable>
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Full Name" />
-							</f:facet>
-							<h:outputText value="#{user.fullName}" />
-						</p:column>
+					</p:tab>
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="E-mail" />
-							</f:facet>
-							<h:outputText value="#{user.emailAddress}" />
-						</p:column>
+					<p:tab title="Buscar Usuarios que tienen laminas que me sirven">
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Phone Number" />
-							</f:facet>
-							<h:outputText value="#{user.phoneNumber}" />
-						</p:column>
-					</p:dataTable>
-				</p:tab>
-				<p:tab title="Otra Busqueda">
-				
-				</p:tab>
-				
-				<p:tab title="Otra Busqueda">
-				
-				</p:tab>
-				
-			</p:tabView>
+						<p:dataTable var="user" value="#{missingsheetBean.usuarios}"
+							paginator="true" cellpadding="5" border="1" rows="6">
 
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Id" />
+								</f:facet>
+								<h:outputText value="#{user.id}" />
+							</p:column>
+
+							<p:column sortBy="#{user.userName}">
+								<f:facet name="header">
+									<h:outputText value="User Name" />
+								</f:facet>
+								<h:outputText value="#{user.userName}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Full Name" />
+								</f:facet>
+								<h:outputText value="#{user.fullName}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="E-mail" />
+								</f:facet>
+								<h:outputText value="#{user.emailAddress}" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Phone Number" />
+								</f:facet>
+								<h:outputText value="#{user.phoneNumber}" />
+							</p:column>
+						</p:dataTable>
+					</p:tab>
+
+					<p:tab title="Otra Busqueda">
+
+					</p:tab>
+
+				</p:tabView>
+			</h:form>
 		</p:tab>
 
 		<p:tab title="Perfil">

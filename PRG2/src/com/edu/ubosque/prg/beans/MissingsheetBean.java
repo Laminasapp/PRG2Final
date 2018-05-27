@@ -35,13 +35,12 @@ public class MissingsheetBean {
 
 	private Missingsheet selectedMissingSheet;
 
-	@ManagedProperty("#{userBean}")
+	@ManagedProperty(value="#{userBean}")
 	private UserBean user;
 
 	@PostConstruct
 	public void init() {
 		faltantes = new ArrayList<Missingsheet>();
-		//aca sse blokea la consulta
 		listarUsuarios();
 	}
 

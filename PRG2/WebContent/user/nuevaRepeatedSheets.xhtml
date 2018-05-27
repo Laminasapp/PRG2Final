@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Nueva Lamina Repetida</title>
+</h:head>
+<h:body>
+
+	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+	<div class="ui-g">
+		<div class="ui-g-2"></div>
+		<div class="ui-g-10">
+			<h1>Nueva lamina repetida</h1>
+			<h:form>
+				<h:panelGrid id="grid" columns="2" cellpadding="5">
+					
+					<h:outputLabel for="numberSheet" value="Numero de la ficha: *"></h:outputLabel>
+					<p:inputText id="numberSheet" value="#{repeatedsheetBean.repeatedsheet.numberSheets}" required="true">
+						<f:validateDoubleRange minimum="1" maximum="670" />
+					</p:inputText>
+					
+					<h:outputLabel for="countSheets" value="Cuantas Fichas: *"></h:outputLabel>
+					<p:inputText id="countSheets" value="#{repeatedsheetBean.repeatedsheet.countSheets}" required="true">
+						<f:validateDoubleRange minimum="1" />
+					</p:inputText>
+				</h:panelGrid>
+
+				<h:panelGrid columns="2" cellpadding="2">
+					<p:commandButton action="#{repeatedsheetBean.adicionarRepeatedsheet}"
+						value="Agregar" update="growl" />
+				</h:panelGrid>
+			</h:form>
+		</div>
+	</div>
+</h:body>
+</html>

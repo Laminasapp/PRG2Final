@@ -26,7 +26,7 @@ import javax.faces.model.ListDataModel;
 import org.apache.log4j.Logger;
 import org.primefaces.PrimeFaces;
 
-@ManagedBean
+@ManagedBean (name="userBean")
 @SessionScoped
 public class UserBean implements Serializable
 {
