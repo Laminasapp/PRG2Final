@@ -18,6 +18,7 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from Missingsheet WHERE userId = '" +userId + "'" ).list();
 		t.commit();
+		session.close();
 		return lista;
 	}
 
@@ -34,6 +35,7 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 		}
 		
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -48,6 +50,7 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 		Transaction t = session.beginTransaction();
 		session.delete(missingsheet);
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -56,6 +59,7 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 		Transaction t = session.beginTransaction();
 		session.update(missingsheet);
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -68,6 +72,7 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 			rta = (Missingsheet) list.get(0);
 		}
 		t.commit();
+		session.close();
 		return rta;
 	}
 
@@ -77,6 +82,7 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from Missingsheet where userId=" + pId).list();
 		t.commit();
+		session.close();
 		return lista;
 	}
 

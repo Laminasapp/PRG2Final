@@ -18,6 +18,7 @@ public class ParameterDAOImpl implements ParameterDAO
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from Parameter").list();
 		t.commit();
+		session.close();
 		return lista;
 	}
 	
@@ -27,6 +28,7 @@ public class ParameterDAOImpl implements ParameterDAO
 		Transaction t = session.beginTransaction();
 		session.save(parameter);
 		t.commit();
+		session.close();
 	}
 	
 	@Override
@@ -35,6 +37,7 @@ public class ParameterDAOImpl implements ParameterDAO
 		Transaction t = session.beginTransaction();
 		Parameter respuesta = (Parameter) session.load(Parameter.class, id);
 		t.commit();
+		session.close();
 		return respuesta;
 	}
 	
@@ -44,6 +47,7 @@ public class ParameterDAOImpl implements ParameterDAO
 		Transaction t = session.beginTransaction();
 		session.delete(parameter);
 		t.commit();
+		session.close();
 	}
 	
 	@Override
@@ -52,6 +56,7 @@ public class ParameterDAOImpl implements ParameterDAO
 		Transaction t = session.beginTransaction();
 		session.update(parameter);
 		t.commit();
+		session.close();
 	}
 	
 	

@@ -14,6 +14,7 @@ public class UserDAOImpl implements UserDAO {
 		Transaction t = session.beginTransaction();
 		session.save(usuario);
 		t.commit();
+		session.close();
 	}
 
 	public User getUsuario(int id) {
@@ -44,6 +45,7 @@ public class UserDAOImpl implements UserDAO {
 			rta = (User) list.get(0);
 		}
 		t.commit();
+		session.close();
 		return rta;
 	}
 	
@@ -56,6 +58,7 @@ public class UserDAOImpl implements UserDAO {
 			rta = (User) list.get(0);
 		}
 		t.commit();
+		session.close();
 		return rta;
 	}
 
@@ -64,6 +67,7 @@ public class UserDAOImpl implements UserDAO {
 		Transaction t = session.beginTransaction();
 		session.update(usuario);
 		t.commit();
+		session.close();
 	}
 
 	public void remove(User usuario) {
@@ -71,6 +75,7 @@ public class UserDAOImpl implements UserDAO {
 		Transaction t = session.beginTransaction();
 		session.delete(usuario);
 		t.commit();
+		session.close();
 	}
 
 	public List<User> list() {
@@ -78,6 +83,7 @@ public class UserDAOImpl implements UserDAO {
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from User").list();
 		t.commit();
+		session.close();
 		return lista;
 	}
 

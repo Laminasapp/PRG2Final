@@ -17,6 +17,7 @@ public class NewDAOImpl implements NewDAO {
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from New").list();
 		t.commit();
+		session.close();
 		return lista;
 	}
 
@@ -26,6 +27,7 @@ public class NewDAOImpl implements NewDAO {
 		Transaction t = session.beginTransaction();
 		session.save(news);
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -40,6 +42,7 @@ public class NewDAOImpl implements NewDAO {
 		Transaction t = session.beginTransaction();
 		session.delete(news);
 		t.commit();
+		session.close();
 	}
 
 	@Override

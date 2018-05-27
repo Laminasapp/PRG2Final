@@ -41,7 +41,8 @@ public class MissingsheetBean {
 	@PostConstruct
 	public void init() {
 		faltantes = new ArrayList<Missingsheet>();
-//		listarUsuarios();
+		//aca sse blokea la consulta
+		listarUsuarios();
 	}
 
 	public List<Missingsheet> getFaltantes() {
@@ -62,7 +63,7 @@ public class MissingsheetBean {
 
 		// Obtengo el Id del usuario que ingreso.
 		int idUsuario = user.getUsuario().getId();
-
+	
 		// Se obtienen las laminas que le faltan al usuario.
 		MissingsheetDAO daoM = new MissingsheetDAOImpl();
 		List <Missingsheet> faltantes = daoM.list(idUsuario);

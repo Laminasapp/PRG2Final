@@ -14,6 +14,7 @@ public class AuditDAOImpl implements AuditDAO {
 		Transaction t = session.beginTransaction();
 		session.save(auditoria);
 		t.commit();
+		session.close();
 	}
 
 	public List<Audit> list() {
@@ -21,6 +22,7 @@ public class AuditDAOImpl implements AuditDAO {
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from Audit").list();
 		t.commit();
+		session.close();
 		return lista;
 	}
 

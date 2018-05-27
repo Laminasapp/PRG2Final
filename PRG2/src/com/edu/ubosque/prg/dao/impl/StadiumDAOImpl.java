@@ -17,6 +17,7 @@ public class StadiumDAOImpl implements StadiumDAO{
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from Stadium").list();
 		t.commit();
+		session.close();
 		return lista;
 	}
 
@@ -26,6 +27,7 @@ public class StadiumDAOImpl implements StadiumDAO{
 		Transaction t = session.beginTransaction();
 		session.save(stadium);
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -40,6 +42,7 @@ public class StadiumDAOImpl implements StadiumDAO{
 		Transaction t = session.beginTransaction();
 		session.delete(stadium);
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -48,6 +51,7 @@ public class StadiumDAOImpl implements StadiumDAO{
 		Transaction t = session.beginTransaction();
 		session.update(stadium);
 		t.commit();
+		session.close();
 	}
 
 	

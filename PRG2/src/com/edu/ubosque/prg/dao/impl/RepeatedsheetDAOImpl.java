@@ -17,6 +17,7 @@ public class RepeatedsheetDAOImpl implements RepeatedsheetDAO{
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from Repeatedsheet").list();
 		t.commit();
+		session.close();
 		return lista;
 	}
 
@@ -26,6 +27,7 @@ public class RepeatedsheetDAOImpl implements RepeatedsheetDAO{
 		Transaction t = session.beginTransaction();
 		session.save(repeatedsheet);
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -40,6 +42,7 @@ public class RepeatedsheetDAOImpl implements RepeatedsheetDAO{
 		Transaction t = session.beginTransaction();
 		session.delete(repeatedsheet);
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -48,6 +51,7 @@ public class RepeatedsheetDAOImpl implements RepeatedsheetDAO{
 		Transaction t = session.beginTransaction();
 		session.update(repeatedsheet);
 		t.commit();
+		session.close();
 	}
 
 	@Override
@@ -56,6 +60,20 @@ public class RepeatedsheetDAOImpl implements RepeatedsheetDAO{
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from Repeatedsheet where numberSheets = " + pLamina).list();
 		t.commit();
+		session.close();
+		return lista;
+	}
+	
+	@Override
+	public List<Repeatedsheet> listaRepetidas(int pId) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		
+		// select r.userId from repeatedsheets r, missingsheets m,  where r.numberSheets = m.numberSheets and m.userId = 
+		
+		List lista = session.createQuery("select r.userId from Repeatedsheets r, Missingsheets m,  where r.numberSheets = m.numberSheets and m.userId = " + pId).list();
+		t.commit();
+		session.close();
 		return lista;
 	}
 
