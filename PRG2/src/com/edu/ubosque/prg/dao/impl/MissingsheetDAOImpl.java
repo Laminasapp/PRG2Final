@@ -22,10 +22,17 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 	}
 
 	@Override
-	public void save(Missingsheet missingsheet) {
+	public void save(int userId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
-		session.save(missingsheet);
+		for (int i = 1; i < 671; i++) {
+			Missingsheet ms = new Missingsheet();
+			ms.setUserId(userId);
+			ms.setNumberSheets(i);
+			ms.setCountSheets(1);
+			session.save(ms);
+		}
+		
 		t.commit();
 	}
 

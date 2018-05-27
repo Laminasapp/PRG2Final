@@ -1,8 +1,10 @@
 package com.edu.ubosque.prg.beans;
 
 import com.edu.ubosque.prg.dao.AuditDAO;
+import com.edu.ubosque.prg.dao.MissingsheetDAO;
 import com.edu.ubosque.prg.dao.UserDAO;
 import com.edu.ubosque.prg.dao.impl.AuditDAOImpl;
+import com.edu.ubosque.prg.dao.impl.MissingsheetDAOImpl;
 import com.edu.ubosque.prg.dao.impl.UserDAOImpl;
 import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.User;
@@ -167,6 +169,10 @@ public class UserBean implements Serializable {
 		UserDAO dao = new UserDAOImpl();
 		dao.save(usuario);
 
+		MissingsheetDAO ms = new MissingsheetDAOImpl();
+		
+		ms.save(usuario.getId());
+		
 		String contrasenia = asignarNuevaContrasenia();
 
 		String nombre = usuario.getFullName();
@@ -195,7 +201,7 @@ public class UserBean implements Serializable {
 		opciones.put("contentWidth", "100%");
 		opciones.put("contentHeight", "100%");
 		opciones.put("headerElement", "customheader");
-		hacerAuditoria("Modi",listaUsuarios.getRowData().getId(),"user");
+		hacerAuditoria("CambioUsu",listaUsuarios.getRowData().getId(),"user");
 		PrimeFaces.current().dialog().openDynamic("registroUsuariosAdmin", opciones, null);
 	}
 
@@ -204,6 +210,7 @@ public class UserBean implements Serializable {
 		dao.update(usuario);
 		logger.info("Se modifica un usario");
 		hacerAuditoria("CambioUsu", 0, "User");
+		Util.darMensaje("Exito", "Sus datos han sido actualizados");
 	}
 
 	@PostConstruct

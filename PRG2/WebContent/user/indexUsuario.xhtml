@@ -33,26 +33,28 @@
 			<p:panel header="Lista de tus laminas faltantes ">
 				<h:form>
 					<p:dataGrid paginator="true" var="lam" id="laminas"
-						value="#{missingsheetBean.faltantes}" layout="grid" columns="5"
+						value="#{missingsheetBean.listarMissingsheet}" layout="grid" columns="5"
 						rows="100">
 						<p:panel header="#{lam.numberSheets}">
 							<h:panelGrid columns="2">
 								<h:outputText value="Te falta!"
-									rendered="#{'0' eq lam.countSheets}" />
-								<h:outputText value="Ya la tienes!"
 									rendered="#{'1' eq lam.countSheets}" />
+								<h:outputText value="Ya la tienes!"
+									rendered="#{'0' eq lam.countSheets}" />
 
 								<h:commandLink
-									action="#{missingsheetBean.adicionarMissingsheet}" rendered="#{'1' eq lam.countSheets}">
+									action="#{missingsheetBean.adicionarMissingsheet}"
+									rendered="#{'0' eq lam.countSheets}">
 									<p:graphicImage url="/resources/img/export/save.png" width="24" />
 									<f:setPropertyActionListener value="#{lam}"
-										target="#{missingsheetBean.selectedMissingSheet}" 
-										/>
+										target="#{missingsheetBean.selectedMissingSheet}" />
 								</h:commandLink>
-								
+
 								<h:commandLink
-									action="#{missingsheetBean.adicionarMissingsheet}" rendered="#{'0' eq lam.countSheets}">
-									<p:graphicImage url="/resources/img/export/delete.png" width="24" />
+									action="#{missingsheetBean.adicionarMissingsheet}"
+									rendered="#{'1' eq lam.countSheets}">
+									<p:graphicImage url="/resources/img/export/delete.png"
+										width="24" />
 									<f:setPropertyActionListener value="#{lam}"
 										target="#{missingsheetBean.selectedMissingSheet}" />
 								</h:commandLink>
@@ -65,46 +67,58 @@
 
 		<p:tab title="Buscar ">
 
-			<p:dataTable var="user" value="#{missingsheetBean.usuarios}"
-				paginator="true" cellpadding="5" border="1" rows="6">
+			<p:tabView dynamic="true" cache="true" effect="fold">
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Id" />
-					</f:facet>
-					<h:outputText value="#{user.id}" />
-				</p:column>
+				<p:tab title="Buscar Usuarios que tienen laminas que me sirven">
 
-				<p:column sortBy="#{user.userName}">
-					<f:facet name="header">
-						<h:outputText value="User Name" />
-					</f:facet>
-					<h:outputText value="#{user.userName}" />
-				</p:column>
+					<p:dataTable var="user" value="#{missingsheetBean.usuarios}"
+						paginator="true" cellpadding="5" border="1" rows="6">
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Full Name" />
-					</f:facet>
-					<h:outputText value="#{user.fullName}" />
-				</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Id" />
+							</f:facet>
+							<h:outputText value="#{user.id}" />
+						</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="E-mail" />
-					</f:facet>
-					<h:outputText value="#{user.emailAddress}" />
-				</p:column>
+						<p:column sortBy="#{user.userName}">
+							<f:facet name="header">
+								<h:outputText value="User Name" />
+							</f:facet>
+							<h:outputText value="#{user.userName}" />
+						</p:column>
 
-				<p:column>
-					<f:facet name="header">
-						<h:outputText value="Phone Number" />
-					</f:facet>
-					<h:outputText value="#{user.phoneNumber}" />
-				</p:column>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Full Name" />
+							</f:facet>
+							<h:outputText value="#{user.fullName}" />
+						</p:column>
 
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="E-mail" />
+							</f:facet>
+							<h:outputText value="#{user.emailAddress}" />
+						</p:column>
 
-			</p:dataTable>
+						<p:column>
+							<f:facet name="header">
+								<h:outputText value="Phone Number" />
+							</f:facet>
+							<h:outputText value="#{user.phoneNumber}" />
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Otra Busqueda">
+				
+				</p:tab>
+				
+				<p:tab title="Otra Busqueda">
+				
+				</p:tab>
+				
+			</p:tabView>
 
 		</p:tab>
 
@@ -138,13 +152,12 @@
 			</div>
 
 			<div class="ui-g-8">
-				<p:gmap center="41.381542, 2.122893" zoom="15" type="HYBRID"
+				<p:gmap center="4.7114439, -74.0345585" zoom="15" type="HYBRID"
 					style="width:100%;height:400px" />
 
 			</div>
 		</p:tab>
 
-		<p:tab title="Prueba ">Prueba </p:tab>
 
 	</p:tabView>
 </h:body>

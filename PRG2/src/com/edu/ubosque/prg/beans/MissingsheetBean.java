@@ -40,29 +40,8 @@ public class MissingsheetBean {
 
 	@PostConstruct
 	public void init() {
-		Missingsheet[] tmp = new Missingsheet[671];
 		faltantes = new ArrayList<Missingsheet>();
-		List<Missingsheet> lista = new MissingsheetDAOImpl().list( user.getUsuario().getId()+"" );
-
-		for(int i = 0; i < lista.size(); i++) {
-
-			tmp[lista.get(i).getNumberSheets()]=lista.get(i);
-
-		}
-		for (int i = 1; i < tmp.length; i++) {
-			if(tmp[i] == null) {
-				Missingsheet ms = new Missingsheet();
-				ms.setId(user.getUsuario().getId());
-				ms.setUserId(user.getUsuario().getId());
-				ms.setNumberSheets(i);
-				ms.setCountSheets(0);
-				faltantes.add(ms);
-			}else {
-				faltantes.add(tmp[i]);
-			}
-
-		}
-		listarUsuarios();
+//		listarUsuarios();
 	}
 
 	public List<Missingsheet> getFaltantes() {
@@ -74,21 +53,6 @@ public class MissingsheetBean {
 	}
 
 	public String adicionarMissingsheet() {
-
-		Missingsheet ms = selectedMissingSheet;
-
-		MissingsheetDAO dao = new MissingsheetDAOImpl();
-
-		if(dao.getMissingsheet(ms.getUserId(), ms.getNumberSheets())!=null) {
-			ms.setCountSheets(0);
-			dao.update(ms);
-
-		}else {
-			ms.setCountSheets(1);
-			dao.save(ms);
-		}
-
-
 		return "indexUsuario";
 	}
 
