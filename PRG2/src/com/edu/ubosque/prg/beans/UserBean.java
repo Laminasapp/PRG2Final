@@ -74,26 +74,25 @@ public class UserBean implements Serializable
 				respuesta = "indexAdmin";
 			}
 			
-			else if (usuario != null && usuario.getUserType().equals("USER")
-					&& contra.equals(usuario.getPassword()))
+			else if (usuario != null && usuario.getUserType().equals("USER") && contra.equals(usuario.getPassword()))
 			{
 				hacerAuditoria("Ingresar", 0, "user");
 				usuario.setAttemps(0);
 				respuesta = "indexUsuario";
 			}
 			
-			else if (usuario != null && !usuario.getPassword().equals(contra)
-					&& usuario.getUserType().equals("USER"))
+			else if (usuario != null && !usuario.getPassword().equals(contra) && usuario.getUserType().equals("USER"))
 			{
 				int attempts = usuario.getAttemps() + 1;
 				usuario.setAttemps(attempts);
-				hacerAuditoria("IngFallo",0,"user");
+				hacerAuditoria("IngFallo", 0, "user");
 				Util.darMensaje("", "Contraseña incorrecta");
 				
 				if (usuario.getAttemps() == 3)
 				{
 					usuario.setActive("I");
-					UtilCorreo.enviarNuevaContrasenia(usuario.getFullName(), asignarNuevaContrasenia(), usuario.getEmailAddress());
+					UtilCorreo.enviarNuevaContrasenia(usuario.getFullName(), asignarNuevaContrasenia(),
+							usuario.getEmailAddress());
 					Util.darMensaje("Bloqueado", "Revise su correo para su nueva contraseña");
 				}
 				
@@ -178,7 +177,7 @@ public class UserBean implements Serializable
 			elUsuario.setActive("A");
 		}
 		
-		hacerAuditoria("Estado",elUsuario.getId(),"user");
+		hacerAuditoria("Estado", elUsuario.getId(), "user");
 		logger.info("Se cambia el estado del usuario");
 		
 		dao.update(elUsuario);
@@ -249,11 +248,11 @@ public class UserBean implements Serializable
 		String correo = usuario.getEmailAddress();
 		usuario = dao.getUsuario(correo);
 		
-		if(usuario != null)
+		if (usuario != null)
 		{
 			String nombre = usuario.getFullName();
 			String contraseña = asignarNuevaContrasenia();
-			UtilCorreo.enviarNuevaContrasenia(nombre, contraseña, correo);	
+			UtilCorreo.enviarNuevaContrasenia(nombre, contraseña, correo);
 		}
 		
 		logger.info("Se recupero la contraseña de un nuevo usuario");

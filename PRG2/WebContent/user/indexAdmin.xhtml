@@ -12,18 +12,20 @@
 <h:body style="zoom:80%">
 	<div class="ui-g">
 		<div class="ui-g-4" />
+
 		<div class="ui-g-4" align="center">
 			<p:graphicImage url="/resources/img/prime/Logo.jpg" height="50%"
 				width="30%" />
 		</div>
+
 		<div class="ui-g-4" />
 	</div>
-	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-	<p:tabView orientation="left">
 
+	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+	<p:tabView orientation="left">
 		<p:tab title="Inicio "> Inicio </p:tab>
 		<p:tab title="Auditorias">
-
 			<h:form>
 				<p:panel id="basic" header="Listado de auditorias">
 
@@ -45,6 +47,7 @@
 							<h:commandLink id="pdfAudit">
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
+
 								<p:dataExporter type="pdf" target="auditoria"
 									fileName="AuditoriaPDF" />
 							</h:commandLink>
@@ -53,54 +56,36 @@
 								position="top" />
 						</f:facet>
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Id" />
-							</f:facet>
+						<p:column headerText="Id">
 							<h:outputText value="#{aud.id}" />
 						</p:column>
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="User Id" />
-							</f:facet>
+						<p:column headerText="Id del usuario">
 							<h:outputText value="#{aud.userId}" />
 						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Operation" />
-							</f:facet>
+
+						<p:column headerText="Operacion">
 							<h:outputText value="#{aud.operation}" />
 						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Table Name" />
-							</f:facet>
+
+						<p:column headerText="Nombre de la tabla">
 							<h:outputText value="#{aud.tableName}" />
 						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Table ID" />
-							</f:facet>
+
+						<p:column headerText="Id de la Tabla">
 							<h:outputText value="#{aud.tableId}" />
 						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Create Date" />
-							</f:facet>
+
+						<p:column headerText="Fecha de creacion">
 							<h:outputText value="#{aud.createDate}" />
 						</p:column>
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="User IP" />
-							</f:facet>
+
+						<p:column headerText="Ip de usuario">
 							<h:outputText value="#{aud.userIp}" />
 						</p:column>
 					</p:dataTable>
-
 				</p:panel>
 			</h:form>
-
 		</p:tab>
 
 
@@ -116,15 +101,18 @@
 							<h:commandLink id="excelUser">
 								<p:graphicImage url="/resources/img/export/xls-icon.png"
 									width="24" />
+
 								<p:dataExporter type="xls" target="users"
 									fileName="UsuarioEXCEL" />
 							</h:commandLink>
+
 							<p:tooltip for="excelUser" value="Descargar esta tabla en Excel"
 								position="top" />
 
 							<h:commandLink id="pdfUser">
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
+
 								<p:dataExporter type="pdf" target="users" fileName="UsuarioPDF" />
 							</h:commandLink>
 
@@ -132,10 +120,7 @@
 								position="top" />
 						</f:facet>
 
-						<p:column>
-							<f:facet name="header">
-								<h:outputText value="Id" />
-							</f:facet>
+						<p:column headerText="Id">
 							<h:outputText value="#{user.id}" />
 						</p:column>
 
@@ -180,8 +165,6 @@
 								update="users" value="Cambiar Estado" />
 						</p:column>
 					</p:dataTable>
-
-
 				</p:panel>
 			</h:form>
 
@@ -231,9 +214,97 @@
 				</p:dialog>
 			</h:form>
 		</p:tab>
+
+		<p:tab title="Parametros">
+
+			<h:form>
+				<p:panel header="Listado de parametros">
+
+					<p:dataTable paginator="true" var="paramenter" id="parametros"
+						value="#{parameterBean.listarParameter}" cellpadding="5"
+						border="1" rows="9">
+
+						<f:facet name="header">
+							<h:commandLink id="excelParameter">
+								<p:graphicImage url="/resources/img/export/xls-icon.png"
+									width="24" />
+								<p:dataExporter type="xls" target="parametros"
+									fileName="ParametrosEXCEL" />
+							</h:commandLink>
+
+							<p:tooltip for="excelParameter"
+								value="Descargar esta tabla en Excel" position="top" />
+
+							<h:commandLink id="pdfParameter">
+								<p:graphicImage url="/resources/img/export/pdf-icon.png"
+									width="24" />
+								<p:dataExporter type="pdf" target="parametros"
+									fileName="ParametrosPDF" />
+							</h:commandLink>
+
+							<p:tooltip for="pdfParameter" value="Descargar esta tabla en PDF"
+								position="top" />
+
+							<h:commandLink id="agregarParametro">
+								<p:graphicImage url="/resources/img/export/add.png"
+									width="24" />
+							</h:commandLink>
+						</f:facet>
+
+						<p:column headerText="Id">
+							<h:outputText value="#{parameter.id}" />
+						</p:column>
+
+						<p:column headerText="Tipo de parametro">
+							<h:outputText value="#{parameter.parameterType}" />
+						</p:column>
+
+						<p:column headerText="Codigo">
+							<h:outputText value="#{parameter.parameterCode}" />
+						</p:column>
+
+						<p:column headerText="Descripción">
+							<h:outputText value="#{parameter.descriptionParameter}" />
+						</p:column>
+
+						<p:column headerText="Valor texto">
+							<h:outputText value="#{parameter.textValue}" />
+						</p:column>
+
+						<p:column headerText="Valor numerico">
+							<h:outputText value="#{parameter.numberValue}" />
+						</p:column>
+
+						<p:column headerText="Modificar" exportable="false">
+							<p:commandButton action="#{parameterBean.modificarParameter}"
+								onclick="PF('dialogMod').show()" value="Modificar"
+								update="@([id$=grid])">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:form>
+
+			<h:form>
+				<p:dialog widgetVar="dialogMod" modal="true" resizable="false"
+					draggable="false" closable="false">
+
+					<p:panelGrid id="grid" columns="3">
+
+					</p:panelGrid>
+
+					<h:panelGrid columns="2">
+						<p:commandButton action="#{userBean.modificarUsuario}"
+							value="Modificar" update="@([id$=parametros])" />
+						<p:commandButton onclick="PF('dialog').hide()" value="Cerrar"
+							update="@([id$=growl])" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+		</p:tab>
+
 		<p:tab title="Prueba "> Prueba </p:tab>
 
 	</p:tabView>
-
 </h:body>
 </html>

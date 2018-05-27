@@ -30,4 +30,9 @@ public class ParameterBean {
 		listaParameter = new ListDataModel(lista);
 		return listaParameter;
 	}
+	
+	public void modificarParameter()
+	{
+		
+	}
 }
