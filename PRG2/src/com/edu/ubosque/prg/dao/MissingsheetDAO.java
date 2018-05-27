@@ -6,7 +6,7 @@ import com.edu.ubosque.prg.entity.Missingsheet;
 
 public interface MissingsheetDAO {
 	
-	public void save(Missingsheet missingsheet);
+	public void save(int userID);
 
 	public Missingsheet getMissingsheet(int id);
 	

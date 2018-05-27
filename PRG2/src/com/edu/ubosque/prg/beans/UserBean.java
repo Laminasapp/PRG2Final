@@ -1,8 +1,10 @@
 package com.edu.ubosque.prg.beans;
 
 import com.edu.ubosque.prg.dao.AuditDAO;
+import com.edu.ubosque.prg.dao.MissingsheetDAO;
 import com.edu.ubosque.prg.dao.UserDAO;
 import com.edu.ubosque.prg.dao.impl.AuditDAOImpl;
+import com.edu.ubosque.prg.dao.impl.MissingsheetDAOImpl;
 import com.edu.ubosque.prg.dao.impl.UserDAOImpl;
 import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.User;
@@ -85,7 +87,7 @@ public class UserBean implements Serializable
 			{
 				int attempts = usuario.getAttemps() + 1;
 				usuario.setAttemps(attempts);
-				
+				hacerAuditoria("IngFallo",0,"user");
 				Util.darMensaje("", "Contraseña incorrecta");
 				
 				if (usuario.getAttemps() == 3)
@@ -103,7 +105,7 @@ public class UserBean implements Serializable
 				Util.darMensaje("", "Usuario no encontrado");
 			}
 		}
-		
+		logger.info("Se verifica el ingreso de un usuario");
 		return respuesta;
 	}
 	
@@ -113,7 +115,7 @@ public class UserBean implements Serializable
 		usuario.setPassword(Util.getStringMessageDigest(nueva, Util.MD5));
 		UserDAO dao = new UserDAOImpl();
 		dao.update(usuario);
-		
+		logger.info("Se asigna una nueva contraseña");
 		return nueva;
 	}
 	
@@ -144,17 +146,20 @@ public class UserBean implements Serializable
 		audit.setTableId(tableId);
 		audit.setOperation(mensaje);
 		
+		logger.info("Se crea un nuevo registro de la tabla auditoria");
+		
 		auditDao.save(audit);
 	}
 	
 	public void cambiarContrasenia()
 	{
 		usuario.setPassword(Util.getStringMessageDigest(contra, Util.MD5));
+		usuario.setDateLastPassword(new Date());
 		UserDAO dao = new UserDAOImpl();
 		dao.update(usuario);
 		
 		hacerAuditoria("Update", usuario.getId(), "user");
-		
+		logger.info("Se cambia la contraseña del usuario");
 		PrimeFaces.current().dialog().closeDynamic(PrimeFaces.current().dialog());
 	}
 	
@@ -172,6 +177,9 @@ public class UserBean implements Serializable
 		{
 			elUsuario.setActive("A");
 		}
+		
+		hacerAuditoria("Estado",elUsuario.getId(),"user");
+		logger.info("Se cambia el estado del usuario");
 		
 		dao.update(elUsuario);
 		
@@ -192,6 +200,10 @@ public class UserBean implements Serializable
 		UserDAO dao = new UserDAOImpl();
 		dao.save(usuario);
 		
+		MissingsheetDAO ms = new MissingsheetDAOImpl();
+		
+		ms.save(usuario.getId());
+		
 		String contrasenia = asignarNuevaContrasenia();
 		
 		String nombre = usuario.getFullName();
@@ -202,7 +214,7 @@ public class UserBean implements Serializable
 		Util.darMensaje("Ha sido registrado", "Revise su correo para su contraseña");
 		
 		hacerAuditoria("Crear", usuario.getId(), "user");
-		
+		logger.info("Se crea un nuevo usuario");
 		nuevoUsuario();
 		
 		return "prime";
@@ -217,8 +229,9 @@ public class UserBean implements Serializable
 	{
 		UserDAO dao = new UserDAOImpl();
 		dao.update(usuarioTemporal);
-		
+		logger.info("Se modifica un usario");
 		hacerAuditoria("Update", usuarioTemporal.getId(), "user");
+		Util.darMensaje("Exito", "Los datos han sido actualizados");
 	}
 	
 	@PostConstruct
@@ -243,6 +256,7 @@ public class UserBean implements Serializable
 			UtilCorreo.enviarNuevaContrasenia(nombre, contraseña, correo);	
 		}
 		
+		logger.info("Se recupero la contraseña de un nuevo usuario");
 		nuevoUsuario();
 	}
 	
