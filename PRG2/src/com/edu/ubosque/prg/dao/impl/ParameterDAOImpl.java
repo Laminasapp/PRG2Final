@@ -51,14 +51,12 @@ public class ParameterDAOImpl implements ParameterDAO
 	}
 	
 	@Override
-	public void update(Parameter parameter) {
+	public void update(Parameter parameter) 
+	{
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
 		session.update(parameter);
 		t.commit();
 		session.close();
 	}
-	
-	
-	
 }

@@ -93,7 +93,7 @@
 			<h:form id="form">
 				<p:panel id="basic" header="Listado de usuarios ">
 
-					<p:dataTable var="user" value="#{userBean.listarUsuarios}"
+					<p:dataTable var="user" value="#{userBean.listaUsuarios}"
 						sortMode="multiple" paginator="true" rows="8" border="1"
 						id="users" tableStyle="width:auto">
 
@@ -155,8 +155,8 @@
 
 						<p:column headerText="Modificar" exportable="false">
 							<p:commandButton action="#{userBean.prepararModificarUsuario}"
-								onclick="PF('dialog').show()" value="Modificar"
-								update="@([id$=grid])">
+								onclick="PF('dialogModificarUsuario').show()" value="Modificar"
+								update="@([id$=gridModificarUsuario])">
 							</p:commandButton>
 						</p:column>
 
@@ -169,9 +169,9 @@
 			</h:form>
 
 			<h:form id="form2">
-				<p:dialog widgetVar="dialog" modal="true" resizable="false"
-					draggable="false" closable="false">
-					<p:panelGrid id="grid" columns="3">
+				<p:dialog widgetVar="dialogModificarUsuario" modal="true"
+					resizable="false" draggable="false" closable="false">
+					<p:panelGrid id="gridModificarUsuario" columns="3">
 
 						<p:outputLabel for="userName" value="Login: " />
 						<p:inputText id="userName"
@@ -185,7 +185,6 @@
 						<p:inputText id="fullName"
 							value="#{userBean.usuarioTemporal.fullName}" required="true"
 							requiredMessage="Campo obligatorio">
-							<p:keyFilter regEx="/[a-z_\ ]/i" />
 						</p:inputText>
 						<p:message for="fullName" />
 
@@ -199,7 +198,6 @@
 						<p:inputText id="telefono"
 							value="#{userBean.usuarioTemporal.phoneNumber}" required="true"
 							requiredMessage="Campo obligatorio">
-							<p:keyFilter regEx="/[0-9_]/i" />
 						</p:inputText>
 						<p:message for="telefono" />
 
@@ -208,20 +206,19 @@
 					<h:panelGrid columns="2">
 						<p:commandButton action="#{userBean.modificarUsuario}"
 							value="Modificar Usuario" update="@([id$=users])" />
-						<p:commandButton onclick="PF('dialog').hide()" value="Cerrar"
-							update="@([id$=grid])" />
+						<p:commandButton onclick="PF('dialogModificarUsuario').hide()"
+							value="Cerrar" update="@([id$=gridModificarUsuario])" />
 					</h:panelGrid>
 				</p:dialog>
 			</h:form>
 		</p:tab>
 
-		<p:tab title="Parametros">
-
+		<p:tab title="Parametros" >
 			<h:form>
 				<p:panel header="Listado de parametros">
 
-					<p:dataTable paginator="true" var="paramenter" id="parametros"
-						value="#{parameterBean.listarParameter}" cellpadding="5"
+					<p:dataTable paginator="true" var="parameter" id="parametros"
+						value="#{parameterBean.listaParameter}" cellpadding="5"
 						border="1" rows="9">
 
 						<f:facet name="header">
@@ -245,10 +242,14 @@
 							<p:tooltip for="pdfParameter" value="Descargar esta tabla en PDF"
 								position="top" />
 
-							<h:commandLink id="agregarParametro">
-								<p:graphicImage url="/resources/img/export/add.png"
-									width="24" />
-							</h:commandLink>
+							<p:commandLink id="agregarParametro"
+								onclick="PF('dialogAgregarParametro').show()"
+								update="@([id$=gridAgregarParametro])">
+								<p:graphicImage url="/resources/img/export/add.png" width="24" />
+							</p:commandLink>
+
+							<p:tooltip for="agregarParametro"
+								value="Agregar un nuevo parametro" position="top" />
 						</f:facet>
 
 						<p:column headerText="Id">
@@ -276,9 +277,8 @@
 						</p:column>
 
 						<p:column headerText="Modificar" exportable="false">
-							<p:commandButton action="#{parameterBean.modificarParameter}"
-								onclick="PF('dialogMod').show()" value="Modificar"
-								update="@([id$=grid])">
+							<p:commandButton onclick="PF('dialogModificarParametro').show()"
+								value="Modificar" update="@([id$=gridModificarParametro])" action="#{parameterBean.prepararModificarParametro}">
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
@@ -286,18 +286,101 @@
 			</h:form>
 
 			<h:form>
-				<p:dialog widgetVar="dialogMod" modal="true" resizable="false"
-					draggable="false" closable="false">
+				<p:dialog widgetVar="dialogAgregarParametro" modal="true"
+					resizable="false" draggable="false" closable="false">
 
-					<p:panelGrid id="grid" columns="3">
+					<p:panelGrid id="gridAgregarParametro" columns="2">
+						<p:outputLabel for="parameterType" value="Tipo de parametro: " />
+						<p:inputText id="parameterType"
+							value="#{parameterBean.parameter.parameterType}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="1" />
+						</p:inputText>
 
+						<p:outputLabel for="parameterCode" value="Codigo: " />
+						<p:inputText id="parameterCode"
+							value="#{parameterBean.parameter.parameterCode}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="10" />
+						</p:inputText>
+
+						<p:outputLabel for="descriptionParameter" value="Descripcion: " />
+						<p:inputTextarea rows="6" cols="33" id="descriptionParameter"
+							value="#{parameterBean.parameter.descriptionParameter}"
+							required="true" requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="60" />
+						</p:inputTextarea>
+
+						<p:outputLabel for="textValue" value="Valor de texto: " />
+						<p:inputText id="textValue"
+							value="#{parameterBean.parameter.textValue}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="10" />
+						</p:inputText>
+
+						<p:outputLabel for="numberValue" value="Valor de numero: " />
+						<p:inputText id="numberValue"
+							value="#{parameterBean.parameter.numberValue}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="5" />
+						</p:inputText>
 					</p:panelGrid>
 
 					<h:panelGrid columns="2">
-						<p:commandButton action="#{userBean.modificarUsuario}"
+						<p:commandButton action="#{parameterBean.agregarParametro}"
+							value="Agregar" update="@([id$=parametros])" />
+						<p:commandButton onclick="PF('dialogAgregarParametro').hide()"
+							value="Cerrar" update="@([id$=gridAgregarParametro])" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+			<h:form>
+				<p:dialog widgetVar="dialogModificarParametro" modal="true"
+					resizable="false" draggable="false" closable="false">
+
+					<p:panelGrid id="gridModificarParametro" columns="2">
+						<p:outputLabel for="parameterType" value="Tipo de parametro: " />
+						<p:inputText id="parameterType"
+							value="#{parameterBean.parameter.parameterType}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="1" />
+						</p:inputText>
+
+						<p:outputLabel for="parameterCode" value="Codigo: " />
+						<p:inputText id="parameterCode"
+							value="#{parameterBean.parameter.parameterCode}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="10" />
+						</p:inputText>
+
+						<p:outputLabel for="descriptionParameter" value="Descripcion: " />
+						<p:inputTextarea rows="6" cols="33" id="descriptionParameter"
+							value="#{parameterBean.parameter.descriptionParameter}"
+							required="true" requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="60" />
+						</p:inputTextarea>
+
+						<p:outputLabel for="textValue" value="Valor de texto: " />
+						<p:inputText id="textValue"
+							value="#{parameterBean.parameter.textValue}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="10" />
+						</p:inputText>
+
+						<p:outputLabel for="numberValue" value="Valor de numero: " />
+						<p:inputText id="numberValue"
+							value="#{parameterBean.parameter.numberValue}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="5" />
+						</p:inputText>
+					</p:panelGrid>
+
+					<h:panelGrid columns="2">
+						<p:commandButton action="#{parameterBean.modificarParametro}"
 							value="Modificar" update="@([id$=parametros])" />
-						<p:commandButton onclick="PF('dialog').hide()" value="Cerrar"
-							update="@([id$=growl])" />
+						<p:commandButton onclick="PF('dialogModificarParametro').hide()"
+							value="Cerrar" update="@([id$=gridModificarParametro])" />
 					</h:panelGrid>
 				</p:dialog>
 			</h:form>

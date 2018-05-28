@@ -77,7 +77,7 @@ public class Util
 			aleatoria.append((int) ((Math.random() * 9) + 1));
 		}
 		
-		aleatoria.insert((int) ((Math.random() * 8) + 1), "@");
+		aleatoria.insert((int) ((Math.random() * 6) + 1), "@");
 		
 		return aleatoria.toString();
 	}

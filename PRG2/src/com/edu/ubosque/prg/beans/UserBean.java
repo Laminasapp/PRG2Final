@@ -294,7 +294,7 @@ public class UserBean implements Serializable
 		this.usuario = usuario;
 	}
 	
-	public DataModel<User> getListarUsuarios()
+	public DataModel<User> getListaUsuarios()
 	{
 		List<User> lista = new UserDAOImpl().list();
 		listaUsuarios = new ListDataModel<User>(lista);

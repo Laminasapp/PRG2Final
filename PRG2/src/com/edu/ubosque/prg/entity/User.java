@@ -1,5 +1,6 @@
 package com.edu.ubosque.prg.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "user")
-public class User implements java.io.Serializable {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
