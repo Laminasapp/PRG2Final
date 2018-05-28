@@ -39,7 +39,8 @@
 							<h:panelGrid columns="2">
 								<p:commandLink
 									action="#{missingsheetBean.adicionarMissingsheet}"
-									rendered="#{'0' eq lam.countSheets}" update="@([id$=laminasRepetidas])">
+									rendered="#{'0' eq lam.countSheets}"
+									update="@([id$=laminasRepetidas])">
 									<p:graphicImage url="/resources/img/export/save.png" width="24" />
 									<f:setPropertyActionListener value="#{lam}"
 										target="#{missingsheetBean.selectedMissingSheet}" />
@@ -47,7 +48,8 @@
 
 								<p:commandLink
 									action="#{missingsheetBean.adicionarMissingsheet}"
-									rendered="#{'1' eq lam.countSheets}" update="@([id$=laminasRepetidas])">
+									rendered="#{'1' eq lam.countSheets}"
+									update="@([id$=laminasRepetidas])">
 									<p:graphicImage url="/resources/img/export/delete.png"
 										width="24" />
 									<f:setPropertyActionListener value="#{lam}"
@@ -66,33 +68,60 @@
 
 					<p:tab title="Nueva lamina repetida">
 
-						<p:dataTable var="rs"
+						<p:dataTable var="rs" id="NuevaRepetidaTabla"
 							value="#{repeatedsheetBean.listarRepeatedsheet}" paginator="true"
 							rows="10">
-							
+
 							<f:facet name="header">
-							<h:commandLink id="imgRS" action="#{repeatedsheetBean.prepararAdicionarRS}">
-							<p:graphicImage url="/resources/img/export/pdf-icon.png"
-									width="24" />
-							</h:commandLink>
-							<p:tooltip for="imgRS" value="Nueva Lamina Repetida"
-								position="top" />
-								<h:outputText value="Falta el boton de agregar lamina"></h:outputText>
+								<p:commandLink id="NuevaRepetida"
+									onclick="PF('dialogNuevaRepetida').show()"
+									update="@([id$=gridNuevaRepetida])">
+									<p:graphicImage url="/resources/img/export/add.png" width="24" />
+								</p:commandLink>
+								<p:tooltip for="NuevaRepetida"
+									value="Agregar una nueva lamina repetida" position="top" />
 							</f:facet>
-							<p:column>
-								<f:facet name="header">
-									<h:outputText Value="Numero de la lamina" />
-								</f:facet>
+
+							<p:column headerText="Numero de la lamina">
 								<h:outputText value="#{rs.numberSheets}"></h:outputText>
 							</p:column>
-							<p:column>
-								<f:facet name="header">
-									<h:outputText Value="Numero de veces repetidas" />
-								</f:facet>
+
+							<p:column headerText="Numero de veces repetidas">
 								<h:outputText value="#{rs.countSheets}"></h:outputText>
 							</p:column>
-
 						</p:dataTable>
+						
+						<h:form>
+								<p:dialog widgetVar="dialogNuevaRepetida" modal="true"
+									resizable="false" draggable="false" closable="false">
+
+									<h:panelGrid id="gridNuevaRepetida" columns="2" cellpadding="5">
+
+										<h:outputLabel for="numberSheet" value="Numero de la ficha: *" />
+										<p:inputText id="numberSheet"
+											value="#{repeatedsheetBean.repeatedsheet.numberSheets}"
+											required="true">
+											<f:validateLength maximum="2" />
+											<f:validateDoubleRange minimum="1" maximum="670" />
+										</p:inputText>
+
+										<h:outputLabel for="countSheets" value="Cuantas Fichas: *" />
+										<p:inputText id="countSheets"
+											value="#{repeatedsheetBean.repeatedsheet.countSheets}"
+											required="true">
+											<f:validateLength maximum="2" />
+											<f:validateDoubleRange minimum="1" />
+										</p:inputText>
+									</h:panelGrid>
+
+									<h:panelGrid columns="2">
+										<p:commandButton action="#{repeatedsheetBean.adicionarRepeatedsheet}" value="Agregar"
+											update="@([id$=NuevaRepetidaTabla])" />
+										<p:commandButton onclick="PF('dialogNuevaRepetida').hide()"
+											value="Cerrar" update="@([id$=gridNuevaRepetida])" />
+									</h:panelGrid>
+								</p:dialog>
+							</h:form>
 
 					</p:tab>
 
@@ -101,38 +130,23 @@
 						<p:dataTable var="user" value="#{missingsheetBean.usuarios}"
 							paginator="true" cellpadding="5" border="1" rows="6">
 
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="Id" />
-								</f:facet>
+							<p:column headerText="Id">
 								<h:outputText value="#{user.id}" />
 							</p:column>
 
-							<p:column sortBy="#{user.userName}">
-								<f:facet name="header">
-									<h:outputText value="User Name" />
-								</f:facet>
+							<p:column headerText="Usuario" sortBy="#{user.userName}">
 								<h:outputText value="#{user.userName}" />
 							</p:column>
 
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="Full Name" />
-								</f:facet>
+							<p:column headerText="Nombre completo">
 								<h:outputText value="#{user.fullName}" />
 							</p:column>
 
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="E-mail" />
-								</f:facet>
+							<p:column headerText="E-mail">
 								<h:outputText value="#{user.emailAddress}" />
 							</p:column>
 
-							<p:column>
-								<f:facet name="header">
-									<h:outputText value="Phone Number" />
-								</f:facet>
+							<p:column headerText="Telefono">
 								<h:outputText value="#{user.phoneNumber}" />
 							</p:column>
 						</p:dataTable>

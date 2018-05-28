@@ -28,8 +28,9 @@ import com.edu.ubosque.prg.entity.User;
 import com.edu.ubosque.prg.util.Util;
 
 @ManagedBean
-public class MissingsheetBean {
-	
+@SessionScoped
+public class MissingsheetBean
+{
 	final static Logger logger = Logger.getLogger(MissingsheetBean.class);
 	
 	private Missingsheet missingSheet;
@@ -41,30 +42,32 @@ public class MissingsheetBean {
 	
 	private Missingsheet selectedMissingSheet;
 	
-	@ManagedProperty("#{userBean}")
+	@ManagedProperty(value = "#{userBean}")
 	private UserBean usuario;
 	
 	@PostConstruct
-	public void init() {
+	public void init()
+	{
 		faltantes = new ArrayList<Missingsheet>();
 		listarUsuarios();
-		System.out.println(usuario.getUsuario().getId());
 	}
 	
-	public List<Missingsheet> getFaltantes() {
+	public List<Missingsheet> getFaltantes()
+	{
 		return faltantes;
 	}
 	
-	public void setFaltantes(List<Missingsheet> faltantes) {
+	public void setFaltantes(List<Missingsheet> faltantes)
+	{
 		this.faltantes = faltantes;
 	}
 	
-	public void adicionarMissingsheet() 
+	public void adicionarMissingsheet()
 	{
 		MissingsheetDAO dao = new MissingsheetDAOImpl();
 		Missingsheet ms = selectedMissingSheet;
 		
-		if(ms.getCountSheets() == 1)
+		if (ms.getCountSheets() == 1)
 		{
 			ms.setCountSheets(0);
 		}
@@ -96,7 +99,7 @@ public class MissingsheetBean {
 		auditDao.save(audit);
 	}
 	
-	public void listarUsuarios() 
+	public void listarUsuarios()
 	{
 		List<User> usuarios = new ArrayList<User>();
 		
@@ -105,17 +108,19 @@ public class MissingsheetBean {
 		
 		// Se obtienen las laminas que le faltan al usuario.
 		MissingsheetDAO daoM = new MissingsheetDAOImpl();
-		List <Missingsheet> faltantes = daoM.list(idUsuario);
+		List<Missingsheet> faltantes = daoM.list(idUsuario);
 		
 		// Se Busca en las repetidas.
 		UserDAO user = new UserDAOImpl();
 		RepeatedsheetDAO daoR = new RepeatedsheetDAOImpl();
-		for (int i = 0; i < faltantes.size(); i++) {
+		for (int i = 0; i < faltantes.size(); i++)
+		{
 			
 			List<Repeatedsheet> laminas = daoR.list(faltantes.get(i).getNumberSheets());
 			
 			// Se agregan a los usuarios.
-			for (int j = 0; j < laminas.size(); j++) {
+			for (int j = 0; j < laminas.size(); j++)
+			{
 				
 				int tmp = laminas.get(j).getUserId();
 				usuarios.add(user.getUsuario(tmp));
@@ -125,33 +130,40 @@ public class MissingsheetBean {
 		this.usuarios = usuarios;
 	}
 	
-	public Missingsheet getSelectedMissingSheet() {
+	public Missingsheet getSelectedMissingSheet()
+	{
 		return selectedMissingSheet;
 	}
 	
-	public void setSelectedMissingSheet(Missingsheet selectedMissingSheet) {
+	public void setSelectedMissingSheet(Missingsheet selectedMissingSheet)
+	{
 		this.selectedMissingSheet = selectedMissingSheet;
 	}
 	
-	public DataModel<Missingsheet> getListarMissingsheet() {
-		List<Missingsheet> lista = new MissingsheetDAOImpl().list( usuario.getUsuario().getId()+"" );
+	public DataModel<Missingsheet> getListarMissingsheet()
+	{
+		List<Missingsheet> lista = new MissingsheetDAOImpl().list(usuario.getUsuario().getId() + "");
 		listaMissingsheet = new ListDataModel<Missingsheet>(lista);
 		return listaMissingsheet;
 	}
 	
-	public UserBean getUsuario() {
+	public UserBean getUsuario()
+	{
 		return usuario;
 	}
 	
-	public void setUsuario(UserBean usuario) {
+	public void setUsuario(UserBean usuario)
+	{
 		this.usuario = usuario;
 	}
 	
-	public List<User> getUsuarios() {
+	public List<User> getUsuarios()
+	{
 		return usuarios;
 	}
 	
-	public void setUsuarios(List<User> usuarios) {
+	public void setUsuarios(List<User> usuarios)
+	{
 		this.usuarios = usuarios;
 	}
 	

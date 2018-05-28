@@ -1,66 +1,71 @@
 package com.edu.ubosque.prg.beans;
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
 import org.apache.log4j.Logger;
-import org.primefaces.PrimeFaces;
 
+import com.edu.ubosque.prg.dao.AuditDAO;
 import com.edu.ubosque.prg.dao.RepeatedsheetDAO;
+import com.edu.ubosque.prg.dao.impl.AuditDAOImpl;
 import com.edu.ubosque.prg.dao.impl.RepeatedsheetDAOImpl;
+import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.Repeatedsheet;
+import com.edu.ubosque.prg.util.Util;
 
 @ManagedBean
+@SessionScoped
 public class RepeatedsheetBean {
 
 	final static Logger logger = Logger.getLogger(RepeatedsheetBean.class);
 	private Repeatedsheet repeatedsheet;
-	private DataModel listaRepeatedsheet;
+	private DataModel<Repeatedsheet> listaRepeatedsheet;
 	
-	public String adicionarRepeatedsheet() {
+	@ManagedProperty(value = "#{userBean}")
+	private UserBean userBean;
+	
+	public void adicionarRepeatedsheet() {
 		RepeatedsheetDAO dao = new RepeatedsheetDAOImpl();
+		repeatedsheet.setUserId(userBean.getUsuario().getId());
 		dao.save(repeatedsheet);
-		return "indexUsuario";
+		
+		hacerAuditoria("Create", repeatedsheet.getId(), "repeatedsheets");
+		logger.info("Se adiciona una nueva lamina repetida");
 	}
-
 	
+	public void hacerAuditoria(String mensaje, int tableId, String tableName)
+	{
+		AuditDAO auditDao = new AuditDAOImpl();
+		Audit audit = new Audit();
+		
+		audit.setCreateDate(new Date());
+		audit.setTableName(tableName);
+		audit.setUserId(userBean.getUsuario().getId());
+		audit.setUserIp(Util.darIp());
+		audit.setTableId(tableId);
+		audit.setOperation(mensaje);
+		
+		logger.info("Se crea un nuevo registro de la tabla auditoria");
+		
+		auditDao.save(audit);
+	}
 	
-	public DataModel getListarRepeatedsheet() {
+	public DataModel<Repeatedsheet> getListarRepeatedsheet() {
 		List<Repeatedsheet> lista = new RepeatedsheetDAOImpl().list();
-		listaRepeatedsheet = new ListDataModel(lista);
+		listaRepeatedsheet = new ListDataModel<Repeatedsheet>(lista);
 		return listaRepeatedsheet;
 	}
 	
 	@PostConstruct
 	public void init(){
 		repeatedsheet = new Repeatedsheet();
-//		dialogNuevaRS();
-	}
-	
-	public String prepararAdicionarRS() {
-		dialogNuevaRS();
-		return "indexUsuario";
-	}
-	
-	public void dialogNuevaRS(){
-		Map<String, Object> opciones = new HashMap<String, Object>();
-		opciones.put("modal", true);
-		opciones.put("draggable", false);
-		opciones.put("resizable", false);
-		opciones.put("width", 1000);
-		opciones.put("height", 400);
-		opciones.put("contentWidth", "100%");
-		opciones.put("contentHeight", "100%");
-		opciones.put("headerElement", "customheader");
-
-		PrimeFaces.current().dialog().openDynamic("nuevaRepeatedSheets", opciones, null);
 	}
 
 	public Repeatedsheet getRepeatedsheet() {
@@ -69,6 +74,16 @@ public class RepeatedsheetBean {
 
 	public void setRepeatedsheet(Repeatedsheet repeatedsheet) {
 		this.repeatedsheet = repeatedsheet;
+	}
+	
+	public UserBean getUserBean()
+	{
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean)
+	{
+		this.userBean = userBean;
 	}
 	
 }

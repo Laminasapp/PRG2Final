@@ -50,11 +50,8 @@
 				<p:captcha label="Captcha" required="true" />
 				<p:commandButton action="#{userBean.adicionarUsuario}"
 					value="Insertar Nuevo Usuario" ajax="false" />
-			</h:form>
-
-			<h:form>
-				<br />
-				<p:commandButton action="prime.xhtml" value="Volver" />
+					
+					<p:commandButton action="prime.xhtml" value="Volver" immediate="true"/>
 			</h:form>
 
 		</div>
