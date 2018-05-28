@@ -32,7 +32,9 @@ public class AuditBean {
 	final static Logger logger = Logger.getLogger(AuditBean.class);
 	private Audit auditoria;
 	private DataModel<Audit> listaAuditoria;
-
+	private Date fecha1;
+	private Date fecha2;
+	
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
 	
@@ -95,4 +97,20 @@ public class AuditBean {
 	{
 		this.auditoria = auditoria;
 	}
+	public Date getFecha1() {
+		return fecha1;
+	}
+
+	public void setFecha1(Date fecha1) {
+		this.fecha1 = fecha1;
+	}
+
+	public Date getFecha2() {
+		return fecha2;
+	}
+
+	public void setFecha2(Date fecha2) {
+		this.fecha2 = fecha2;
+	}
+
 }

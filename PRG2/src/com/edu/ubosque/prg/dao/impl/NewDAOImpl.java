@@ -47,8 +47,11 @@ public class NewDAOImpl implements NewDAO {
 
 	@Override
 	public void update(New news) {
-		// TODO Auto-generated method stub
-		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		session.update(news);
+		t.commit();
+		session.close();
 	}
 
 }

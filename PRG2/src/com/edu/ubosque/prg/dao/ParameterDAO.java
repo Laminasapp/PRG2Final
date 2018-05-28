@@ -10,6 +10,8 @@ public interface ParameterDAO {
 
 	public Parameter getParameter(int id);
 
+	public Parameter getParameter(String param);
+	
 	public void remove(Parameter parameter);
 
 	public void update(Parameter parameter);

@@ -2,9 +2,11 @@ package com.edu.ubosque.prg.beans;
 
 import com.edu.ubosque.prg.dao.AuditDAO;
 import com.edu.ubosque.prg.dao.MissingsheetDAO;
+import com.edu.ubosque.prg.dao.ParameterDAO;
 import com.edu.ubosque.prg.dao.UserDAO;
 import com.edu.ubosque.prg.dao.impl.AuditDAOImpl;
 import com.edu.ubosque.prg.dao.impl.MissingsheetDAOImpl;
+import com.edu.ubosque.prg.dao.impl.ParameterDAOImpl;
 import com.edu.ubosque.prg.dao.impl.UserDAOImpl;
 import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.User;
@@ -41,6 +43,9 @@ public class UserBean implements Serializable
 	
 	public String verificarIngreso()
 	{
+		ParameterDAO x = new ParameterDAOImpl();		
+		int dias = x.getParameter("C").getNumberValue();
+		System.out.println("DIAS__________________" + dias);
 		String respuesta = "prime";
 		
 		UserDAO dao = new UserDAOImpl();
@@ -75,10 +80,18 @@ public class UserBean implements Serializable
 			}
 			
 			else if (usuario != null && usuario.getUserType().equals("USER") && contra.equals(usuario.getPassword()))
-			{
+			{	System.out.println("Antes de");
+				if(obligarCambioContraseña(dias)) {
+					System.out.println("Despues de de");
+					usuario.setActive("I");
+					UtilCorreo.enviarNuevaContrasenia(usuario.getFullName(), asignarNuevaContrasenia(),
+							usuario.getEmailAddress());
+					Util.darMensaje("Bloqueado", "Revise su correo para su nueva contraseña");
+				}else {
 				hacerAuditoria("Ingresar", 0, "user");
 				usuario.setAttemps(0);
 				respuesta = "indexUsuario";
+				}
 			}
 			
 			else if (usuario != null && !usuario.getPassword().equals(contra) && usuario.getUserType().equals("USER"))
@@ -108,10 +121,29 @@ public class UserBean implements Serializable
 		return respuesta;
 	}
 	
+	@SuppressWarnings("deprecation")
+	public boolean obligarCambioContraseña(int dias) {
+		Date actual = new Date();
+		Date fecha = usuario.getDateLastPassword();
+		boolean rta = false;
+		int actualDia = actual.getDate();
+		int fechalDia = fecha.getDate();
+		System.out.println("Actual,"+actualDia+"Fecha,"+fechalDia);
+		if(actualDia>fechalDia) {
+			int param = actualDia - fechalDia;
+			System.out.println(param+" - " + dias);
+			if(param>=dias) {
+				rta = true;
+			}
+		}
+		return rta;
+	}
+	
 	public String asignarNuevaContrasenia()
 	{
 		String nueva = Util.darContraseniaAleatoria();
 		usuario.setPassword(Util.getStringMessageDigest(nueva, Util.MD5));
+		usuario.setDateLastPassword(new Date());
 		UserDAO dao = new UserDAOImpl();
 		dao.update(usuario);
 		logger.info("Se asigna una nueva contraseña");

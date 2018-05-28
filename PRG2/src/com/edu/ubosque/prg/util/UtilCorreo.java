@@ -1,5 +1,6 @@
 package com.edu.ubosque.prg.util;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -8,6 +9,13 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import com.nexmo.client.NexmoClient;
+import com.nexmo.client.NexmoClientException;
+import com.nexmo.client.auth.AuthMethod;
+import com.nexmo.client.auth.TokenAuthMethod;
+import com.nexmo.client.sms.SmsSubmissionResult;
+import com.nexmo.client.sms.messages.TextMessage;
 
 public class UtilCorreo
 {
@@ -43,6 +51,27 @@ public class UtilCorreo
 			transporte.close();
 		}
 		catch (MessagingException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void enviarSMS(String numero, String mensaje)
+	{
+		AuthMethod auth = new TokenAuthMethod("6c792482", "x6V5PAgeNS9yP7kw");
+		NexmoClient client = new NexmoClient(auth);
+
+		TextMessage message = new TextMessage("573102068794", numero, mensaje);
+		SmsSubmissionResult[] responses;
+		try
+		{
+			responses = client.getSmsClient().submitMessage(message);
+			for (SmsSubmissionResult response : responses)
+			{
+				System.out.println(response);
+			}
+		}
+		catch (IOException | NexmoClientException e)
 		{
 			e.printStackTrace();
 		}

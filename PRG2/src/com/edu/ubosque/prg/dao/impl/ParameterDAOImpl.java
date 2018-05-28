@@ -2,6 +2,8 @@ package com.edu.ubosque.prg.dao.impl;
 
 import java.util.List;
 
+import javax.management.Query;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -36,6 +38,16 @@ public class ParameterDAOImpl implements ParameterDAO
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
 		Parameter respuesta = (Parameter) session.load(Parameter.class, id);
+		t.commit();
+		session.close();
+		return respuesta;
+	}
+	
+	@Override
+	public Parameter getParameter(String param) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		Parameter respuesta = (Parameter) session.createQuery("from Parameter where parameterCode='"+param+"'").list().get(0);
 		t.commit();
 		session.close();
 		return respuesta;

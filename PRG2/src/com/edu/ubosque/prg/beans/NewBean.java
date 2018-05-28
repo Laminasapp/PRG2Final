@@ -47,7 +47,17 @@ public class NewBean
 		hacerAuditoria("Create", news.getId(), "news");
 		logger.info("Se crea un nueva noticia");
 	}
-	
+	public void cambiarEstado() {
+		New n = listaNews.getRowData();
+		NewDAO dao = new NewDAOImpl();
+		if(n.getState().equals("A")) {
+			n.setState("I");
+		}else {
+			n.setState("A");
+		}
+		System.out.println("Buena perro" + n.getLargeDescription());
+		dao.update(n);
+	}
 	public void hacerAuditoria(String mensaje, int tableId, String tableName)
 	{
 		AuditDAO auditDao = new AuditDAOImpl();
