@@ -85,5 +85,16 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 		session.close();
 		return lista;
 	}
+	
+	public List<Missingsheet> listaLaminas(int lamina){
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		List lista = session.createQuery("from Missingsheet where numberSheets=" + lamina).list();
+		t.commit();
+		session.close();
+		return lista;
+				
+	}
 
 }

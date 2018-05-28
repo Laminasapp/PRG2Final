@@ -20,6 +20,5 @@ public interface MissingsheetDAO {
 	
 	public List<Missingsheet> list(String userId);
 	
-	 
-
+	public List<Missingsheet> listaLaminas(int lamina);
 }

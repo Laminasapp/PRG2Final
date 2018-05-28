@@ -130,6 +130,49 @@ public class MissingsheetBean
 		this.usuarios = usuarios;
 	}
 	
+	
+	public List<User> venderLaminas() {
+
+		List<User> vender = new ArrayList<User>();
+
+		// Obtengo el Id del usuario que ingreso.
+		int idUsuario = usuario.getUsuario().getId();
+
+		// Se obtienen las laminas repetidas del usuario
+		RepeatedsheetDAO daoR = new RepeatedsheetDAOImpl();
+		List<Repeatedsheet> laminasRepetidas = daoR.repetidasUsuario(idUsuario);
+
+		// se buscan a los usuarios que le voy a vender
+		UserDAO user = new UserDAOImpl();
+		MissingsheetDAO daoM = new MissingsheetDAOImpl();
+
+		for (int i = 0; i < laminasRepetidas.size(); i++) {
+
+			List<Missingsheet> faltantes = daoM.listaLaminas(laminasRepetidas.get(i).getNumberSheets());
+
+			// ahora se buscan los usuarios
+
+			for (int j = 0; j < faltantes.size(); j++) {
+
+				int tmp = faltantes.get(j).getUserId();
+				vender.add(user.getUsuario(tmp));
+			}
+
+		}
+
+		return vender;
+	}
+
+	public List<User> albumLleno() {
+		
+		List<User> users = new ArrayList<User>();
+		
+		
+		
+		
+		return null;
+	}
+	
 	public Missingsheet getSelectedMissingSheet()
 	{
 		return selectedMissingSheet;

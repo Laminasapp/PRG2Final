@@ -20,4 +20,6 @@ public interface RepeatedsheetDAO {
 	
 	public List<Repeatedsheet> listaRepetidas(int pId);
 	
+	public List<Repeatedsheet> repetidasUsuario(int pId);
+	
 }

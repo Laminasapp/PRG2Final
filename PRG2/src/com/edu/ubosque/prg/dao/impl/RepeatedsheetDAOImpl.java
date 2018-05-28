@@ -76,5 +76,17 @@ public class RepeatedsheetDAOImpl implements RepeatedsheetDAO{
 		session.close();
 		return lista;
 	}
+	
+	
+	public List<Repeatedsheet> repetidasUsuario(int pId){
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		List lista = session.createQuery("from Repeatedsheet where userId = " + pId).list();
+		t.commit();
+		session.close();
+		return lista;
+		
+	}
 
 }
