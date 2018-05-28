@@ -35,7 +35,7 @@
 			<h:form>
 			<p:panel header="Noticias">
 
-				<p:dataTable paginator="true" var="nw" id="news" rows="5">
+				<p:dataTable paginator="true" var="nw" value="#{newBean.listarNews}" id="newsDT" rows="5">
 
 					<f:facet name="header">
 						<p:commandLink id="agregarNew"
@@ -50,29 +50,29 @@
 
 					<p:column headerText="ID" filterBy="#{newBean.news.id}"
 						filterMatchMode="contains">
-						<h:outputText value="#{newBean.news.id}"></h:outputText>
+						<h:outputText value="#{nw.id}"></h:outputText>
 					</p:column>
 					<p:column headerText="Fecha de la noticia"
 						filterBy="#{newBean.news.dateNews}" filterMatchMode="contains">
-						<h:outputText value="#{newBean.news.dateNews}"></h:outputText>
+						<h:outputText value="#{nw.dateNews}"></h:outputText>
 					</p:column>
 					<p:column headerText="Titulo"
 						filterBy="#{newBean.news.shortDescription}"
 						filterMatchMode="contains">
-						<h:outputText value="#{newBean.news.shortDescription}"></h:outputText>
+						<h:outputText value="#{nw.shortDescription}"></h:outputText>
 					</p:column>
 					<p:column headerText="Descripcion"
-						filterBy="#{newBean.news.largeDescription}"
+						filterBy="#{nw.largeDescription}"
 						filterMatchMode="contains">
-						<h:outputText value="#{newBean.news.largeDescription}"></h:outputText>
+						<h:outputText value="#{nw.largeDescription}"></h:outputText>
 					</p:column>
 					<p:column headerText="ID del usuario"
 						filterBy="#{newBean.news.idUser}" filterMatchMode="contains">
-						<h:outputText value="#{newBean.news.idUser}"></h:outputText>
+						<h:outputText value="#{nw.idUser}"></h:outputText>
 					</p:column>
 					<p:column headerText="Estado" filterBy="#{newBean.news.state}"
 						filterMatchMode="contains">
-						<h:outputText value="#{newBean.news.state}"></h:outputText>
+						<h:outputText value="#{nw.state}"></h:outputText>
 					</p:column>
 
 				</p:dataTable>
@@ -81,15 +81,16 @@
 
 
 			<h:form>
+			
 				<p:dialog widgetVar="dialogAgregarNew" modal="true"
 					resizable="false" draggable="false" closable="false">
 
-					<p:panelGrid id="gridAgregarParametro" columns="2">
+					<p:panelGrid id="gridAgregarNew" columns="2">
 						<p:outputLabel for="Titulo" value="Titulo de la noticia: " />
 						<p:inputText id="Titulo"
 							value="#{newBean.news.shortDescription}" required="true"
 							requiredMessage="Campo obligatorio">
-							<f:validateLength maximum="1" />
+							<f:validateLength minimum="1" />
 						</p:inputText>
 
 						<p:outputLabel for="Noticia" value="Descripcion: " />
@@ -102,7 +103,7 @@
 
 					<h:panelGrid columns="2">
 						<p:commandButton action="#{newBean.agregarNew}"
-							value="Agregar" update="@([id$=news])" />
+							value="Agregar" update="@([id$=newsDT])" />
 						<p:commandButton onclick="PF('dialogAgregarNew').hide()"
 							value="Cerrar" update="@([id$=gridAgregarNew])" />
 					</h:panelGrid>

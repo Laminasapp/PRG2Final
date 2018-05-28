@@ -46,7 +46,6 @@ public class NewBean {
 	{
 		NewDAO DAO = new NewDAOImpl();
 		DAO.save(news);
-		
 		Util.darMensaje("Ha sido agregado", "Se ha agregado la nueva noticia");
 		hacerAuditoria("Create", news.getId(), "news");
 		logger.info("Se crea un nueva noticia");
@@ -77,6 +76,9 @@ public class NewBean {
 	@PostConstruct
 	public void init() {
 		news = new New();
+		news.setDateNews(new Date());
+		news.setState("A");
+		news.setIdUser(userBean.getUsuario().getId());
 	}
 	public UserBean getUserBean()
 	{
