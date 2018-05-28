@@ -31,7 +31,7 @@ public class AuditBean {
 
 	final static Logger logger = Logger.getLogger(AuditBean.class);
 	private Audit auditoria;
-	private DataModel listaAuditoria;
+	private DataModel<Audit> listaAuditoria;
 
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
@@ -42,9 +42,9 @@ public class AuditBean {
 		return "index";
 	}
 
-	public DataModel getListarAuditoria() {
+	public DataModel<Audit> getListarAuditoria() {
 		List<Audit> lista = new AuditDAOImpl().list();
-		listaAuditoria = new ListDataModel(lista);
+		listaAuditoria = new ListDataModel<Audit>(lista);
 		return listaAuditoria;
 	}
 
@@ -65,4 +65,34 @@ public class AuditBean {
 	  pdf.add(new Paragraph(" "));
 	
 	 }
+
+	public DataModel<Audit> getListaAuditoria()
+	{
+		return listaAuditoria;
+	}
+
+	public void setListaAuditoria(DataModel<Audit> listaAuditoria)
+	{
+		this.listaAuditoria = listaAuditoria;
+	}
+
+	public UserBean getUserBean()
+	{
+		return userBean;
+	}
+
+	public void setUserBean(UserBean userBean)
+	{
+		this.userBean = userBean;
+	}
+
+	public Audit getAuditoria()
+	{
+		return auditoria;
+	}
+
+	public void setAuditoria(Audit auditoria)
+	{
+		this.auditoria = auditoria;
+	}
 }

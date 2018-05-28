@@ -22,26 +22,23 @@ import com.edu.ubosque.prg.util.Util;
 
 @ManagedBean
 @SessionScoped
-public class NewBean {
+public class NewBean
+{
 	
 	final static Logger logger = Logger.getLogger(NewBean.class);
 	private New news;
-	private DataModel listaNews;
-
+	private DataModel<New> listaNews;
+	
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
 	
-	public String adicionarNews(New news) {
-		NewDAO dao = new NewDAOImpl();
-		dao.save(news);
-		return "index";
-	}
-
-	public DataModel getListarNews() {
+	public DataModel<New> getListarNews()
+	{
 		List<New> lista = new NewDAOImpl().list();
-		listaNews = new ListDataModel(lista);
+		listaNews = new ListDataModel<New>(lista);
 		return listaNews;
 	}
+	
 	public void agregarNew()
 	{
 		NewDAO DAO = new NewDAOImpl();
@@ -50,6 +47,7 @@ public class NewBean {
 		hacerAuditoria("Create", news.getId(), "news");
 		logger.info("Se crea un nueva noticia");
 	}
+	
 	public void hacerAuditoria(String mensaje, int tableId, String tableName)
 	{
 		AuditDAO auditDao = new AuditDAOImpl();
@@ -66,25 +64,31 @@ public class NewBean {
 		
 		auditDao.save(audit);
 	}
-	public New getNews() {
+	
+	public New getNews()
+	{
 		return news;
 	}
-
-	public void setNews(New news) {
+	
+	public void setNews(New news)
+	{
 		this.news = news;
 	}
+	
 	@PostConstruct
-	public void init() {
+	public void init()
+	{
 		news = new New();
 		news.setDateNews(new Date());
 		news.setState("A");
 		news.setIdUser(userBean.getUsuario().getId());
 	}
+	
 	public UserBean getUserBean()
 	{
 		return userBean;
 	}
-
+	
 	public void setUserBean(UserBean userBean)
 	{
 		this.userBean = userBean;

@@ -17,7 +17,7 @@ public class StadiumBean {
 	
 	final static Logger logger = Logger.getLogger(StadiumBean.class);
 	private Stadium stadium;
-	private DataModel listaStadium;
+	private DataModel<Stadium> listaStadium;
 
 	public String adicionarAuditoria(Stadium stadium) {
 		StadiumDAO dao = new StadiumDAOImpl();
@@ -25,10 +25,20 @@ public class StadiumBean {
 		return "index";
 	}
 
-	public DataModel getListarAuditoria() {
+	public DataModel<Stadium> getListarAuditoria() {
 		List<Stadium> lista = new StadiumDAOImpl().list();
-		listaStadium = new ListDataModel(lista);
+		listaStadium = new ListDataModel<Stadium>(lista);
 		return listaStadium;
+	}
+
+	public Stadium getStadium()
+	{
+		return stadium;
+	}
+
+	public void setStadium(Stadium stadium)
+	{
+		this.stadium = stadium;
 	}
 	
 }

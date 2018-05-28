@@ -14,16 +14,14 @@
 		<div class="ui-g-4" />
 
 		<div class="ui-g-4" align="center">
-			<p:graphicImage url="/resources/img/prime/Logo.jpg" height="50%"
-				width="30%" />
+			<p:graphicImage url="/resources/img/prime/iconito.png" height="70%"
+				width="35%" />
 		</div>
 
-		<div class="ui-g-4">
+		<div class="ui-g-4" align="right">
 			<h:form>
-				<p:commandButton action="prime.xhtml" value="Volver"
-					immediate="true" />
+				<p:commandButton action="prime.xhtml" value="Salir" immediate="true" />
 			</h:form>
-
 		</div>
 	</div>
 
@@ -33,77 +31,76 @@
 		<p:tab title="Inicio ">
 
 			<h:form>
-			<p:panel header="Noticias">
+				<p:panel header="Noticias">
 
-				<p:dataTable paginator="true" var="nw" value="#{newBean.listarNews}" id="newsDT" rows="5">
+					<p:dataTable paginator="true" var="nw"
+						value="#{newBean.listarNews}" id="newsDT" rows="5">
 
-					<f:facet name="header">
-						<p:commandLink id="agregarNew"
-							onclick="PF('dialogAgregarNew').show()"
-							update="@([id$=gridAgregarNew])">
-							<p:graphicImage url="/resources/img/export/add.png" width="24" />
-						</p:commandLink>
+						<f:facet name="header">
+							<p:commandLink id="agregarNew"
+								onclick="PF('dialogAgregarNew').show()"
+								update="@([id$=gridAgregarNew])">
+								<p:graphicImage url="/resources/img/export/add.png" width="24" />
+							</p:commandLink>
 
-						<p:tooltip for="agregarNew"
-							value="Agregar un nueva noticia" position="top" />
-					</f:facet>
+							<p:tooltip for="agregarNew" value="Agregar un nueva noticia"
+								position="top" />
+						</f:facet>
 
-					<p:column headerText="ID" filterBy="#{newBean.news.id}"
-						filterMatchMode="contains">
-						<h:outputText value="#{nw.id}"></h:outputText>
-					</p:column>
-					<p:column headerText="Fecha de la noticia"
-						filterBy="#{newBean.news.dateNews}" filterMatchMode="contains">
-						<h:outputText value="#{nw.dateNews}"></h:outputText>
-					</p:column>
-					<p:column headerText="Titulo"
-						filterBy="#{newBean.news.shortDescription}"
-						filterMatchMode="contains">
-						<h:outputText value="#{nw.shortDescription}"></h:outputText>
-					</p:column>
-					<p:column headerText="Descripcion"
-						filterBy="#{nw.largeDescription}"
-						filterMatchMode="contains">
-						<h:outputText value="#{nw.largeDescription}"></h:outputText>
-					</p:column>
-					<p:column headerText="ID del usuario"
-						filterBy="#{newBean.news.idUser}" filterMatchMode="contains">
-						<h:outputText value="#{nw.idUser}"></h:outputText>
-					</p:column>
-					<p:column headerText="Estado" filterBy="#{newBean.news.state}"
-						filterMatchMode="contains">
-						<h:outputText value="#{nw.state}"></h:outputText>
-					</p:column>
+						<p:column headerText="ID" filterBy="#{newBean.news.id}"
+							filterMatchMode="contains">
+							<h:outputText value="#{nw.id}"></h:outputText>
+						</p:column>
+						<p:column headerText="Fecha de la noticia"
+							filterBy="#{newBean.news.dateNews}" filterMatchMode="contains">
+							<h:outputText value="#{nw.dateNews}"></h:outputText>
+						</p:column>
+						<p:column headerText="Titulo"
+							filterBy="#{newBean.news.shortDescription}"
+							filterMatchMode="contains">
+							<h:outputText value="#{nw.shortDescription}"></h:outputText>
+						</p:column>
+						<p:column headerText="Descripcion"
+							filterBy="#{nw.largeDescription}" filterMatchMode="contains">
+							<h:outputText value="#{nw.largeDescription}"></h:outputText>
+						</p:column>
+						<p:column headerText="ID del usuario"
+							filterBy="#{newBean.news.idUser}" filterMatchMode="contains">
+							<h:outputText value="#{nw.idUser}"></h:outputText>
+						</p:column>
+						<p:column headerText="Estado" filterBy="#{newBean.news.state}"
+							filterMatchMode="contains">
+							<h:outputText value="#{nw.state}"></h:outputText>
+						</p:column>
 
-				</p:dataTable>
-			</p:panel>
+					</p:dataTable>
+				</p:panel>
 			</h:form>
 
 
 			<h:form>
-			
+
 				<p:dialog widgetVar="dialogAgregarNew" modal="true"
 					resizable="false" draggable="false" closable="false">
 
 					<p:panelGrid id="gridAgregarNew" columns="2">
 						<p:outputLabel for="Titulo" value="Titulo de la noticia: " />
-						<p:inputText id="Titulo"
-							value="#{newBean.news.shortDescription}" required="true"
-							requiredMessage="Campo obligatorio">
+						<p:inputText id="Titulo" value="#{newBean.news.shortDescription}"
+							required="true" requiredMessage="Campo obligatorio">
 							<f:validateLength minimum="1" />
 						</p:inputText>
 
 						<p:outputLabel for="Noticia" value="Descripcion: " />
 						<p:inputTextarea rows="6" cols="33" id="Noticia"
-							value="#{newBean.news.largeDescription}"
-							required="true" requiredMessage="Campo obligatorio">
+							value="#{newBean.news.largeDescription}" required="true"
+							requiredMessage="Campo obligatorio">
 							<f:validateLength maximum="60" />
 						</p:inputTextarea>
 					</p:panelGrid>
 
 					<h:panelGrid columns="2">
-						<p:commandButton action="#{newBean.agregarNew}"
-							value="Agregar" update="@([id$=newsDT])" />
+						<p:commandButton action="#{newBean.agregarNew}" value="Agregar"
+							update="@([id$=newsDT])" />
 						<p:commandButton onclick="PF('dialogAgregarNew').hide()"
 							value="Cerrar" update="@([id$=gridAgregarNew])" />
 					</h:panelGrid>
@@ -127,7 +124,7 @@
 							<h:commandLink id="excelAudit">
 								<p:graphicImage url="/resources/img/export/xls-icon.png"
 									width="24" />
-								<p:dataExporter type="xls" target="auditoria" 
+								<p:dataExporter type="xls" target="auditoria"
 									fileName="AuditoriaEXCEL" />
 							</h:commandLink>
 
@@ -138,7 +135,8 @@
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
 
-								<p:dataExporter type="pdf" target="auditoria" preProcessor="#{auditBean.preProcessPDF}"
+								<p:dataExporter type="pdf" target="auditoria"
+									preProcessor="#{auditBean.preProcessPDF}"
 									fileName="AuditoriaPDF" />
 							</h:commandLink>
 
@@ -209,7 +207,8 @@
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
 
-								<p:dataExporter type="pdf" target="users" fileName="UsuarioPDF"  preProcessor="#{auditBean.preProcessPDF}"/>
+								<p:dataExporter type="pdf" target="users" fileName="UsuarioPDF"
+									preProcessor="#{auditBean.preProcessPDF}" />
 							</h:commandLink>
 
 							<p:tooltip for="pdfUser" value="Descargar esta tabla en PDF"
@@ -339,7 +338,8 @@
 							<h:commandLink id="pdfParameter">
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
-								<p:dataExporter type="pdf" target="parametros" preProcessor="#{auditBean.preProcessPDF}"
+								<p:dataExporter type="pdf" target="parametros"
+									preProcessor="#{auditBean.preProcessPDF}"
 									fileName="ParametrosPDF" />
 							</h:commandLink>
 

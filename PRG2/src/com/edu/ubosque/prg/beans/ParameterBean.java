@@ -31,12 +31,6 @@ public class ParameterBean {
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
 	
-	public String adicionarParameter(Parameter parameter) {
-		ParameterDAO dao = new ParameterDAOImpl();
-		dao.save(parameter);
-		return "index";
-	}
-	
 	public DataModel<Parameter> getListaParameter() {
 		List<Parameter> lista = new ParameterDAOImpl().list();
 		listaParameter = new ListDataModel<Parameter>(lista);
