@@ -200,7 +200,12 @@ public class UserBean implements Serializable
 	
 	public String adicionarUsuario()
 	{
+		String pagina = null;
+		
 		UserDAO dao = new UserDAOImpl();
+		
+		if(dao.userName(this.usuario.getUserName())) {
+		
 		dao.save(usuario);
 		
 		MissingsheetDAO ms = new MissingsheetDAOImpl();
@@ -220,7 +225,16 @@ public class UserBean implements Serializable
 		logger.info("Se crea un nuevo usuario");
 		nuevoUsuario();
 		
-		return "prime";
+		pagina = "prime";
+		}
+		
+		else {
+			
+			Util.darMensaje("Warning", "Nombre de usuario ya existe");
+			
+		}
+		
+		return pagina;
 	}
 	
 	public void prepararModificarUsuario()

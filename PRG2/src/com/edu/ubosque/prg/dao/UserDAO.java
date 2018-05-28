@@ -18,5 +18,7 @@ public interface UserDAO {
 	public void remove(User usuario);
 
 	public void update(User usuario);
+	
+	public boolean userName(String pName);
 
 }

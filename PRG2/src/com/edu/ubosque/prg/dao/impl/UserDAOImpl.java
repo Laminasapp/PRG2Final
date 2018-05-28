@@ -21,40 +21,37 @@ public class UserDAOImpl implements UserDAO {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		return (User) session.load(User.class, id);
 	}
-	
+
 	@Override
-	public User getUsuario(String parameter)
-	{
+	public User getUsuario(String parameter) {
 		User rta = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
 		List<User> list;
-		
-		
-		if(!parameter.contains("@"))
-		{
-			list = session.createQuery("from User where userName = '" +parameter+"' ").list();	
+
+		if (!parameter.contains("@")) {
+			list = session.createQuery("from User where userName = '" + parameter + "' ").list();
 		}
-		
-		else
-		{
-			list = session.createQuery("from User where emailAddress = '" +parameter+"' ").list();	
+
+		else {
+			list = session.createQuery("from User where emailAddress = '" + parameter + "' ").list();
 		}
-		
-		if(list.size()!=0) {
+
+		if (list.size() != 0) {
 			rta = (User) list.get(0);
 		}
 		t.commit();
 		session.close();
 		return rta;
 	}
-	
+
 	public User getUsuario(String name, String pass) {
 		User rta = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
-		List list = session.createQuery("from User where userName = '" +name+"' AND password = '"+pass+"'").list();
-		if(list.size()!=0) {
+		List list = session.createQuery("from User where userName = '" + name + "' AND password = '" + pass + "'")
+				.list();
+		if (list.size() != 0) {
 			rta = (User) list.get(0);
 		}
 		t.commit();
@@ -85,6 +82,23 @@ public class UserDAOImpl implements UserDAO {
 		t.commit();
 		session.close();
 		return lista;
+	}
+
+	public boolean userName(String pName) {
+
+		boolean verificacion = false;
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		List lista = session.createQuery("from User where userName = '" + pName + "'").list();
+		t.commit();
+		session.close();
+
+		if (lista.size() == 0) {
+			verificacion = true;
+		}
+
+		return verificacion;
 	}
 
 }
