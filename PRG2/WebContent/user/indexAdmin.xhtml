@@ -18,13 +18,102 @@
 				width="30%" />
 		</div>
 
-		<div class="ui-g-4" />
+		<div class="ui-g-4">
+			<h:form>
+				<p:commandButton action="prime.xhtml" value="Volver"
+					immediate="true" />
+			</h:form>
+
+		</div>
 	</div>
 
 	<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
 
 	<p:tabView orientation="left">
-		<p:tab title="Inicio "> Inicio </p:tab>
+		<p:tab title="Inicio ">
+
+			<h:form>
+			<p:panel header="Noticias">
+
+				<p:dataTable paginator="true" var="nw" id="news" rows="5">
+
+					<f:facet name="header">
+						<p:commandLink id="agregarNew"
+							onclick="PF('dialogAgregarNew').show()"
+							update="@([id$=gridAgregarNew])">
+							<p:graphicImage url="/resources/img/export/add.png" width="24" />
+						</p:commandLink>
+
+						<p:tooltip for="agregarNew"
+							value="Agregar un nueva noticia" position="top" />
+					</f:facet>
+
+					<p:column headerText="ID" filterBy="#{newBean.news.id}"
+						filterMatchMode="contains">
+						<h:outputText value="#{newBean.news.id}"></h:outputText>
+					</p:column>
+					<p:column headerText="Fecha de la noticia"
+						filterBy="#{newBean.news.dateNews}" filterMatchMode="contains">
+						<h:outputText value="#{newBean.news.dateNews}"></h:outputText>
+					</p:column>
+					<p:column headerText="Titulo"
+						filterBy="#{newBean.news.shortDescription}"
+						filterMatchMode="contains">
+						<h:outputText value="#{newBean.news.shortDescription}"></h:outputText>
+					</p:column>
+					<p:column headerText="Descripcion"
+						filterBy="#{newBean.news.largeDescription}"
+						filterMatchMode="contains">
+						<h:outputText value="#{newBean.news.largeDescription}"></h:outputText>
+					</p:column>
+					<p:column headerText="ID del usuario"
+						filterBy="#{newBean.news.idUser}" filterMatchMode="contains">
+						<h:outputText value="#{newBean.news.idUser}"></h:outputText>
+					</p:column>
+					<p:column headerText="Estado" filterBy="#{newBean.news.state}"
+						filterMatchMode="contains">
+						<h:outputText value="#{newBean.news.state}"></h:outputText>
+					</p:column>
+
+				</p:dataTable>
+			</p:panel>
+			</h:form>
+
+
+			<h:form>
+				<p:dialog widgetVar="dialogAgregarNew" modal="true"
+					resizable="false" draggable="false" closable="false">
+
+					<p:panelGrid id="gridAgregarParametro" columns="2">
+						<p:outputLabel for="Titulo" value="Titulo de la noticia: " />
+						<p:inputText id="Titulo"
+							value="#{newBean.news.shortDescription}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="1" />
+						</p:inputText>
+
+						<p:outputLabel for="Noticia" value="Descripcion: " />
+						<p:inputTextarea rows="6" cols="33" id="Noticia"
+							value="#{newBean.news.largeDescription}"
+							required="true" requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="60" />
+						</p:inputTextarea>
+					</p:panelGrid>
+
+					<h:panelGrid columns="2">
+						<p:commandButton action="#{newBean.agregarNew}"
+							value="Agregar" update="@([id$=news])" />
+						<p:commandButton onclick="PF('dialogAgregarNew').hide()"
+							value="Cerrar" update="@([id$=gridAgregarNew])" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
+
+
+
+
+		</p:tab>
 		<p:tab title="Auditorias">
 			<h:form>
 				<p:panel id="basic" header="Listado de auditorias">
@@ -56,27 +145,33 @@
 								position="top" />
 						</f:facet>
 
-						<p:column headerText="Id">
+						<p:column headerText="Id" filterBy="#{aud.id}"
+							filterMatchMode="contains">
 							<h:outputText value="#{aud.id}" />
 						</p:column>
 
-						<p:column headerText="Id del usuario">
+						<p:column headerText="Id del usuario" filterBy="#{aud.userId}"
+							filterMatchMode="contains">
 							<h:outputText value="#{aud.userId}" />
 						</p:column>
 
-						<p:column headerText="Operacion">
+						<p:column headerText="Operacion" filterBy="#{aud.operation}"
+							filterMatchMode="contains">
 							<h:outputText value="#{aud.operation}" />
 						</p:column>
 
-						<p:column headerText="Nombre de la tabla">
+						<p:column headerText="Nombre de la tabla"
+							filterBy="#{aud.tableName}" filterMatchMode="contains">
 							<h:outputText value="#{aud.tableName}" />
 						</p:column>
 
-						<p:column headerText="Id de la Tabla">
+						<p:column headerText="Id de la Tabla" filterBy="#{aud.tableId}"
+							filterMatchMode="contains">
 							<h:outputText value="#{aud.tableId}" />
 						</p:column>
 
-						<p:column headerText="Fecha de creacion">
+						<p:column headerText="Fecha de creacion"
+							filterBy="#{aud.createDate}" filterMatchMode="contains">
 							<h:outputText value="#{aud.createDate}" />
 						</p:column>
 
@@ -120,35 +215,43 @@
 								position="top" />
 						</f:facet>
 
-						<p:column headerText="Id">
+						<p:column headerText="Id" filterBy="#{user.id}"
+							filterMatchMode="contains">
 							<h:outputText value="#{user.id}" />
 						</p:column>
 
-						<p:column headerText="Usuario" sortBy="#{user.userName}">
+						<p:column headerText="Usuario" filterBy="#{user.userName}"
+							filterMatchMode="contains">
 							<h:outputText value="#{user.userName}" />
 						</p:column>
 
-						<p:column headerText="Nombre">
+						<p:column headerText="Nombre" filterBy="#{user.fullName}"
+							filterMatchMode="contains">
 							<h:outputText value="#{user.fullName}" />
 						</p:column>
 
-						<p:column headerText="Correo">
+						<p:column headerText="Correo" filterBy="#{user.emailAddress}"
+							filterMatchMode="contains">
 							<h:outputText value="#{user.emailAddress}" />
 						</p:column>
 
-						<p:column headerText="Telefono">
+						<p:column headerText="Telefono" filterBy="#{user.phoneNumber}"
+							filterMatchMode="contains">
 							<h:outputText value="#{user.phoneNumber}" />
 						</p:column>
 
-						<p:column headerText="Ultima Fecha Contraseña">
+						<p:column headerText="Ultima Fecha Contraseña"
+							filterBy="#{user.dateLastPassword}" filterMatchMode="contains">
 							<h:outputText value="#{user.dateLastPassword}" />
 						</p:column>
 
-						<p:column headerText="Tipo de Usuario">
+						<p:column headerText="Tipo de Usuario" filterBy="#{user.userType}"
+							filterMatchMode="contains">
 							<h:outputText value="#{user.userType}" />
 						</p:column>
 
-						<p:column headerText="Estado">
+						<p:column headerText="Estado" filterBy="#{user.active}"
+							filterMatchMode="contains">
 							<h:outputText value="Activo" rendered="#{'A' eq user.active}" />
 							<h:outputText value="Inactivo" rendered="#{'I' eq user.active}" />
 						</p:column>
@@ -213,13 +316,13 @@
 			</h:form>
 		</p:tab>
 
-		<p:tab title="Parametros" >
+		<p:tab title="Parametros">
 			<h:form>
 				<p:panel header="Listado de parametros">
 
 					<p:dataTable paginator="true" var="parameter" id="parametros"
-						value="#{parameterBean.listaParameter}" cellpadding="5"
-						border="1" rows="9">
+						value="#{parameterBean.listaParameter}" cellpadding="5" border="1"
+						rows="9">
 
 						<f:facet name="header">
 							<h:commandLink id="excelParameter">
@@ -278,7 +381,8 @@
 
 						<p:column headerText="Modificar" exportable="false">
 							<p:commandButton onclick="PF('dialogModificarParametro').show()"
-								value="Modificar" update="@([id$=gridModificarParametro])" action="#{parameterBean.prepararModificarParametro}">
+								value="Modificar" update="@([id$=gridModificarParametro])"
+								action="#{parameterBean.prepararModificarParametro}">
 							</p:commandButton>
 						</p:column>
 					</p:dataTable>
@@ -385,8 +489,6 @@
 				</p:dialog>
 			</h:form>
 		</p:tab>
-
-		<p:tab title="Prueba "> Prueba </p:tab>
 
 	</p:tabView>
 </h:body>
