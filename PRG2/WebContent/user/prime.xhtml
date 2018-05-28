@@ -29,16 +29,24 @@
 			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
 
 			<h:form>
+
 				<h:panelGrid columns="2" style="margin: 0 auto">
+
 					<p:outputLabel for="login" value="Usuario: " />
 					<p:inputText id="login" value="#{userBean.login}" required="true"
-						requiredMessage="El usuario es requerido">
+						requiredMessage="El usuario es requerido"
+						validatorMessage="Usuario incorrecto">
+						<f:validateLength minimum="6" maximum="8" />
 					</p:inputText>
+
 
 					<p:outputLabel for="contra" value="Contraseña: " />
 					<p:password id="contra" value="#{userBean.contra}" required="true"
-						requiredMessage="La contraseña es requerida">
+						requiredMessage="La contraseña es requerida"
+						validatorMessage="Contraseña incorrecta">
+						<f:validateLength minimum="6" maximum="8" />
 					</p:password>
+
 				</h:panelGrid>
 
 				<!-- <h:panelGrid columns="1" style="margin: 0 auto">
@@ -71,19 +79,26 @@
 		<div class="ui-g-4" />
 	</div>
 
-	<h:form>
-		<p:dialog header="Recuperar Contraseña" widgetVar="dialog"
-			resizable="false" draggable="false" modal="true">
-			<h:panelGrid id="grid" columns="2">
+
+	<p:dialog header="Recuperar Contraseña" widgetVar="dialog"
+		resizable="false" draggable="false" modal="true" closable="false"> 
+		<h:panelGrid id="grid" columns="2">
+			<h:form>
 				<h:outputLabel for="elCorreo"> Correo: </h:outputLabel>
 				<p:inputText id="elCorreo" value="#{userBean.usuario.emailAddress}"
-					required="true" />
+					required="true" requiredMessage="El campo es requerido"
+					validatorMessage="Correo Inválido">
+					<f:validateRegex
+						pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+				</p:inputText>
 				<p:commandButton value="Recuperar"
-					action="#{userBean.recuperarContrasenia}"
-					onclick="PF('dialog').hide()" update="grid"/>
-			</h:panelGrid>
-		</p:dialog>
-	</h:form>
+					action="#{userBean.recuperarContrasenia}" update="grid" />
+			</h:form><h:form>
+			<p:commandButton value="Cerrar" onclick="PF('dialog').hide()"
+				update="grid" />	</h:form>
+		</h:panelGrid>
+	</p:dialog>
+
 
 </h:body>
 </html>

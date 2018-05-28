@@ -294,13 +294,18 @@
 						<p:outputLabel for="email" value="Correo: " />
 						<p:inputText id="email"
 							value="#{userBean.usuarioTemporal.emailAddress}" required="true"
-							requiredMessage="Campo obligatorio" />
+							requiredMessage="Campo obligatorio">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
 						<p:message for="email" />
 
 						<p:outputLabel for="telefono" value="Numero de telefono: " />
 						<p:inputText id="telefono"
 							value="#{userBean.usuarioTemporal.phoneNumber}" required="true"
 							requiredMessage="Campo obligatorio">
+							<f:validateRegex pattern="[0-9]+" />
+							<f:validateLength minimum="9" maximum="13"></f:validateLength>
 						</p:inputText>
 						<p:message for="telefono" />
 

@@ -6,6 +6,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
+	<title>Registro</title>
 </h:head>
 <h:body>
 
@@ -13,45 +14,78 @@
 		<div class="ui-g-4"></div>
 		<div class="ui-g-8">
 
-			<h1>Resgistrate aqui</h1>
+			<h1>Registrate aqui</h1>
 
 			<p:growl id="growl" showDetail="true" life="3000" />
 			<h:form>
 
-				<p:panelGrid columns="2">
+				<p:panelGrid columns="4">
 
 					<p:outputLabel for="userName" value="Nombre de Usuario: " />
 					<p:inputText id="userName" value="#{userBean.usuario.userName}"
 						required="true"
-						requiredMessage="Nombre de Usuario: Campo obligatorio">
-						<f:validateLength maximum="8" />
+						requiredMessage="Nombre de Usuario: Campo obligatorio"
+						validatorMessage="Usuario incorrecto">
+						<f:validateRegex pattern="^[a-zA-Z]*$" />
+						<f:validateLength minimum="6" maximum="8" />
 					</p:inputText>
+					<p:graphicImage id="lupita1" url="/resources/img/export/lupita.jpg"
+						width="24" />
+					<p:tooltip for="lupita1"
+						value="El usuario debe ser de minimo 6 y maximo 8 digitos Y El usuario no debe contener caracteres extraños [#-$-%--/-(@)-=]"
+						position="top" />
+
 
 					<p:outputLabel for="fullName" value="Nombre Completo: " />
 					<p:inputText id="fullName" value="#{userBean.usuario.fullName}"
 						required="true"
-						requiredMessage="Nombre Completo: Campo obligatorio">
-						<p:keyFilter regEx="/[a-z ]/i" />
+						requiredMessage="Nombre Completo: Campo obligatorio"
+						validatorMessage="El nombre completo esta incorrecto">
+						<f:validateRegex pattern="[a-zA-Z ]*" />
 					</p:inputText>
+					<p:graphicImage id="lupita2" url="/resources/img/export/lupita.jpg"
+						width="24" />
+					<p:tooltip for="lupita2" value="Nombre completo, Solo letras"
+						position="top" />
 
 
 					<p:outputLabel for="email" value="Correo: " />
 					<p:inputText id="email" value="#{userBean.usuario.emailAddress}"
-						required="true" requiredMessage="Correo: Campo obligatorio" />
+						required="true" requiredMessage="Correo: Campo obligatorio"
+						validatorMessage="Correo inválido">
+						<f:validateRegex
+							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+					</p:inputText>
+					<p:graphicImage id="lupita3" url="/resources/img/export/lupita.jpg"
+						width="24" />
+					<p:tooltip for="lupita3" value="Correo valido: example@gmail.com"
+						position="top" />
 
-					<p:outputLabel for="telefono" value="Numero de telefono: " />
+
+					<p:outputLabel for="telefono" value="Numero de celular: " />
 					<p:inputText id="telefono" value="#{userBean.usuario.phoneNumber}"
 						required="true"
-						requiredMessage="Numero de telefono: Campo obligatorio">
-						<p:keyFilter regEx="/[0-9]/i" />
+						requiredMessage="Numero de celular: Campo obligatorio"
+						validatorMessage="Telefono inválido">
+						<f:validateRegex pattern="[0-9]+" />
+						<f:validateLength minimum="9" maximum="13"></f:validateLength>
 					</p:inputText>
+					<p:graphicImage id="lupita4" url="/resources/img/export/lupita.jpg"
+						width="24" />
+					<p:tooltip for="lupita4"
+						value="Telefono celular valido: Ejm. 3**44293**" position="top" />
+
+
 				</p:panelGrid>
 
-				<p:captcha label="Captcha" required="true" />
+				<p:captcha label="Captcha" required="true"
+					validatorMessage="El captcha es requerido"
+					requiredMessage="El captcha es requerido" />
 				<p:commandButton action="#{userBean.adicionarUsuario}"
 					value="Insertar Nuevo Usuario" ajax="false" />
-					
-					<p:commandButton action="prime.xhtml" value="Volver" immediate="true"/>
+
+				<p:commandButton action="prime.xhtml" value="Volver"
+					immediate="true" />
 			</h:form>
 
 		</div>
