@@ -12,10 +12,10 @@ import com.edu.ubosque.prg.util.HibernateUtil;
 public class RepeatedsheetDAOImpl implements RepeatedsheetDAO{
 
 	@Override
-	public List<Repeatedsheet> list() {
+	public List<Repeatedsheet> listLaminas(int pId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
-		List lista = session.createQuery("from Repeatedsheet").list();
+		List lista = session.createQuery("from Repeatedsheet where userId="+pId).list();
 		t.commit();
 		session.close();
 		return lista;

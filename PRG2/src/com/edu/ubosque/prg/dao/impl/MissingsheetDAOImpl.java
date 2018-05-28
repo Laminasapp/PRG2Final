@@ -10,13 +10,13 @@ import com.edu.ubosque.prg.entity.Missingsheet;
 import com.edu.ubosque.prg.entity.User;
 import com.edu.ubosque.prg.util.HibernateUtil;
 
-public class MissingsheetDAOImpl implements MissingsheetDAO{
+public class MissingsheetDAOImpl implements MissingsheetDAO {
 
 	@Override
 	public List<Missingsheet> list(String userId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
-		List lista = session.createQuery("from Missingsheet WHERE userId = '" +userId + "'" ).list();
+		List lista = session.createQuery("from Missingsheet WHERE userId = '" + userId + "'").list();
 		t.commit();
 		session.close();
 		return lista;
@@ -33,7 +33,7 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 			ms.setCountSheets(1);
 			session.save(ms);
 		}
-		
+
 		t.commit();
 		session.close();
 	}
@@ -67,8 +67,10 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 		Missingsheet rta = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
-		List list = session.createQuery("from Missingsheet where userId = " +userId+" AND numberSheets = "+numberSheets+"").list();
-		if(list.size()!=0) {
+		List list = session
+				.createQuery("from Missingsheet where userId = " + userId + " AND numberSheets = " + numberSheets + "")
+				.list();
+		if (list.size() != 0) {
 			rta = (Missingsheet) list.get(0);
 		}
 		t.commit();
@@ -77,24 +79,42 @@ public class MissingsheetDAOImpl implements MissingsheetDAO{
 	}
 
 	@Override
-	public List<Missingsheet> list(long pId) {
+	public List<Missingsheet> list(int pId) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
-		List lista = session.createQuery("from Missingsheet where userId=" + pId).list();
+		List lista = session.createQuery("from Missingsheet where userId=" + pId + " and countSheets = 1").list();
 		t.commit();
 		session.close();
 		return lista;
 	}
-	
-	public List<Missingsheet> listaLaminas(int lamina){
-		
+
+	public List<Missingsheet> listaLaminas(int lamina) {
+
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
-		List lista = session.createQuery("from Missingsheet where numberSheets=" + lamina).list();
+		List lista = session.createQuery("from Missingsheet where numberSheets=" + lamina + " and countSheets = 1")
+				.list();
 		t.commit();
 		session.close();
 		return lista;
-				
+
+	}
+
+	public boolean lleno(int pId) {
+
+		boolean rta = false;
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		List lista = session.createQuery("from Missingsheet where userId=" + pId + " and countSheets = 0").list();
+		t.commit();
+		session.close();
+
+		if (lista.size() == 670) {
+			rta = true;
+		}
+
+		return rta;
 	}
 
 }

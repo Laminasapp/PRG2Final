@@ -58,7 +58,7 @@ public class RepeatedsheetBean {
 	}
 	
 	public DataModel<Repeatedsheet> getListarRepeatedsheet() {
-		List<Repeatedsheet> lista = new RepeatedsheetDAOImpl().list();
+		List<Repeatedsheet> lista = new RepeatedsheetDAOImpl().listLaminas(userBean.getUsuario().getId());
 		listaRepeatedsheet = new ListDataModel<Repeatedsheet>(lista);
 		return listaRepeatedsheet;
 	}

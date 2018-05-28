@@ -29,108 +29,100 @@ import com.edu.ubosque.prg.util.Util;
 
 @ManagedBean
 @SessionScoped
-public class MissingsheetBean
-{
+public class MissingsheetBean {
 	final static Logger logger = Logger.getLogger(MissingsheetBean.class);
-	
+
 	private Missingsheet missingSheet;
 	private DataModel<Missingsheet> listaMissingsheet;
-	
+
 	private List<Missingsheet> faltantes;
-	private List<User> laminasAVender;
+
 	private List<User> usuarios;
-	
+
+	private List<User> laminasAVender;
+
+	private List<User> llenaron;
+
 	private Missingsheet selectedMissingSheet;
-	
+
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean usuario;
-	
+
 	@PostConstruct
-	public void init()
-	{
+	public void init() {
 		faltantes = new ArrayList<Missingsheet>();
 		listarUsuarios();
 	}
-	
-	public List<Missingsheet> getFaltantes()
-	{
+
+	public List<Missingsheet> getFaltantes() {
 		return faltantes;
 	}
-	
-	public void setFaltantes(List<Missingsheet> faltantes)
-	{
+
+	public void setFaltantes(List<Missingsheet> faltantes) {
 		this.faltantes = faltantes;
 	}
-	
-	public void adicionarMissingsheet()
-	{
+
+	public void adicionarMissingsheet() {
 		MissingsheetDAO dao = new MissingsheetDAOImpl();
 		Missingsheet ms = selectedMissingSheet;
-		
-		if (ms.getCountSheets() == 1)
-		{
+
+		if (ms.getCountSheets() == 1) {
 			ms.setCountSheets(0);
 		}
-		
-		else
-		{
+
+		else {
 			ms.setCountSheets(1);
 		}
-		
+
 		hacerAuditoria("Update", ms.getId(), "missingsheets");
 		logger.info("Se cambia el estado de la lamina");
 		dao.update(ms);
 	}
-	
-	public void hacerAuditoria(String mensaje, int tableId, String tableName)
-	{
+
+	public void hacerAuditoria(String mensaje, int tableId, String tableName) {
 		AuditDAO auditDao = new AuditDAOImpl();
 		Audit audit = new Audit();
-		
+
 		audit.setCreateDate(new Date());
 		audit.setTableName(tableName);
 		audit.setUserId(usuario.getUsuario().getId());
 		audit.setUserIp(Util.darIp());
 		audit.setTableId(tableId);
 		audit.setOperation(mensaje);
-		
+
 		logger.info("Se crea un nuevo registro de la tabla auditoria");
-		
+
 		auditDao.save(audit);
 	}
-	
-	public void listarUsuarios()
-	{
+
+	public void listarUsuarios() {
 		List<User> usuarios = new ArrayList<User>();
-		
+
 		// Obtengo el Id del usuario que ingreso.
 		int idUsuario = usuario.getUsuario().getId();
-		
+
 		// Se obtienen las laminas que le faltan al usuario.
 		MissingsheetDAO daoM = new MissingsheetDAOImpl();
 		List<Missingsheet> faltantes = daoM.list(idUsuario);
-		
+
 		// Se Busca en las repetidas.
 		UserDAO user = new UserDAOImpl();
 		RepeatedsheetDAO daoR = new RepeatedsheetDAOImpl();
-		for (int i = 0; i < faltantes.size(); i++)
-		{
-			
+		for (int i = 0; i < faltantes.size(); i++) {
+
 			List<Repeatedsheet> laminas = daoR.list(faltantes.get(i).getNumberSheets());
-			
+
 			// Se agregan a los usuarios.
-			for (int j = 0; j < laminas.size(); j++)
-			{
-				
+			for (int j = 0; j < laminas.size(); j++) {
+
 				int tmp = laminas.get(j).getUserId();
 				usuarios.add(user.getUsuario(tmp));
-				
+
 			}
 		}
 		this.usuarios = usuarios;
 	}
-	
-	
+
 	public void venderLaminas() {
 
 		List<User> vender = new ArrayList<User>();
@@ -160,74 +152,88 @@ public class MissingsheetBean
 
 		}
 
-		this.laminasAVender = vender;
+		laminasAVender = vender;
 	}
 
-	public List<User> albumLleno() {
-		
-		List<User> users = new ArrayList<User>();
-		
-		
-		
-		
-		return null;
+	public void albumLleno() {
+
+		List<User> completaron = new ArrayList<User>();
+
+		UserDAO user = new UserDAOImpl();
+		List<User> listaUsuarios = new ArrayList<User>();
+
+		listaUsuarios = user.list();
+
+		MissingsheetDAO daoM = new MissingsheetDAOImpl();
+
+		for (int i = 0; i < listaUsuarios.size(); i++) {
+
+			if (daoM.lleno(listaUsuarios.get(i).getId())) {
+				completaron.add(listaUsuarios.get(i));
+			}
+		}
+
+		this.llenaron = completaron;
+
 	}
 	
-	public Missingsheet getSelectedMissingSheet()
-	{
+	
+	
+	
+	
+
+	public Missingsheet getSelectedMissingSheet() {
 		return selectedMissingSheet;
 	}
-	
-	public void setSelectedMissingSheet(Missingsheet selectedMissingSheet)
-	{
+
+	public void setSelectedMissingSheet(Missingsheet selectedMissingSheet) {
 		this.selectedMissingSheet = selectedMissingSheet;
 	}
-	
-	public DataModel<Missingsheet> getListarMissingsheet()
-	{
+
+	public DataModel<Missingsheet> getListarMissingsheet() {
 		List<Missingsheet> lista = new MissingsheetDAOImpl().list(usuario.getUsuario().getId() + "");
 		listaMissingsheet = new ListDataModel<Missingsheet>(lista);
 		return listaMissingsheet;
 	}
-	
-	public UserBean getUsuario()
-	{
+
+	public UserBean getUsuario() {
 		return usuario;
 	}
-	
-	public void setUsuario(UserBean usuario)
-	{
+
+	public void setUsuario(UserBean usuario) {
 		this.usuario = usuario;
 	}
-	
-	public List<User> getUsuarios()
-	{
+
+	public List<User> getUsuarios() {
 		return usuarios;
 	}
-	
-	public void setUsuarios(List<User> usuarios)
-	{
+
+	public void setUsuarios(List<User> usuarios) {
 		this.usuarios = usuarios;
 	}
-	
-	public Missingsheet getMissingSheet()
-	{
+
+	public Missingsheet getMissingSheet() {
 		return missingSheet;
 	}
-	
-	public void setMissingSheet(Missingsheet missingSheet)
-	{
+
+	public void setMissingSheet(Missingsheet missingSheet) {
 		this.missingSheet = missingSheet;
 	}
 
-	public List<User> getLaminasAVender()
-	{
+	public DataModel<Missingsheet> getListaMissingsheet() {
+		return listaMissingsheet;
+	}
+
+	public void setListaMissingsheet(DataModel<Missingsheet> listaMissingsheet) {
+		this.listaMissingsheet = listaMissingsheet;
+	}
+
+	public List<User> getLaminasAVender() {
 		return laminasAVender;
 	}
 
-	public void setLaminasAVender(List<User> laminasAVender)
-	{
+	public void setLaminasAVender(List<User> laminasAVender) {
 		this.laminasAVender = laminasAVender;
 	}
-	
+
 }

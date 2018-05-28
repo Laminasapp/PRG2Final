@@ -10,13 +10,13 @@ public interface RepeatedsheetDAO {
 
 	public Repeatedsheet getRepeatedsheet(int id);
 	
-	public List<Repeatedsheet> list(int pLamina);
+	public List<Repeatedsheet> listLaminas(int pId);
 
 	public void remove(Repeatedsheet repeatedsheet);
 
 	public void update(Repeatedsheet repeatedsheet);
 	
-	public List<Repeatedsheet> list();
+	public List<Repeatedsheet> list(int pId);
 	
 	public List<Repeatedsheet> listaRepetidas(int pId);
 	

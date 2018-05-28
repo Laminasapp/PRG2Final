@@ -10,7 +10,7 @@ public interface MissingsheetDAO {
 
 	public Missingsheet getMissingsheet(int id);
 	
-	public List<Missingsheet> list(long pId);
+	public List<Missingsheet> list(int pId);
 
 	public Missingsheet getMissingsheet(int userId, int numberSheets);
 	
@@ -21,4 +21,6 @@ public interface MissingsheetDAO {
 	public List<Missingsheet> list(String userId);
 	
 	public List<Missingsheet> listaLaminas(int lamina);
+	
+	public boolean lleno(int pId);
 }
