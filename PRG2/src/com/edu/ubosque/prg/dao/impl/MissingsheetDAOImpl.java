@@ -109,7 +109,7 @@ public class MissingsheetDAOImpl implements MissingsheetDAO {
 		List lista = session.createQuery("from Missingsheet where userId=" + pId + " and countSheets = 0").list();
 		t.commit();
 		session.close();
-
+		System.out.println("TAmaño de la lista" + lista.size());
 		if (lista.size() == 670) {
 			rta = true;
 		}

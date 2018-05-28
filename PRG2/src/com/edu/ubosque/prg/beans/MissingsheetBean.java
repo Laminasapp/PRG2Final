@@ -52,6 +52,8 @@ public class MissingsheetBean {
 	public void init() {
 		faltantes = new ArrayList<Missingsheet>();
 		listarUsuarios();
+		venderLaminas();
+		albumLleno();
 	}
 
 	public List<Missingsheet> getFaltantes() {
@@ -174,13 +176,15 @@ public class MissingsheetBean {
 		}
 
 		this.llenaron = completaron;
-
 	}
-	
-	
-	
-	
-	
+
+	public List<User> getLlenaron() {
+		return llenaron;
+	}
+
+	public void setLlenaron(List<User> llenaron) {
+		this.llenaron = llenaron;
+	}
 
 	public Missingsheet getSelectedMissingSheet() {
 		return selectedMissingSheet;
