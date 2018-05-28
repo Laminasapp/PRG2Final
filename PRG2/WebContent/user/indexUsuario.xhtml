@@ -11,7 +11,7 @@
 		src="http://maps.google.com/maps/api/js?key=AIzaSyA1opnM7mBfL7yM6IQ3sxXFzZqAcQZinaU"
 		type="text/javascript"></script>
 </h:head>
-<h:body>
+<h:body style="zoom:80%">
 
 	<div class="ui-g">
 		<div class="ui-g-12" />
@@ -32,32 +32,27 @@
 		<p:tab title="Inicio ">
 			<p:panel header="Lista de tus laminas faltantes ">
 				<h:form>
-					<p:dataGrid paginator="true" var="lam" id="laminas"
+					<p:dataGrid paginator="true" var="lam" id="laminasRepetidas"
 						value="#{missingsheetBean.listarMissingsheet}" layout="grid"
-						columns="5" rows="100">
+						columns="12" rows="100">
 						<p:panel header="#{lam.numberSheets}">
 							<h:panelGrid columns="2">
-								<h:outputText value="Te falta!"
-									rendered="#{'1' eq lam.countSheets}" />
-								<h:outputText value="Ya la tienes!"
-									rendered="#{'0' eq lam.countSheets}" />
-
-								<h:commandLink
+								<p:commandLink
 									action="#{missingsheetBean.adicionarMissingsheet}"
-									rendered="#{'0' eq lam.countSheets}">
+									rendered="#{'0' eq lam.countSheets}" update="@([id$=laminasRepetidas])">
 									<p:graphicImage url="/resources/img/export/save.png" width="24" />
 									<f:setPropertyActionListener value="#{lam}"
 										target="#{missingsheetBean.selectedMissingSheet}" />
-								</h:commandLink>
+								</p:commandLink>
 
-								<h:commandLink
+								<p:commandLink
 									action="#{missingsheetBean.adicionarMissingsheet}"
-									rendered="#{'1' eq lam.countSheets}">
+									rendered="#{'1' eq lam.countSheets}" update="@([id$=laminasRepetidas])">
 									<p:graphicImage url="/resources/img/export/delete.png"
 										width="24" />
 									<f:setPropertyActionListener value="#{lam}"
 										target="#{missingsheetBean.selectedMissingSheet}" />
-								</h:commandLink>
+								</p:commandLink>
 							</h:panelGrid>
 						</p:panel>
 					</p:dataGrid>
