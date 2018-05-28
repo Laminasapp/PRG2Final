@@ -37,7 +37,7 @@ public class MissingsheetBean
 	private DataModel<Missingsheet> listaMissingsheet;
 	
 	private List<Missingsheet> faltantes;
-	
+	private List<User> laminasAVender;
 	private List<User> usuarios;
 	
 	private Missingsheet selectedMissingSheet;
@@ -131,7 +131,7 @@ public class MissingsheetBean
 	}
 	
 	
-	public List<User> venderLaminas() {
+	public void venderLaminas() {
 
 		List<User> vender = new ArrayList<User>();
 
@@ -160,7 +160,7 @@ public class MissingsheetBean
 
 		}
 
-		return vender;
+		this.laminasAVender = vender;
 	}
 
 	public List<User> albumLleno() {
@@ -218,6 +218,16 @@ public class MissingsheetBean
 	public void setMissingSheet(Missingsheet missingSheet)
 	{
 		this.missingSheet = missingSheet;
+	}
+
+	public List<User> getLaminasAVender()
+	{
+		return laminasAVender;
+	}
+
+	public void setLaminasAVender(List<User> laminasAVender)
+	{
+		this.laminasAVender = laminasAVender;
 	}
 	
 }
