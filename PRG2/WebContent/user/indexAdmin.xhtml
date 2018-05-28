@@ -127,7 +127,7 @@
 							<h:commandLink id="excelAudit">
 								<p:graphicImage url="/resources/img/export/xls-icon.png"
 									width="24" />
-								<p:dataExporter type="xls" target="auditoria"
+								<p:dataExporter type="xls" target="auditoria" 
 									fileName="AuditoriaEXCEL" />
 							</h:commandLink>
 
@@ -138,7 +138,7 @@
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
 
-								<p:dataExporter type="pdf" target="auditoria"
+								<p:dataExporter type="pdf" target="auditoria" preProcessor="#{auditBean.preProcessPDF}"
 									fileName="AuditoriaPDF" />
 							</h:commandLink>
 
@@ -209,7 +209,7 @@
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
 
-								<p:dataExporter type="pdf" target="users" fileName="UsuarioPDF" />
+								<p:dataExporter type="pdf" target="users" fileName="UsuarioPDF"  preProcessor="#{auditBean.preProcessPDF}"/>
 							</h:commandLink>
 
 							<p:tooltip for="pdfUser" value="Descargar esta tabla en PDF"
@@ -339,7 +339,7 @@
 							<h:commandLink id="pdfParameter">
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
-								<p:dataExporter type="pdf" target="parametros"
+								<p:dataExporter type="pdf" target="parametros" preProcessor="#{auditBean.preProcessPDF}"
 									fileName="ParametrosPDF" />
 							</h:commandLink>
 
