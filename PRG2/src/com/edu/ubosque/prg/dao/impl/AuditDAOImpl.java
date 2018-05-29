@@ -2,6 +2,8 @@ package com.edu.ubosque.prg.dao.impl;
 
 import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.dao.AuditDAO;
+
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -21,6 +23,16 @@ public class AuditDAOImpl implements AuditDAO {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction t = session.beginTransaction();
 		List lista = session.createQuery("from Audit").list();
+		t.commit();
+		session.close();
+		return lista;
+	}
+
+	@Override
+	public List<Audit> filtrados(Date d1, Date d2) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		List lista = session.createQuery("from Audit createDate between '"+d1+"' and '"+d2+"'").list();
 		t.commit();
 		session.close();
 		return lista;

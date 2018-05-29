@@ -137,6 +137,7 @@ public class MissingsheetBean {
 
 			}
 		}
+		logger.info("Se realiza una consulta en la base de datos");
 		this.usuarios = usuarios;
 	}
 	/**
@@ -170,7 +171,7 @@ public class MissingsheetBean {
 			}
 
 		}
-
+		logger.info("Se realiza una consulta en la base de datos");
 		laminasAVender = vender;
 	}
 
@@ -194,7 +195,7 @@ public class MissingsheetBean {
 				completaron.add(listaUsuarios.get(i));
 			}
 		}
-
+		logger.info("Se realiza una consulta en la base de datos");
 		this.llenaron = completaron;
 	}
 

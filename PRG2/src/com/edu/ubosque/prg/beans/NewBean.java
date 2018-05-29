@@ -32,6 +32,7 @@ public class NewBean
 	final static Logger logger = Logger.getLogger(NewBean.class);
 	private New news;
 	private DataModel<New> listaNews;
+	private DataModel<New> listaNewsActives;
 	
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
@@ -41,6 +42,12 @@ public class NewBean
 		List<New> lista = new NewDAOImpl().list();
 		listaNews = new ListDataModel<New>(lista);
 		return listaNews;
+	}
+	public DataModel<New> getListarNewsActives()
+	{
+		List<New> lista = new NewDAOImpl().listA();
+		listaNewsActives = new ListDataModel<New>(lista);
+		return listaNewsActives;
 	}
 	/**
 	 * Método que se encaraga de agregar una noticia en la tabla new
@@ -66,6 +73,7 @@ public class NewBean
 		}
 		System.out.println("Buena perro" + n.getLargeDescription());
 		dao.update(n);
+		logger.info("Se cambio el estado de una noticia");
 	}
 	/**
 	 * Método que se encarga de realizar auditoria de todos los movimientos que el usario realize

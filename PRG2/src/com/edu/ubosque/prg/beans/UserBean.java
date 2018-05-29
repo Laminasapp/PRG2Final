@@ -78,7 +78,7 @@ public class UserBean implements Serializable
 			contra = Util.getStringMessageDigest(contra, Util.MD5);
 			usuario = dao.getUsuario(login);
 			usuarioTemporal = dao.getUsuario(login);
-			
+
 			if (usuario != null && usuario.getUserType().equals("ADMIN") && contra.equals(usuario.getPassword()))
 			{
 				hacerAuditoria("Ingresar", 0, "user");
@@ -346,6 +346,20 @@ public class UserBean implements Serializable
 		
 		logger.info("Se recupero la contraseña de un nuevo usuario");
 		nuevoUsuario();
+	}
+	
+	public void enviarSms() {
+		User usuTmp = (User) (listaUsuarios.getRowData());
+		UtilCorreo.enviarSMS(usuTmp.getPhoneNumber(), "Me contacto contigo mediante LaminasApp Mi usuario es: " + usuario.getUserName() +" Espero tu contacto");
+		logger.info("Se envio un mensaje por celular");
+	}
+	public void enviarCorreo() {
+		logger.info("Se envio correo");
+		System.out.println("Correo");
+		User usuTmp = (User) (listaUsuarios.getRowData());
+		String cuerpo = "Hola! Soy: "+usuario.getUserName()+" me pongo en contacto contigo mediante la aplicacion laminasApp para llegar un acuerdo, Espero tu respuesta a:" + usuario.getEmailAddress();
+		UtilCorreo.enviarMensaje("Contacto mediante LaminasApp", cuerpo, usuTmp.getEmailAddress());
+		
 	}
 	
 	public String getLogin()

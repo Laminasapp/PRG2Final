@@ -120,8 +120,7 @@
 				<p:panel id="basic" header="Listado de auditorias">
 
 					<p:dataTable paginator="true" var="aud" id="auditoria"
-						value="#{auditBean.listarAuditoria}" cellpadding="5" border="1"
-						rows="9">
+						value="#{auditBean.listarAuditoria}" rows="9">
 
 						<f:facet name="header">
 							<h:commandLink id="excelAudit">
@@ -145,13 +144,6 @@
 
 							<p:tooltip for="pdfAudit" value="Descargar esta tabla en PDF"
 								position="top" />
-						</f:facet>
-						
-						<f:facet name="header">
-							<p:calendar id="button1" value="#{auditBean.fecha1}"
-								showOn="button" />
-							<p:calendar id="button2" value="#{auditBean.fecha2}"
-								showOn="button" />
 						</f:facet>
 
 						<p:column headerText="Id" filterBy="#{aud.id}"

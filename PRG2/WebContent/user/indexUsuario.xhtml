@@ -20,8 +20,7 @@
 		</div>
 		<div class="ui-g-4" align="right">
 			<h:form>
-				<p:commandButton action="prime.xhtml" value="Salir"
-					immediate="true" />
+				<p:commandButton action="prime.xhtml" value="Salir" immediate="true" />
 			</h:form>
 		</div>
 	</div>
@@ -125,40 +124,48 @@
 					</p:tab>
 
 					<p:tab title="Usuarios con mis laminas faltantes">
+						<h:form>
+							<p:dataTable var="user" value="#{missingsheetBean.usuarios}"
+								paginator="true" cellpadding="5" border="1" rows="6">
 
-						<p:dataTable var="user" value="#{missingsheetBean.usuarios}"
-							paginator="true" cellpadding="5" border="1" rows="6">
+								<p:column headerText="Usuario" sortBy="#{user.userName}">
+									<h:outputText value="#{user.userName}" />
+								</p:column>
 
-							<p:column headerText="Id">
-								<h:outputText value="#{user.id}" />
-							</p:column>
+								<p:column headerText="Nombre completo">
+									<h:outputText value="#{user.fullName}" />
+								</p:column>
 
-							<p:column headerText="Usuario" sortBy="#{user.userName}">
-								<h:outputText value="#{user.userName}" />
-							</p:column>
+								<p:column headerText="E-mail">
+									<h:outputText value="#{user.emailAddress}" />
+								</p:column>
 
-							<p:column headerText="Nombre completo">
-								<h:outputText value="#{user.fullName}" />
-							</p:column>
+								<p:column headerText="Telefono">
+									<h:outputText value="#{user.phoneNumber}" />
+								</p:column>
 
-							<p:column headerText="E-mail">
-								<h:outputText value="#{user.emailAddress}" />
-							</p:column>
 
-							<p:column headerText="Telefono">
-								<h:outputText value="#{user.phoneNumber}" />
-							</p:column>
-						</p:dataTable>
+								<p:column headerText="Contactar Correo">
+
+									<p:commandButton value="Correo"
+										action="#{userBean.enviarCorreo}"></p:commandButton>
+
+								</p:column>
+								<p:column headerText="Contactar SMS">
+
+									<p:commandButton value="SMS" action="#{userBean.enviarSms}"></p:commandButton>
+
+								</p:column>
+
+
+							</p:dataTable>
+						</h:form>
 					</p:tab>
 
 					<p:tab title="Usuarios que les faltan mis laminas repetidas">
 						<p:dataTable var="laminasAVender"
 							value="#{missingsheetBean.laminasAVender}" paginator="true"
 							cellpadding="5" border="1" rows="6">
-
-							<p:column headerText="Id">
-								<h:outputText value="#{laminasAVender.id}" />
-							</p:column>
 
 							<p:column headerText="Usuario" sortBy="#{user.userName}">
 								<h:outputText value="#{laminasAVender.userName}" />
@@ -175,6 +182,19 @@
 							<p:column headerText="Telefono">
 								<h:outputText value="#{laminasAVender.phoneNumber}" />
 							</p:column>
+
+							<p:column headerText="Contactar Correo">
+								<h:form>
+									<p:commandButton value="Correo"
+										action="#{userBean.enviarCorreo}"></p:commandButton>
+								</h:form>
+							</p:column>
+							<p:column headerText="Contactar SMS">
+								<h:form>
+									<p:commandButton value="SMS" action="#{userBean.enviarSms}"></p:commandButton>
+								</h:form>
+							</p:column>
+
 						</p:dataTable>
 					</p:tab>
 
@@ -221,7 +241,8 @@
 						</f:facet>
 
 						<h:outputText value="Usuario:" />
-						<p:inputText value="#{userBean.usuarioTemporal.userName}" disabled="true" />
+						<p:inputText value="#{userBean.usuarioTemporal.userName}"
+							disabled="true" />
 
 						<h:outputText value="Nombre: " />
 						<p:inputText value="#{userBean.usuarioTemporal.fullName}" />
@@ -245,6 +266,78 @@
 					style="width:100%;height:400px" />
 
 			</div>
+		</p:tab>
+		<p:tab title="Noticias">
+
+
+			<h:form>
+				<p:panel header="Noticias">
+
+					<p:dataTable paginator="true" var="nw"
+						value="#{newBean.listarNewsActives}" id="newsDT" rows="5">
+
+						<f:facet name="header">
+							<p:commandLink id="agregarNew"
+								onclick="PF('dialogAgregarNew').show()"
+								update="@([id$=gridAgregarNew])">
+								<p:graphicImage url="/resources/img/export/add.png" width="24" />
+							</p:commandLink>
+
+							<p:tooltip for="agregarNew" value="Agregar un nueva noticia"
+								position="top" />
+						</f:facet>
+
+						<p:column headerText="Fecha de la noticia"
+							filterBy="#{newBean.news.dateNews}" filterMatchMode="contains">
+							<h:outputText value="#{nw.dateNews}"></h:outputText>
+						</p:column>
+						<p:column headerText="Titulo"
+							filterBy="#{newBean.news.shortDescription}"
+							filterMatchMode="contains">
+							<h:outputText value="#{nw.shortDescription}"></h:outputText>
+						</p:column>
+						<p:column headerText="Descripcion"
+							filterBy="#{nw.largeDescription}" filterMatchMode="contains">
+							<h:outputText value="#{nw.largeDescription}"></h:outputText>
+						</p:column>
+						<p:column headerText="ID del usuario"
+							filterBy="#{newBean.news.idUser}" filterMatchMode="contains">
+							<h:outputText value="#{nw.idUser}"></h:outputText>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:form>
+
+
+			<h:form>
+
+				<p:dialog widgetVar="dialogAgregarNew" modal="true"
+					resizable="false" draggable="false" closable="false">
+
+					<p:panelGrid id="gridAgregarNew" columns="2">
+						<p:outputLabel for="Titulo" value="Titulo de la noticia: " />
+						<p:inputText id="Titulo" value="#{newBean.news.shortDescription}"
+							required="true" requiredMessage="Campo obligatorio">
+							<f:validateLength minimum="1" />
+						</p:inputText>
+
+						<p:outputLabel for="Noticia" value="Descripcion: " />
+						<p:inputTextarea rows="6" cols="33" id="Noticia"
+							value="#{newBean.news.largeDescription}" required="true"
+							requiredMessage="Campo obligatorio">
+							<f:validateLength maximum="60" />
+						</p:inputTextarea>
+					</p:panelGrid>
+
+					<h:panelGrid columns="2">
+						<p:commandButton action="#{newBean.agregarNew}" value="Agregar"
+							update="@([id$=newsDT])" />
+						<p:commandButton onclick="PF('dialogAgregarNew').hide()"
+							value="Cerrar" update="@([id$=gridAgregarNew])" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+
 		</p:tab>
 
 

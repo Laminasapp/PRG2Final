@@ -20,6 +20,15 @@ public class NewDAOImpl implements NewDAO {
 		session.close();
 		return lista;
 	}
+	@Override
+	public List<New> listA() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction t = session.beginTransaction();
+		List lista = session.createQuery("from New where state='A'").list();
+		t.commit();
+		session.close();
+		return lista;
+	}
 
 	@Override
 	public void save(New news) {

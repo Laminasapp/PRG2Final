@@ -35,5 +35,10 @@ public interface NewDAO {
 	 * @return List Lista de las nosticias almacenadas en la Base de Datos
 	 */
 	public List<New> list();
+	/**
+	 * Método que devuelve lista de todas las noticias
+	 * @return List Lista de las nosticias almacenadas en la Base de Datos
+	 */
+	public List<New> listA();
 
 }

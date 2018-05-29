@@ -35,6 +35,7 @@ public class AuditBean {
 	final static Logger logger = Logger.getLogger(AuditBean.class);
 	private Audit auditoria;
 	private DataModel<Audit> listaAuditoria;
+	private DataModel<Audit> listaAuditoriafiltrada;
 	private Date fecha1;
 	private Date fecha2;
 	
@@ -81,6 +82,21 @@ public class AuditBean {
 	  pdf.add(new Paragraph(" "));
 	
 	 }
+	public void consultaFechas() {
+		if((fecha1!=null)&&(fecha2!=null)) {
+			
+			List<Audit> lista = new AuditDAOImpl().filtrados(fecha1, fecha2);
+			listaAuditoriafiltrada = new ListDataModel<Audit>(lista);
+		}
+	}
+
+	public DataModel<Audit> getListaAuditoriafiltrada() {
+		return listaAuditoriafiltrada;
+	}
+
+	public void setListaAuditoriafiltrada(DataModel<Audit> listaAuditoriafiltrada) {
+		this.listaAuditoriafiltrada = listaAuditoriafiltrada;
+	}
 
 	public DataModel<Audit> getListaAuditoria()
 	{
