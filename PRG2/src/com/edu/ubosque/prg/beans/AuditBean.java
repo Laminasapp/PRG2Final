@@ -24,7 +24,10 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
 import org.apache.log4j.Logger;
-
+/**
+ * Descripción: Clase Bean que se asocia con un formulario que necesite la tabla audit
+ *
+ */
 @ManagedBean
 @SessionScoped
 public class AuditBean {
@@ -37,7 +40,11 @@ public class AuditBean {
 	
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
-	
+	/**
+	 * Método que se encarga de agregar un nuevo objeto en la tabla audit
+	 * @param auditoria Objeto que se agrega en la tabla
+	 * @return Objeto que contien la pagina a la que sera direccionado
+	 */
 	public String adicionarAuditoria(Audit auditoria) {
 		AuditDAO dao = new AuditDAOImpl();
 		dao.save(auditoria);
@@ -49,7 +56,14 @@ public class AuditBean {
 		listaAuditoria = new ListDataModel<Audit>(lista);
 		return listaAuditoria;
 	}
-
+	/**
+	 * Método que prepara la generación de un documento PF
+	 * @param document Objeto que se va a convertir a PDF
+	 * @throws BadElementException 
+	 * @throws MalformedURLException
+	 * @throws DocumentException
+	 * @throws IOException
+	 */
 	public void preProcessPDF(Object document) throws BadElementException, MalformedURLException, DocumentException, IOException
 	 {
 	  Document pdf = (Document) document;

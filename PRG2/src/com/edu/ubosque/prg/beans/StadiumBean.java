@@ -11,20 +11,30 @@ import org.apache.log4j.Logger;
 import com.edu.ubosque.prg.dao.StadiumDAO;
 import com.edu.ubosque.prg.dao.impl.StadiumDAOImpl;
 import com.edu.ubosque.prg.entity.Stadium;
-
+/**
+ * Descripción: Clase bean que se vincula a un bean para manejar un formularo
+ *
+ */
 @ManagedBean
 public class StadiumBean {
 	
 	final static Logger logger = Logger.getLogger(StadiumBean.class);
 	private Stadium stadium;
 	private DataModel<Stadium> listaStadium;
-
+	/**
+	 * Método que se encarga de agregar un estadio a la base de datos
+	 * @param stadium Objeto del estadiop que se agrega
+	 * @return
+	 */
 	public String adicionarAuditoria(Stadium stadium) {
 		StadiumDAO dao = new StadiumDAOImpl();
 		dao.save(stadium);
 		return "index";
 	}
-
+	/**
+	 * Método que devuelve una lista de estadios
+	 * @return
+	 */
 	public DataModel<Stadium> getListarAuditoria() {
 		List<Stadium> lista = new StadiumDAOImpl().list();
 		listaStadium = new ListDataModel<Stadium>(lista);

@@ -19,7 +19,10 @@ import com.edu.ubosque.prg.dao.impl.RepeatedsheetDAOImpl;
 import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.Repeatedsheet;
 import com.edu.ubosque.prg.util.Util;
-
+/**
+ * Descripción: Clase Bean asociada a los formularios que necesitan la tabla repeatedsheet
+ *
+ */
 @ManagedBean
 @SessionScoped
 public class RepeatedsheetBean {
@@ -30,7 +33,9 @@ public class RepeatedsheetBean {
 	
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
-	
+	/**
+	 * Método que adiciona laminas repetidas a la tabla repeatedsheets
+	 */
 	public void adicionarRepeatedsheet() {
 		RepeatedsheetDAO dao = new RepeatedsheetDAOImpl();
 		repeatedsheet.setUserId(userBean.getUsuario().getId());
@@ -39,7 +44,12 @@ public class RepeatedsheetBean {
 		hacerAuditoria("Create", repeatedsheet.getId(), "repeatedsheets");
 		logger.info("Se adiciona una nueva lamina repetida");
 	}
-	
+	/**
+	 * Método que se encarga de hacer la auditoria de las acciones realizadas por el usuario
+	 * @param mensaje Accion realiazada por el usuario
+	 * @param tableId Id de la tabla en la que se realizo la consulta
+	 * @param tableName Nombre de la tabla en la que se realizo la consulta
+	 */
 	public void hacerAuditoria(String mensaje, int tableId, String tableName)
 	{
 		AuditDAO auditDao = new AuditDAOImpl();

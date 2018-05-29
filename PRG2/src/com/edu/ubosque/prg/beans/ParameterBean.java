@@ -19,7 +19,11 @@ import com.edu.ubosque.prg.dao.impl.ParameterDAOImpl;
 import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.Parameter;
 import com.edu.ubosque.prg.util.Util;
-
+/**
+ * Descripción: Clase Bean asociado a un formulario que ncesita realizar operaciones con la tabla parameter
+ * @author Laminasapp
+ *
+ */
 @ManagedBean
 @SessionScoped
 public class ParameterBean {
@@ -36,7 +40,9 @@ public class ParameterBean {
 		listaParameter = new ListDataModel<Parameter>(lista);
 		return listaParameter;
 	}
-	
+	/**
+	 * Método que se encarga de agregar en la tabla parameter
+	 */
 	public void agregarParametro()
 	{
 		ParameterDAOImpl parameterDAO = new ParameterDAOImpl();
@@ -46,7 +52,9 @@ public class ParameterBean {
 		hacerAuditoria("Create", parameter.getId(), "parameter");
 		logger.info("Se crea un nuevo usuario");
 	}
-	
+	/**
+	 * Método que se encargar de modificar un parametro
+	 */
 	public void modificarParametro()
 	{
 		ParameterDAO parameterDAO = new ParameterDAOImpl();
@@ -57,7 +65,12 @@ public class ParameterBean {
 		hacerAuditoria("Update", parameter.getId(), "parameter");
 		Util.darMensaje("Exito", "Los datos han sido actualizados");
 	}
-	
+	/**
+	 * Método que se encarga de hacer la auditoria de los movimientos que el usuario haga
+	 * @param mensaje Accion realizada pro el usuario
+	 * @param tableId Id de la tabla sobre la cual se realizo la consulta
+	 * @param tableName Nombre de la tabla sobre la cual se realizo la consulta
+	 */
 	public void hacerAuditoria(String mensaje, int tableId, String tableName)
 	{
 		AuditDAO auditDao = new AuditDAOImpl();

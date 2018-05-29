@@ -26,7 +26,10 @@ import com.edu.ubosque.prg.entity.Missingsheet;
 import com.edu.ubosque.prg.entity.Repeatedsheet;
 import com.edu.ubosque.prg.entity.User;
 import com.edu.ubosque.prg.util.Util;
-
+/**
+ * Descripcion: CLase Bean que se vincula a un formulario el cual realiza consultas en la tabla missingsheet
+ *
+ */
 @ManagedBean
 @SessionScoped
 public class MissingsheetBean {
@@ -47,7 +50,9 @@ public class MissingsheetBean {
 
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean usuario;
-
+	/**
+	 * Método que incializa variables necesarias para el formilario
+	 */
 	@PostConstruct
 	public void init() {
 		faltantes = new ArrayList<Missingsheet>();
@@ -63,7 +68,9 @@ public class MissingsheetBean {
 	public void setFaltantes(List<Missingsheet> faltantes) {
 		this.faltantes = faltantes;
 	}
-
+	/**
+	 * Método que se encarga de agregar laminas repetidas en la tabla
+	 */
 	public void adicionarMissingsheet() {
 		MissingsheetDAO dao = new MissingsheetDAOImpl();
 		Missingsheet ms = selectedMissingSheet;
@@ -80,7 +87,12 @@ public class MissingsheetBean {
 		logger.info("Se cambia el estado de la lamina");
 		dao.update(ms);
 	}
-
+	/**
+	 * Método que se encarga de hacer auditoria a los movimierntos realizados por los usuarios
+	 * @param mensaje Accion realizada por el usuario
+	 * @param tableId Id de a tabla sobre la cual se realizo la acción
+	 * @param tableName Nombre de la tabla sobre la cual se realizo la acción
+	 */
 	public void hacerAuditoria(String mensaje, int tableId, String tableName) {
 		AuditDAO auditDao = new AuditDAOImpl();
 		Audit audit = new Audit();
@@ -97,6 +109,9 @@ public class MissingsheetBean {
 		auditDao.save(audit);
 	}
 
+	/**
+	 * Método que genera una lista de los usuarios que tienen laminas que le sirvern a un usuario
+	 */
 	public void listarUsuarios() {
 		List<User> usuarios = new ArrayList<User>();
 
@@ -124,7 +139,9 @@ public class MissingsheetBean {
 		}
 		this.usuarios = usuarios;
 	}
-
+	/**
+	 * Método que genera un lista de las laminas que puedo vender buscando los usuarios necesitados
+	 */
 	public void venderLaminas() {
 
 		List<User> vender = new ArrayList<User>();
@@ -157,6 +174,9 @@ public class MissingsheetBean {
 		laminasAVender = vender;
 	}
 
+	/**
+	 * Método que muestra los usarios que ya llenaron el álbum 
+	 */
 	public void albumLleno() {
 
 		List<User> completaron = new ArrayList<User>();

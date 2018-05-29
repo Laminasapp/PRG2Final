@@ -19,7 +19,11 @@ import com.edu.ubosque.prg.dao.impl.NewDAOImpl;
 import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.New;
 import com.edu.ubosque.prg.util.Util;
-
+/**
+ * Descripción: Clase Bean asociado a un formulario que ncesita realizar operaciones con la tabla parameter
+ * @author Laminasapp
+ *
+ */
 @ManagedBean
 @SessionScoped
 public class NewBean
@@ -38,7 +42,9 @@ public class NewBean
 		listaNews = new ListDataModel<New>(lista);
 		return listaNews;
 	}
-	
+	/**
+	 * Método que se encaraga de agregar una noticia en la tabla new
+	 */
 	public void agregarNew()
 	{
 		NewDAO DAO = new NewDAOImpl();
@@ -47,6 +53,9 @@ public class NewBean
 		hacerAuditoria("Create", news.getId(), "news");
 		logger.info("Se crea un nueva noticia");
 	}
+	/**
+	 * Metodo que cambia el estado de una noticia
+	 */
 	public void cambiarEstado() {
 		New n = listaNews.getRowData();
 		NewDAO dao = new NewDAOImpl();
@@ -58,6 +67,12 @@ public class NewBean
 		System.out.println("Buena perro" + n.getLargeDescription());
 		dao.update(n);
 	}
+	/**
+	 * Método que se encarga de realizar auditoria de todos los movimientos que el usario realize
+	 * @param mensaje Accion que el usaurio realizo
+	 * @param tableId Id de la tabla sobre la cual se realizo la operacióon
+	 * @param tableName Nombre de la tabla sobre la cual se realizo la operación
+	 */
 	public void hacerAuditoria(String mensaje, int tableId, String tableName)
 	{
 		AuditDAO auditDao = new AuditDAOImpl();
@@ -84,7 +99,9 @@ public class NewBean
 	{
 		this.news = news;
 	}
-	
+	/**
+	 * Método que inicializa variable de la clase
+	 */
 	@PostConstruct
 	public void init()
 	{

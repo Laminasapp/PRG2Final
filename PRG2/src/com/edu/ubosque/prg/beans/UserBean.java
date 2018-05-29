@@ -27,7 +27,10 @@ import javax.faces.model.ListDataModel;
 
 import org.apache.log4j.Logger;
 import org.primefaces.PrimeFaces;
-
+/**
+ * Descripcion: Clase asociada al formulario de ingreso a la pagina 
+ *
+ */
 @ManagedBean (name="userBean")
 @SessionScoped
 public class UserBean implements Serializable
@@ -40,12 +43,15 @@ public class UserBean implements Serializable
 	
 	private String login;
 	private String contra;
-	
+	/**
+	 * Método que verifca el ingreso de un usurio se corrrecto en el sistema
+	 * @return
+	 */
 	public String verificarIngreso()
 	{
 		ParameterDAO x = new ParameterDAOImpl();		
 		int dias = x.getParameter("C").getNumberValue();
-		System.out.println("DIAS__________________" + dias);
+
 		String respuesta = "prime";
 		
 		UserDAO dao = new UserDAOImpl();
@@ -80,9 +86,8 @@ public class UserBean implements Serializable
 			}
 			
 			else if (usuario != null && usuario.getUserType().equals("USER") && contra.equals(usuario.getPassword()))
-			{	System.out.println("Antes de");
+			{	
 				if(obligarCambioContraseña(dias)) {
-					System.out.println("Despues de de");
 					usuario.setActive("I");
 					UtilCorreo.enviarNuevaContrasenia(usuario.getFullName(), asignarNuevaContrasenia(),
 							usuario.getEmailAddress());
@@ -120,7 +125,10 @@ public class UserBean implements Serializable
 		logger.info("Se verifica el ingreso de un usuario");
 		return respuesta;
 	}
-	
+	/**
+	 * Método que obliga a generar una contraseña aleatoria
+	 * @return Contraseñan que de devuelve 
+	 */
 	@SuppressWarnings("deprecation")
 	public boolean obligarCambioContraseña(int dias) {
 		Date actual = new Date();
@@ -128,7 +136,6 @@ public class UserBean implements Serializable
 		boolean rta = false;
 		int actualDia = actual.getDate();
 		int fechalDia = fecha.getDate();
-		System.out.println("Actual,"+actualDia+"Fecha,"+fechalDia);
 		if(actualDia>fechalDia) {
 			int param = actualDia - fechalDia;
 			System.out.println(param+" - " + dias);
@@ -138,7 +145,10 @@ public class UserBean implements Serializable
 		}
 		return rta;
 	}
-	
+	/**
+	 * Método que genera un contraseña aleatoria
+	 * @return Contraseñan que de devuelve 
+	 */
 	public String asignarNuevaContrasenia()
 	{
 		String nueva = Util.darContraseniaAleatoria();
@@ -149,7 +159,12 @@ public class UserBean implements Serializable
 		logger.info("Se asigna una nueva contraseña");
 		return nueva;
 	}
-	
+	/**
+	 * Método que se encarga de enviar la auditoria a la tabla audit
+	 * @param mensaje Mensaje que se muestra en la auditoria
+	 * @param tableId  Id de la tabla sobre la que se realizo la consulta
+	 * @param tableName Nombre de la tabla
+	 */
 	public void dialogCambioContrasenia()
 	{
 		Map<String, Object> opciones = new HashMap<String, Object>();
@@ -164,7 +179,12 @@ public class UserBean implements Serializable
 		
 		PrimeFaces.current().dialog().openDynamic("cambioContrasenia", opciones, null);
 	}
-	
+	/**
+	 * Método que se encarga de enviar la auditoria a la tabla audit
+	 * @param mensaje Mensaje que se muestra en la auditoria
+	 * @param tableId  Id de la tabla sobre la que se realizo la consulta
+	 * @param tableName Nombre de la tabla
+	 */
 	public void hacerAuditoria(String mensaje, int tableId, String tableName)
 	{
 		AuditDAO auditDao = new AuditDAOImpl();
@@ -181,7 +201,9 @@ public class UserBean implements Serializable
 		
 		auditDao.save(audit);
 	}
-	
+	/**
+	 * Método que cambia la contraseña de un usaurio
+	 */
 	public void cambiarContrasenia()
 	{
 		usuario.setPassword(Util.getStringMessageDigest(contra, Util.MD5));
@@ -193,7 +215,10 @@ public class UserBean implements Serializable
 		logger.info("Se cambia la contraseña del usuario");
 		PrimeFaces.current().dialog().closeDynamic(PrimeFaces.current().dialog());
 	}
-	
+	/**
+	 * Método que cambia el estado de un usuaruio
+	 * @return Devuelve el tipo de cambio que se realizara
+	 */
 	public String cambiarEstado()
 	{
 		User elUsuario = (User) (listaUsuarios.getRowData());
@@ -220,7 +245,10 @@ public class UserBean implements Serializable
 		
 		return "indexAdmin";
 	}
-	
+	/**
+	 *Método que prepara para la agregacion de un usuario
+	 * @return Objeto que contiene la direccion de la pagina a la que sera redirigida
+	 */
 	public String prepararAdicionarUsuario()
 	{
 		String respuesta = "registroUsuarios";
@@ -229,7 +257,10 @@ public class UserBean implements Serializable
 		
 		return respuesta;
 	}
-	
+	/**
+	 * Método que se encarga de agregar un usuario
+	 * @return Objeto que devuelve la pagina a la que sera redireccionado
+	 */
 	public String adicionarUsuario()
 	{
 		String pagina = null;
@@ -268,12 +299,16 @@ public class UserBean implements Serializable
 		
 		return pagina;
 	}
-	
+	/**
+	 * Método que prepara la modificón de un usuario
+	 */
 	public void prepararModificarUsuario()
 	{
 		usuarioTemporal = (User) (listaUsuarios.getRowData());
 	}
-	
+	/**
+	 * Método que modifica a un usuario
+	 */
 	public void modificarUsuario()
 	{
 		UserDAO dao = new UserDAOImpl();
@@ -282,7 +317,9 @@ public class UserBean implements Serializable
 		hacerAuditoria("Update", usuarioTemporal.getId(), "user");
 		Util.darMensaje("Exito", "Los datos han sido actualizados");
 	}
-	
+	/**
+	 * Método que inicializa variables de la clase
+	 */
 	@PostConstruct
 	public void nuevoUsuario()
 	{
@@ -291,7 +328,9 @@ public class UserBean implements Serializable
 		usuario.setDateLastPassword(new Date());
 		usuario.setUserType("USER");
 	}
-	
+	/**
+	 * Método que recupera la contraseña de un usario
+	 */
 	public void recuperarContrasenia()
 	{
 		UserDAO dao = new UserDAOImpl();
