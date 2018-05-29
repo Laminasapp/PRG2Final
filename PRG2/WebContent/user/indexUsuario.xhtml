@@ -98,7 +98,7 @@
 									<p:inputText id="numberSheet"
 										value="#{repeatedsheetBean.repeatedsheet.numberSheets}"
 										required="true">
-										<f:validateLength maximum="2" />
+										<f:validateLength minimum="1" />
 										<f:validateDoubleRange minimum="1" maximum="670" />
 									</p:inputText>
 
@@ -106,7 +106,7 @@
 									<p:inputText id="countSheets"
 										value="#{repeatedsheetBean.repeatedsheet.countSheets}"
 										required="true">
-										<f:validateLength maximum="2" />
+										<f:validateLength minimum="1" />
 										<f:validateDoubleRange minimum="1" />
 									</p:inputText>
 								</h:panelGrid>
