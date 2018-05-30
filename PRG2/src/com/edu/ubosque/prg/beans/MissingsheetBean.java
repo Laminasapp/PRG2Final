@@ -1,6 +1,8 @@
 package com.edu.ubosque.prg.beans;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +27,12 @@ import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.Missingsheet;
 import com.edu.ubosque.prg.entity.Repeatedsheet;
 import com.edu.ubosque.prg.entity.User;
+import com.edu.ubosque.prg.util.Nodo;
 import com.edu.ubosque.prg.util.Util;
+
 /**
- * Descripcion: CLase Bean que se vincula a un formulario el cual realiza consultas en la tabla missingsheet
+ * Descripcion: CLase Bean que se vincula a un formulario el cual realiza
+ * consultas en la tabla missingsheet
  *
  */
 @ManagedBean
@@ -45,11 +50,14 @@ public class MissingsheetBean {
 	private List<User> laminasAVender;
 
 	private List<User> llenaron;
+	
+	private List<Nodo> menosFaltan;
 
 	private Missingsheet selectedMissingSheet;
 
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean usuario;
+
 	/**
 	 * Método que incializa variables necesarias para el formilario
 	 */
@@ -59,6 +67,7 @@ public class MissingsheetBean {
 		listarUsuarios();
 		venderLaminas();
 		albumLleno();
+		countFaltantes();
 	}
 
 	public List<Missingsheet> getFaltantes() {
@@ -68,6 +77,7 @@ public class MissingsheetBean {
 	public void setFaltantes(List<Missingsheet> faltantes) {
 		this.faltantes = faltantes;
 	}
+
 	/**
 	 * Método que se encarga de agregar laminas repetidas en la tabla
 	 */
@@ -87,11 +97,17 @@ public class MissingsheetBean {
 		logger.info("Se cambia el estado de la lamina");
 		dao.update(ms);
 	}
+
 	/**
-	 * Método que se encarga de hacer auditoria a los movimierntos realizados por los usuarios
-	 * @param mensaje Accion realizada por el usuario
-	 * @param tableId Id de a tabla sobre la cual se realizo la acción
-	 * @param tableName Nombre de la tabla sobre la cual se realizo la acción
+	 * Método que se encarga de hacer auditoria a los movimierntos realizados por
+	 * los usuarios
+	 * 
+	 * @param mensaje
+	 *            Accion realizada por el usuario
+	 * @param tableId
+	 *            Id de a tabla sobre la cual se realizo la acción
+	 * @param tableName
+	 *            Nombre de la tabla sobre la cual se realizo la acción
 	 */
 	public void hacerAuditoria(String mensaje, int tableId, String tableName) {
 		AuditDAO auditDao = new AuditDAOImpl();
@@ -110,7 +126,8 @@ public class MissingsheetBean {
 	}
 
 	/**
-	 * Método que genera una lista de los usuarios que tienen laminas que le sirvern a un usuario
+	 * Método que genera una lista de los usuarios que tienen laminas que le sirvern
+	 * a un usuario
 	 */
 	public void listarUsuarios() {
 		List<User> usuarios = new ArrayList<User>();
@@ -140,8 +157,10 @@ public class MissingsheetBean {
 		logger.info("Se realiza una consulta en la base de datos");
 		this.usuarios = usuarios;
 	}
+
 	/**
-	 * Método que genera un lista de las laminas que puedo vender buscando los usuarios necesitados
+	 * Método que genera un lista de las laminas que puedo vender buscando los
+	 * usuarios necesitados
 	 */
 	public void venderLaminas() {
 
@@ -176,7 +195,7 @@ public class MissingsheetBean {
 	}
 
 	/**
-	 * Método que muestra los usarios que ya llenaron el álbum 
+	 * Método que muestra los usarios que ya llenaron el álbum
 	 */
 	public void albumLleno() {
 
@@ -197,6 +216,56 @@ public class MissingsheetBean {
 		}
 		logger.info("Se realiza una consulta en la base de datos");
 		this.llenaron = completaron;
+	}
+
+	public void countFaltantes() {
+
+		List<Nodo> temp = new ArrayList<Nodo>();
+		
+		List<User> usuarios = new ArrayList<User>();
+		
+		// Traigo la lista de todos los usuarios
+		UserDAO user = new UserDAOImpl();
+		List<User> listaUsuarios = user.list();
+
+		MissingsheetDAO daoM = new MissingsheetDAOImpl();
+
+		for (int i = 0; i < listaUsuarios.size(); i++) {
+
+			// se cargan las laminas faltantes para el usuario
+			List<Missingsheet> faltantes = daoM.list(listaUsuarios.get(i).getId());
+
+			int falt = 670 - faltantes.size();
+			// aca se guarda en una lista
+			if (falt > 0) {
+
+				Nodo tmp = new Nodo(listaUsuarios.get(i).getId(), falt, listaUsuarios.get(i).getUserName());
+
+				temp.add(tmp);
+
+			}
+
+		}
+	
+		   Collections.sort(temp, new Comparator<Nodo>() {
+			
+			   // ordenado acendente
+			public int compare(Nodo a, Nodo b) {
+				return Integer.valueOf(a.getNumeroRepetidas()).compareTo(b.getNumeroRepetidas());
+			}
+			
+		});
+		   
+		   
+		   for (int i = 0; i < temp.size(); i++) {
+			
+			   usuarios.add(user.getUsuario(temp.get(i).getUserId()));
+			   
+		}
+		   
+		   menosFaltan = temp;
+		   
+
 	}
 
 	public List<User> getLlenaron() {
@@ -259,6 +328,14 @@ public class MissingsheetBean {
 
 	public void setLaminasAVender(List<User> laminasAVender) {
 		this.laminasAVender = laminasAVender;
+	}
+
+	public List<Nodo> getMenosFaltan() {
+		return menosFaltan;
+	}
+
+	public void setMenosFaltan(List<Nodo> menosFaltan) {
+		this.menosFaltan = menosFaltan;
 	}
 
 }

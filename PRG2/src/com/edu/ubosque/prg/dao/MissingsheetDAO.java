@@ -3,6 +3,7 @@ package com.edu.ubosque.prg.dao;
 import java.util.List;
 
 import com.edu.ubosque.prg.entity.Missingsheet;
+import com.edu.ubosque.prg.entity.User;
 /**
  * Descripción: Interface que modela la tabla Missingsheet
  *
@@ -20,7 +21,7 @@ public interface MissingsheetDAO {
 	 */
 	public Missingsheet getMissingsheet(int id);
 	/**
-	 * método que devuelve la lista de las laminas faltantes de una lamina
+	 * método que devuelve la lista de las laminas faltantes de un usuario
 	 * @param pId
 	 * @return
 	 */
