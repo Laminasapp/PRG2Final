@@ -29,7 +29,8 @@ public class StadiumBean {
 	public String adicionarAuditoria(Stadium stadium) {
 		StadiumDAO dao = new StadiumDAOImpl();
 		dao.save(stadium);
-		return "index";
+		logger.info("Se crea un nuevo estadio");
+		return "prime";
 	}
 	/**
 	 * Método que devuelve una lista de estadios

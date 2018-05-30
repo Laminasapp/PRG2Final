@@ -157,6 +157,7 @@
 				</p:tab>
 
 				<p:tab title="Usuarios que les faltan mis laminas repetidas">
+
 					<h:form>
 						<p:dataTable var="laminasAVender"
 							value="#{missingsheetBean.laminasAVender}" paginator="true"
@@ -181,13 +182,13 @@
 							<p:column headerText="Contactar Correo">
 								<p:commandButton value="Correo"
 									action="#{userBean.enviarCorreo}">
-									<f:param name="userName" value="#{user.userName}" />
+									<f:param name="userName" value="#{laminasAVender.userName}" />
 								</p:commandButton>
 							</p:column>
 
 							<p:column headerText="Contactar SMS">
 								<p:commandButton value="SMS" action="#{userBean.enviarSms}">
-									<f:param name="userName" value="#{user.userName}" />
+									<f:param name="userName" value="#{laminasAVender.userName}" />
 								</p:commandButton>
 							</p:column>
 
@@ -199,10 +200,6 @@
 
 					<p:dataTable paginator="true" var="usuariosLlenos"
 						value="#{missingsheetBean.llenaron}">
-
-						<p:column headerText="Id">
-							<h:outputText value="#{usuariosLlenos.id}" />
-						</p:column>
 
 						<p:column headerText="Usuario">
 							<h:outputText value="#{usuariosLlenos.userName}" />
@@ -220,6 +217,34 @@
 							<h:outputText value="#{usuariosLlenos.phoneNumber}" />
 						</p:column>
 
+					</p:dataTable>
+
+				</p:tab>
+
+				<p:tab title="Laminas faltantes (Ascendente)">
+
+					<p:dataTable paginator="true"
+						value="#{missingsheetBean.menosFaltan}" var="nod">
+						<p:column headerText="Usuario">
+							<h:outputText value="#{nod.nombre}" />
+						</p:column>
+						<p:column headerText="Cantidad de laminas faltantes">
+							<h:outputText value="#{nod.numeroRepetidas}" />
+						</p:column>
+					</p:dataTable>
+
+				</p:tab>
+				
+				<p:tab title="Laminas faltantes (Descendente)">
+
+					<p:dataTable paginator="true"
+						value="#{missingsheetBean.masFaltan}" var="nodo">
+						<p:column headerText="Usuario">
+							<h:outputText value="#{nodo.nombre}" />
+						</p:column>
+						<p:column headerText="Cantidad de laminas faltantes">
+							<h:outputText value="#{nodo.numeroRepetidas}" />
+						</p:column>
 					</p:dataTable>
 
 				</p:tab>

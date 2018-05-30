@@ -49,6 +49,7 @@ public class AuditBean {
 	public String adicionarAuditoria(Audit auditoria) {
 		AuditDAO dao = new AuditDAOImpl();
 		dao.save(auditoria);
+		logger.info("Se agrego una auditoria");
 		return "index";
 	}
 
@@ -80,13 +81,14 @@ public class AuditBean {
 	  String texto = " \n Archivo creado por: " + userBean.getUsuario().getFullName() + ", Fecha: " + fecha ;
 	  pdf.add(new Paragraph(texto));
 	  pdf.add(new Paragraph(" "));
+	  logger.info("Se descarga el pdf");
 	
 	 }
 	public void consultaFechas() {
 		if((fecha1!=null)&&(fecha2!=null)) {
-			
 			List<Audit> lista = new AuditDAOImpl().filtrados(fecha1, fecha2);
 			listaAuditoriafiltrada = new ListDataModel<Audit>(lista);
+			logger.info("Se creo la consulta por fechas de la auditoria");
 		}
 	}
 

@@ -154,6 +154,8 @@ public class UserBean implements Serializable
 	{
 		String nueva = Util.darContraseniaAleatoria();
 		usuario.setPassword(Util.getStringMessageDigest(nueva, Util.MD5));
+		usuario.setActive("A");
+		usuario.setAttemps(0);
 		usuario.setDateLastPassword(new Date());
 		UserDAO dao = new UserDAOImpl();
 		dao.update(usuario);

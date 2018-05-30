@@ -52,6 +52,8 @@ public class MissingsheetBean {
 	private List<User> llenaron;
 	
 	private List<Nodo> menosFaltan;
+	
+	private List<Nodo> masFaltan;
 
 	private Missingsheet selectedMissingSheet;
 
@@ -68,6 +70,7 @@ public class MissingsheetBean {
 		venderLaminas();
 		albumLleno();
 		countFaltantes();
+		countMasFaltantes();
 	}
 
 	public List<Missingsheet> getFaltantes() {
@@ -219,53 +222,62 @@ public class MissingsheetBean {
 	}
 
 	public void countFaltantes() {
-
 		List<Nodo> temp = new ArrayList<Nodo>();
-		
 		List<User> usuarios = new ArrayList<User>();
-		
 		// Traigo la lista de todos los usuarios
 		UserDAO user = new UserDAOImpl();
 		List<User> listaUsuarios = user.list();
-
 		MissingsheetDAO daoM = new MissingsheetDAOImpl();
-
-		for (int i = 0; i < listaUsuarios.size(); i++) {
-
+		for (int i = 1; i < listaUsuarios.size(); i++) {
 			// se cargan las laminas faltantes para el usuario
 			List<Missingsheet> faltantes = daoM.list(listaUsuarios.get(i).getId());
-
-			int falt = 670 - faltantes.size();
+			int falt =faltantes.size();
 			// aca se guarda en una lista
 			if (falt > 0) {
-
 				Nodo tmp = new Nodo(listaUsuarios.get(i).getId(), falt, listaUsuarios.get(i).getUserName());
-
 				temp.add(tmp);
-
 			}
-
 		}
-	
 		   Collections.sort(temp, new Comparator<Nodo>() {
-			
 			   // ordenado acendente
 			public int compare(Nodo a, Nodo b) {
 				return Integer.valueOf(a.getNumeroRepetidas()).compareTo(b.getNumeroRepetidas());
 			}
-			
 		});
-		   
-		   
 		   for (int i = 0; i < temp.size(); i++) {
-			
 			   usuarios.add(user.getUsuario(temp.get(i).getUserId()));
-			   
 		}
-		   
+		   logger.info("Se genero la consulta de los usuarios con menos laminas faltantes");
 		   menosFaltan = temp;
-		   
-
+	}
+	public void countMasFaltantes() {
+		List<Nodo> temp = new ArrayList<Nodo>();
+		List<User> usuarios = new ArrayList<User>();
+		// Traigo la lista de todos los usuarios
+		UserDAO user = new UserDAOImpl();
+		List<User> listaUsuarios = user.list();
+		MissingsheetDAO daoM = new MissingsheetDAOImpl();
+		for (int i = 1; i < listaUsuarios.size(); i++) {
+			// se cargan las laminas faltantes para el usuario
+			List<Missingsheet> faltantes = daoM.list(listaUsuarios.get(i).getId());
+			int falt =faltantes.size();
+			// aca se guarda en una lista
+			if (falt > 0) {
+				Nodo tmp = new Nodo(listaUsuarios.get(i).getId(), falt, listaUsuarios.get(i).getUserName());
+				temp.add(tmp);
+			}
+		}
+		Collections.sort(temp, new Comparator<Nodo>() {
+			// ordenado acendente
+			public int compare(Nodo a, Nodo b) {
+				return Integer.valueOf(b.getNumeroRepetidas()).compareTo(a.getNumeroRepetidas());
+			}
+		});
+		for (int i = 0; i < temp.size(); i++) {
+			usuarios.add(user.getUsuario(temp.get(i).getUserId()));
+		}
+		logger.info("Se genero la consulta de los usuarios con mas laminas faltantes");
+		masFaltan = temp;
 	}
 
 	public List<User> getLlenaron() {
@@ -336,6 +348,14 @@ public class MissingsheetBean {
 
 	public void setMenosFaltan(List<Nodo> menosFaltan) {
 		this.menosFaltan = menosFaltan;
+	}
+
+	public List<Nodo> getMasFaltan() {
+		return masFaltan;
+	}
+
+	public void setMasFaltan(List<Nodo> masFaltan) {
+		this.masFaltan = masFaltan;
 	}
 
 }
