@@ -61,7 +61,7 @@ public class UtilCorreo
 		AuthMethod auth = new TokenAuthMethod("6c792482", "x6V5PAgeNS9yP7kw");
 		NexmoClient client = new NexmoClient(auth);
 
-		TextMessage message = new TextMessage("573102068794", numero, mensaje);
+		TextMessage message = new TextMessage("573105635972", numero, mensaje);
 		SmsSubmissionResult[] responses;
 		try
 		{

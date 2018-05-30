@@ -6,11 +6,18 @@ import com.edu.ubosque.prg.entity.Audit;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
+import java.awt.Color;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Date;
@@ -90,6 +97,87 @@ public class AuditBean {
 			listaAuditoriafiltrada = new ListDataModel<Audit>(lista);
 			logger.info("Se creo la consulta por fechas de la auditoria");
 		}
+	}
+	public void pdf()
+	{
+		try
+		{
+			File file = new File("ListaAuditoria.pdf");
+			Document document = new Document();
+			PdfWriter.getInstance(document, new FileOutputStream(file));
+
+			document.open();
+
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+			String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "img" + File.separator + "prime" + File.separator + "Logo.jpg";
+			Image image = Image.getInstance(logo);
+			image.scalePercent(25);
+			image.setAlignment(Element.ALIGN_CENTER);
+
+			Date fecha = new Date();
+			String text = " \n Archivo creado por: " + userBean.getUsuario().getFullName() + ", Fecha: " + fecha ;
+			Paragraph paragraph = new Paragraph(text);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+
+			document.add(image);
+			document.add(paragraph);
+			document.add(new Paragraph(" "));
+
+			PdfPTable table = new PdfPTable(7);
+
+			PdfPCell cell1 = new PdfPCell(new Paragraph("Id"));
+			cell1.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell2 = new PdfPCell(new Paragraph("Id del usuario"));
+			cell2.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell3 = new PdfPCell(new Paragraph("Operacion"));
+			cell3.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell4 = new PdfPCell(new Paragraph("Nombre de la tabla"));
+			cell4.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell5 = new PdfPCell(new Paragraph("Id de la tabla"));
+			cell5.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell6 = new PdfPCell(new Paragraph("Fecha de Creacion"));
+			cell6.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell7 = new PdfPCell(new Paragraph("IP del usuario"));
+			cell7.setBackgroundColor(new Color(255, 102, 102));
+
+			table.addCell(cell1);
+			table.addCell(cell2);
+			table.addCell(cell3);
+			table.addCell(cell4);
+			table.addCell(cell5);
+			table.addCell(cell6);
+			table.addCell(cell7);
+
+			for (Audit data : listaAuditoria)
+			{
+				cell1 = new PdfPCell(new Paragraph(data.getId() + ""));
+				cell2 = new PdfPCell(new Paragraph(data.getUserId() + ""));
+				cell3 = new PdfPCell(new Paragraph(data.getOperation()));
+				cell4 = new PdfPCell(new Paragraph(data.getTableName()));
+				cell5 = new PdfPCell(new Paragraph(data.getTableId() + ""));
+				cell6 = new PdfPCell(new Paragraph(data.getCreateDate() + ""));
+				cell7 = new PdfPCell(new Paragraph(data.getUserIp()));
+
+				table.addCell(cell1);
+				table.addCell(cell2);
+				table.addCell(cell3);
+				table.addCell(cell4);
+				table.addCell(cell5);
+				table.addCell(cell6);
+				table.addCell(cell7);
+			}
+
+			document.add(table);
+			document.close();
+
+			Desktop.getDesktop().open(file);
+		}
+
+		catch (DocumentException | IOException e)
+		{
+			e.printStackTrace();
+		}
+
 	}
 
 	public DataModel<Audit> getListaAuditoriafiltrada() {

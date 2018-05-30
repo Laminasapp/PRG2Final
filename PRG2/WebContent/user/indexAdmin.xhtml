@@ -116,161 +116,162 @@
 
 		</p:tab>
 		<p:tab title="Auditorias">
-		
-		<p:tabView dynamic="true" cache="true" effect="fold">
-		
-		<p:tab title="Auditorias">
-		
-		<h:form>
-				<p:panel id="basic" header="Listado de auditorias">
 
-					<p:dataTable paginator="true" var="aud" id="auditoria"
-						value="#{auditBean.listarAuditoria}" rows="9">
+			<p:tabView dynamic="true" cache="true" effect="fold">
 
-						<f:facet name="header">
-							<h:commandLink id="excelAudit">
-								<p:graphicImage url="/resources/img/export/xls-icon.png"
-									width="24" />
-								<p:dataExporter type="xls" target="auditoria"
-									fileName="AuditoriaEXCEL" />
-							</h:commandLink>
+				<p:tab title="Auditorias">
 
-							<p:tooltip for="excelAudit" value="Descargar esta tabla en Excel"
-								position="top" />
+					<h:form>
+						<p:panel id="basic" header="Listado de auditorias">
 
-							<h:commandLink id="pdfAudit">
-								<p:graphicImage url="/resources/img/export/pdf-icon.png"
-									width="24" />
+							<p:dataTable paginator="true" var="aud" id="auditoria"
+								value="#{auditBean.listarAuditoria}" rows="9">
 
-								<p:dataExporter type="pdf" target="auditoria"
-									preProcessor="#{auditBean.preProcessPDF}"
-									fileName="AuditoriaPDF" />
-							</h:commandLink>
+								<f:facet name="header">
+									<h:commandLink id="excelAudit">
+										<p:graphicImage url="/resources/img/export/xls-icon.png"
+											width="24" />
+										<p:dataExporter type="xls" target="auditoria"
+											fileName="AuditoriaEXCEL" />
+									</h:commandLink>
 
-							<p:tooltip for="pdfAudit" value="Descargar esta tabla en PDF"
-								position="top" />
-						</f:facet>
+									<p:tooltip for="excelAudit"
+										value="Descargar esta tabla en Excel" position="top" />
 
-						<p:column headerText="Id" filterBy="#{aud.id}"
-							filterMatchMode="contains">
-							<h:outputText value="#{aud.id}" />
-						</p:column>
+									<p:commandLink id="pdfAudit" action="#{auditBean.pdf}">
+										<p:graphicImage url="/resources/img/export/pdf-icon.png"
+											width="24" />
+									</p:commandLink>
 
-						<p:column headerText="Id del usuario" filterBy="#{aud.userId}"
-							filterMatchMode="contains">
-							<h:outputText value="#{aud.userId}" />
-						</p:column>
+									<p:tooltip for="pdfAudit" value="Descargar esta tabla en PDF"
+										position="top" />
+								</f:facet>
 
-						<p:column headerText="Operacion" filterBy="#{aud.operation}"
-							filterMatchMode="contains">
-							<h:outputText value="#{aud.operation}" />
-						</p:column>
+								<p:column headerText="Id" filterBy="#{aud.id}"
+									filterMatchMode="contains">
+									<h:outputText value="#{aud.id}" />
+								</p:column>
 
-						<p:column headerText="Nombre de la tabla"
-							filterBy="#{aud.tableName}" filterMatchMode="contains">
-							<h:outputText value="#{aud.tableName}" />
-						</p:column>
+								<p:column headerText="Id del usuario" filterBy="#{aud.userId}"
+									filterMatchMode="contains">
+									<h:outputText value="#{aud.userId}" />
+								</p:column>
 
-						<p:column headerText="Id de la Tabla" filterBy="#{aud.tableId}"
-							filterMatchMode="contains">
-							<h:outputText value="#{aud.tableId}" />
-						</p:column>
+								<p:column headerText="Operacion" filterBy="#{aud.operation}"
+									filterMatchMode="contains">
+									<h:outputText value="#{aud.operation}" />
+								</p:column>
 
-						<p:column headerText="Fecha de creacion"
-							filterBy="#{aud.createDate}" filterMatchMode="contains">
-							<h:outputText value="#{aud.createDate}" />
-						</p:column>
+								<p:column headerText="Nombre de la tabla"
+									filterBy="#{aud.tableName}" filterMatchMode="contains">
+									<h:outputText value="#{aud.tableName}" />
+								</p:column>
 
-						<p:column headerText="Ip de usuario">
-							<h:outputText value="#{aud.userIp}" />
-						</p:column>
-					</p:dataTable>
-				</p:panel>
-			</h:form>
-		
-		
-		</p:tab>
-		<p:tab title="Auditorias por rango de fechas">
-		
-		<h:form>
-				<p:panel id="basic" header="Listado de auditorias fltradas">
+								<p:column headerText="Id de la Tabla" filterBy="#{aud.tableId}"
+									filterMatchMode="contains">
+									<h:outputText value="#{aud.tableId}" />
+								</p:column>
 
-					<p:dataTable paginator="true" var="aud" id="auditoriafil"
-						value="#{auditBean.listaAuditoriafiltrada}" rows="9">
+								<p:column headerText="Fecha de creacion"
+									filterBy="#{aud.createDate}" filterMatchMode="contains">
+									<h:outputText value="#{aud.createDate}" />
+								</p:column>
 
-						<f:facet name="header">
-							<h:commandLink id="excelAuditfil">
-								<p:graphicImage url="/resources/img/export/xls-icon.png"
-									width="24" />
-								<p:dataExporter type="xls" target="auditoriafil"
-									fileName="AuditoriaEXCEL" />
-							</h:commandLink>
+								<p:column headerText="Ip de usuario">
+									<h:outputText value="#{aud.userIp}" />
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</h:form>
 
-							<p:tooltip for="excelAuditfil" value="Descargar esta tabla en Excel"
-								position="top" />
 
-							<h:commandLink id="pdfAuditfil">
-								<p:graphicImage url="/resources/img/export/pdf-icon.png"
-									width="24" />
+				</p:tab>
+				<p:tab title="Auditorias por rango de fechas">
 
-								<p:dataExporter type="pdf" target="auditoriafil"
-									preProcessor="#{auditBean.preProcessPDF}"
-									fileName="AuditoriaPDF" />
-							</h:commandLink>
+					<h:form>
+						<p:panel id="basic" header="Listado de auditorias fltradas">
 
-							<p:tooltip for="pdfAuditfil" value="Descargar esta tabla en PDF"
-								position="top" />
-						</f:facet>
+							<p:dataTable paginator="true" var="aud" id="auditoriafil"
+								value="#{auditBean.listaAuditoriafiltrada}" rows="9">
 
-						<f:facet name="header">
-							<p:outputLabel for="fe1" value="Fecha1: " />
-							<p:calendar id="fe1" value="#{auditBean.fecha1}" pattern="yyyy-MM-dd HH:mm:ss" required="true" alt="Fecha minima"/>
-							<p:outputLabel for="fe2" value="Fecha2: " />
-							<p:calendar id="fe2" value="#{auditBean.fecha2}" pattern="yyyy-MM-dd HH:mm:ss" required="true" alt="Fecha Maxima"/>
-							<p:commandButton value="Consultar" action="#{auditBean.consultaFechas}" update="auditoriafil"></p:commandButton>
-						</f:facet>
+								<f:facet name="header">
+									<h:commandLink id="excelAuditfil">
+										<p:graphicImage url="/resources/img/export/xls-icon.png"
+											width="24" />
+										<p:dataExporter type="xls" target="auditoriafil"
+											fileName="AuditoriaEXCEL" />
+									</h:commandLink>
 
-						<p:column headerText="Id" filterBy="#{aud.id}"
-							filterMatchMode="contains">
-							<h:outputText value="#{aud.id}" />
-						</p:column>
+									<p:tooltip for="excelAuditfil"
+										value="Descargar esta tabla en Excel" position="top" />
 
-						<p:column headerText="Id del usuario" filterBy="#{aud.userId}"
-							filterMatchMode="contains">
-							<h:outputText value="#{aud.userId}" />
-						</p:column>
+									<h:commandLink id="pdfAuditfil">
+										<p:graphicImage url="/resources/img/export/pdf-icon.png"
+											width="24" />
 
-						<p:column headerText="Operacion" filterBy="#{aud.operation}"
-							filterMatchMode="contains">
-							<h:outputText value="#{aud.operation}" />
-						</p:column>
+										<p:dataExporter type="pdf" target="auditoriafil"
+											preProcessor="#{auditBean.preProcessPDF}"
+											fileName="AuditoriaPDF" />
+									</h:commandLink>
 
-						<p:column headerText="Nombre de la tabla"
-							filterBy="#{aud.tableName}" filterMatchMode="contains">
-							<h:outputText value="#{aud.tableName}" />
-						</p:column>
+									<p:tooltip for="pdfAuditfil"
+										value="Descargar esta tabla en PDF" position="top" />
+								</f:facet>
 
-						<p:column headerText="Id de la Tabla" filterBy="#{aud.tableId}"
-							filterMatchMode="contains">
-							<h:outputText value="#{aud.tableId}" />
-						</p:column>
+								<f:facet name="header">
+									<p:outputLabel for="fe1" value="Fecha1: " />
+									<p:calendar id="fe1" value="#{auditBean.fecha1}"
+										pattern="yyyy-MM-dd HH:mm:ss" required="true"
+										alt="Fecha minima" />
+									<p:outputLabel for="fe2" value="Fecha2: " />
+									<p:calendar id="fe2" value="#{auditBean.fecha2}"
+										pattern="yyyy-MM-dd HH:mm:ss" required="true"
+										alt="Fecha Maxima" />
+									<p:commandButton value="Consultar"
+										action="#{auditBean.consultaFechas}" update="auditoriafil"></p:commandButton>
+								</f:facet>
 
-						<p:column headerText="Fecha de creacion"
-							filterBy="#{aud.createDate}" filterMatchMode="contains">
-							<h:outputText value="#{aud.createDate}" />
-						</p:column>
+								<p:column headerText="Id" filterBy="#{aud.id}"
+									filterMatchMode="contains">
+									<h:outputText value="#{aud.id}" />
+								</p:column>
 
-						<p:column headerText="Ip de usuario">
-							<h:outputText value="#{aud.userIp}" />
-						</p:column>
-					</p:dataTable>
-				</p:panel>
-			</h:form>
-		
-		</p:tab>
-		
-		</p:tabView>
-	
+								<p:column headerText="Id del usuario" filterBy="#{aud.userId}"
+									filterMatchMode="contains">
+									<h:outputText value="#{aud.userId}" />
+								</p:column>
+
+								<p:column headerText="Operacion" filterBy="#{aud.operation}"
+									filterMatchMode="contains">
+									<h:outputText value="#{aud.operation}" />
+								</p:column>
+
+								<p:column headerText="Nombre de la tabla"
+									filterBy="#{aud.tableName}" filterMatchMode="contains">
+									<h:outputText value="#{aud.tableName}" />
+								</p:column>
+
+								<p:column headerText="Id de la Tabla" filterBy="#{aud.tableId}"
+									filterMatchMode="contains">
+									<h:outputText value="#{aud.tableId}" />
+								</p:column>
+
+								<p:column headerText="Fecha de creacion"
+									filterBy="#{aud.createDate}" filterMatchMode="contains">
+									<h:outputText value="#{aud.createDate}" />
+								</p:column>
+
+								<p:column headerText="Ip de usuario">
+									<h:outputText value="#{aud.userIp}" />
+								</p:column>
+							</p:dataTable>
+						</p:panel>
+					</h:form>
+
+				</p:tab>
+
+			</p:tabView>
+
 
 		</p:tab>
 
@@ -295,13 +296,10 @@
 							<p:tooltip for="excelUser" value="Descargar esta tabla en Excel"
 								position="top" />
 
-							<h:commandLink id="pdfUser">
+							<p:commandLink id="pdfUser" action="#{userBean.pdf}">
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
-
-								<p:dataExporter type="pdf" target="users" fileName="UsuarioPDF"
-									preProcessor="#{auditBean.preProcessPDF}" />
-							</h:commandLink>
+							</p:commandLink>
 
 							<p:tooltip for="pdfUser" value="Descargar esta tabla en PDF"
 								position="top" />
@@ -432,13 +430,10 @@
 							<p:tooltip for="excelParameter"
 								value="Descargar esta tabla en Excel" position="top" />
 
-							<h:commandLink id="pdfParameter">
+							<p:commandLink id="pdfParameter" action="#{parameterBean.pdf}">
 								<p:graphicImage url="/resources/img/export/pdf-icon.png"
 									width="24" />
-								<p:dataExporter type="pdf" target="parametros"
-									preProcessor="#{auditBean.preProcessPDF}"
-									fileName="ParametrosPDF" />
-							</h:commandLink>
+							</p:commandLink>
 
 							<p:tooltip for="pdfParameter" value="Descargar esta tabla en PDF"
 								position="top" />

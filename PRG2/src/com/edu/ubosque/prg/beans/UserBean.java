@@ -12,7 +12,20 @@ import com.edu.ubosque.prg.entity.Audit;
 import com.edu.ubosque.prg.entity.User;
 import com.edu.ubosque.prg.util.Util;
 import com.edu.ubosque.prg.util.UtilCorreo;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.Image;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 
+import java.awt.Color;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +35,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
@@ -375,6 +389,93 @@ public class UserBean implements Serializable
 		logger.info("Se envio correo");
 	}
 
+	public void pdf()
+	{
+		try
+		{
+			File file = new File("ListaUsuario.pdf");
+			Document document = new Document();
+			PdfWriter.getInstance(document, new FileOutputStream(file));
+
+			document.open();
+
+			ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+			String logo = externalContext.getRealPath("") + File.separator + "resources" + File.separator + "img" + File.separator + "prime" + File.separator + "Logo.jpg";
+			Image image = Image.getInstance(logo);
+			image.scalePercent(25);
+			image.setAlignment(Element.ALIGN_CENTER);
+
+			Date fecha = new Date();
+			String text = " \n Archivo creado por: " + usuario.getFullName() + ", Fecha: " + fecha ;
+			Paragraph paragraph = new Paragraph(text);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+
+			document.add(image);
+			document.add(paragraph);
+			document.add(new Paragraph(" "));
+
+			PdfPTable table = new PdfPTable(8);
+			table.setWidthPercentage(100);
+
+			PdfPCell cell1 = new PdfPCell(new Paragraph("Id"));
+			cell1.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell2 = new PdfPCell(new Paragraph("Usuario"));
+			cell2.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell3 = new PdfPCell(new Paragraph("Nombre"));
+			cell3.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell4 = new PdfPCell(new Paragraph("Correo"));
+			cell4.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell5 = new PdfPCell(new Paragraph("Telefono"));
+			cell5.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell6 = new PdfPCell(new Paragraph("Ultima Fecha Contraseña"));
+			cell6.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell7 = new PdfPCell(new Paragraph("Tipo de Usuario"));
+			cell7.setBackgroundColor(new Color(255, 102, 102));
+			PdfPCell cell8 = new PdfPCell(new Paragraph("Estado"));
+			cell8.setBackgroundColor(new Color(255, 102, 102));
+
+			table.addCell(cell1);
+			table.addCell(cell2);
+			table.addCell(cell3);
+			table.addCell(cell4);
+			table.addCell(cell5);
+			table.addCell(cell6);
+			table.addCell(cell7);
+			table.addCell(cell8);
+
+			for (User data : listaUsuarios)
+			{
+				cell1 = new PdfPCell(new Paragraph(data.getId() + ""));
+				cell2 = new PdfPCell(new Paragraph(data.getUserName()));
+				cell3 = new PdfPCell(new Paragraph(data.getFullName()));
+				cell4 = new PdfPCell(new Paragraph(data.getEmailAddress()));
+				cell5 = new PdfPCell(new Paragraph(data.getPhoneNumber()));
+				cell6 = new PdfPCell(new Paragraph(data.getDateLastPassword() + ""));
+				cell7 = new PdfPCell(new Paragraph(data.getUserType()));
+				cell8 = new PdfPCell(new Paragraph(data.getActive()));
+
+				table.addCell(cell1);
+				table.addCell(cell2);
+				table.addCell(cell3);
+				table.addCell(cell4);
+				table.addCell(cell5);
+				table.addCell(cell6);
+				table.addCell(cell7);
+				table.addCell(cell8);
+			}
+
+			document.add(table);
+			document.close();
+
+			Desktop.getDesktop().open(file);
+		}
+
+		catch (DocumentException | IOException e)
+		{
+			e.printStackTrace();
+		}
+
+	}
 	public String getLogin()
 	{
 		return login;
