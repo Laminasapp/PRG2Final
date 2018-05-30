@@ -188,6 +188,7 @@ public class UserBean implements Serializable
 		opciones.put("modal", true);
 		opciones.put("draggable", false);
 		opciones.put("resizable", false);
+		opciones.put("closable", false);
 		opciones.put("width", 1000);
 		opciones.put("height", 400);
 		opciones.put("contentWidth", "100%");
