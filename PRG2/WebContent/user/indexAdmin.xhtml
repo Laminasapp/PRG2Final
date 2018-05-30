@@ -116,7 +116,12 @@
 
 		</p:tab>
 		<p:tab title="Auditorias">
-			<h:form>
+		
+		<p:tabView dynamic="true" cache="true" effect="fold">
+		
+		<p:tab title="Auditorias">
+		
+		<h:form>
 				<p:panel id="basic" header="Listado de auditorias">
 
 					<p:dataTable paginator="true" var="aud" id="auditoria"
@@ -182,6 +187,91 @@
 					</p:dataTable>
 				</p:panel>
 			</h:form>
+		
+		
+		</p:tab>
+		<p:tab title="Auditorias por rango de fechas">
+		
+		<h:form>
+				<p:panel id="basic" header="Listado de auditorias fltradas">
+
+					<p:dataTable paginator="true" var="aud" id="auditoriafil"
+						value="#{auditBean.listaAuditoriafiltrada}" rows="9">
+
+						<f:facet name="header">
+							<h:commandLink id="excelAuditfil">
+								<p:graphicImage url="/resources/img/export/xls-icon.png"
+									width="24" />
+								<p:dataExporter type="xls" target="auditoriafil"
+									fileName="AuditoriaEXCEL" />
+							</h:commandLink>
+
+							<p:tooltip for="excelAuditfil" value="Descargar esta tabla en Excel"
+								position="top" />
+
+							<h:commandLink id="pdfAuditfil">
+								<p:graphicImage url="/resources/img/export/pdf-icon.png"
+									width="24" />
+
+								<p:dataExporter type="pdf" target="auditoriafil"
+									preProcessor="#{auditBean.preProcessPDF}"
+									fileName="AuditoriaPDF" />
+							</h:commandLink>
+
+							<p:tooltip for="pdfAuditfil" value="Descargar esta tabla en PDF"
+								position="top" />
+						</f:facet>
+
+						<f:facet name="header">
+							<p:outputLabel for="fe1" value="Fecha1: " />
+							<p:calendar id="fe1" value="#{auditBean.fecha1}" pattern="yyyy-MM-dd HH:mm:ss" required="true" alt="Fecha minima"/>
+							<p:outputLabel for="fe2" value="Fecha2: " />
+							<p:calendar id="fe2" value="#{auditBean.fecha2}" pattern="yyyy-MM-dd HH:mm:ss" required="true" alt="Fecha Maxima"/>
+							<p:commandButton value="Consultar" action="#{auditBean.consultaFechas}" update="auditoriafil"></p:commandButton>
+						</f:facet>
+
+						<p:column headerText="Id" filterBy="#{aud.id}"
+							filterMatchMode="contains">
+							<h:outputText value="#{aud.id}" />
+						</p:column>
+
+						<p:column headerText="Id del usuario" filterBy="#{aud.userId}"
+							filterMatchMode="contains">
+							<h:outputText value="#{aud.userId}" />
+						</p:column>
+
+						<p:column headerText="Operacion" filterBy="#{aud.operation}"
+							filterMatchMode="contains">
+							<h:outputText value="#{aud.operation}" />
+						</p:column>
+
+						<p:column headerText="Nombre de la tabla"
+							filterBy="#{aud.tableName}" filterMatchMode="contains">
+							<h:outputText value="#{aud.tableName}" />
+						</p:column>
+
+						<p:column headerText="Id de la Tabla" filterBy="#{aud.tableId}"
+							filterMatchMode="contains">
+							<h:outputText value="#{aud.tableId}" />
+						</p:column>
+
+						<p:column headerText="Fecha de creacion"
+							filterBy="#{aud.createDate}" filterMatchMode="contains">
+							<h:outputText value="#{aud.createDate}" />
+						</p:column>
+
+						<p:column headerText="Ip de usuario">
+							<h:outputText value="#{aud.userIp}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:form>
+		
+		</p:tab>
+		
+		</p:tabView>
+	
+
 		</p:tab>
 
 

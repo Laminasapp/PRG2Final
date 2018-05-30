@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
@@ -40,7 +41,7 @@ public class UserBean implements Serializable
 	private User usuario;
 	private User usuarioTemporal;
 	private DataModel<User> listaUsuarios;
-	
+
 	private String login;
 	private String contra;
 	/**
@@ -53,26 +54,26 @@ public class UserBean implements Serializable
 		int dias = x.getParameter("C").getNumberValue();
 
 		String respuesta = "prime";
-		
+
 		UserDAO dao = new UserDAOImpl();
-		
+
 		if (contra.contains("@"))
 		{
 			contra = Util.getStringMessageDigest(contra, Util.MD5);
-			
+
 			usuario = dao.getUsuario(login, contra);
-			
+
 			if (usuario != null)
 			{
 				dialogCambioContrasenia();
 			}
-			
+
 			else if (usuario == null)
 			{
 				Util.darMensaje("", "Usuario no encontrado");
 			}
 		}
-		
+
 		else if (!contra.contains("@"))
 		{
 			contra = Util.getStringMessageDigest(contra, Util.MD5);
@@ -84,7 +85,7 @@ public class UserBean implements Serializable
 				hacerAuditoria("Ingresar", 0, "user");
 				respuesta = "indexAdmin";
 			}
-			
+
 			else if (usuario != null && usuario.getUserType().equals("USER") && contra.equals(usuario.getPassword()))
 			{	
 				if(obligarCambioContraseña(dias)) {
@@ -93,19 +94,19 @@ public class UserBean implements Serializable
 							usuario.getEmailAddress());
 					Util.darMensaje("Bloqueado", "Revise su correo para su nueva contraseña");
 				}else {
-				hacerAuditoria("Ingresar", 0, "user");
-				usuario.setAttemps(0);
-				respuesta = "indexUsuario";
+					hacerAuditoria("Ingresar", 0, "user");
+					usuario.setAttemps(0);
+					respuesta = "indexUsuario";
 				}
 			}
-			
+
 			else if (usuario != null && !usuario.getPassword().equals(contra) && usuario.getUserType().equals("USER"))
 			{
 				int attempts = usuario.getAttemps() + 1;
 				usuario.setAttemps(attempts);
 				hacerAuditoria("IngFallo", 0, "user");
 				Util.darMensaje("", "Contraseña incorrecta");
-				
+
 				if (usuario.getAttemps() == 3)
 				{
 					usuario.setActive("I");
@@ -113,10 +114,10 @@ public class UserBean implements Serializable
 							usuario.getEmailAddress());
 					Util.darMensaje("Bloqueado", "Revise su correo para su nueva contraseña");
 				}
-				
+
 				dao.update(usuario);
 			}
-			
+
 			else if (usuario == null)
 			{
 				Util.darMensaje("", "Usuario no encontrado");
@@ -176,7 +177,7 @@ public class UserBean implements Serializable
 		opciones.put("contentWidth", "100%");
 		opciones.put("contentHeight", "100%");
 		opciones.put("headerElement", "customheader");
-		
+
 		PrimeFaces.current().dialog().openDynamic("cambioContrasenia", opciones, null);
 	}
 	/**
@@ -189,16 +190,16 @@ public class UserBean implements Serializable
 	{
 		AuditDAO auditDao = new AuditDAOImpl();
 		Audit audit = new Audit();
-		
+
 		audit.setCreateDate(new Date());
 		audit.setTableName(tableName);
 		audit.setUserId(usuario.getId());
 		audit.setUserIp(Util.darIp());
 		audit.setTableId(tableId);
 		audit.setOperation(mensaje);
-		
+
 		logger.info("Se crea un nuevo registro de la tabla auditoria");
-		
+
 		auditDao.save(audit);
 	}
 	/**
@@ -210,7 +211,7 @@ public class UserBean implements Serializable
 		usuario.setDateLastPassword(new Date());
 		UserDAO dao = new UserDAOImpl();
 		dao.update(usuario);
-		
+
 		hacerAuditoria("Update", usuario.getId(), "user");
 		logger.info("Se cambia la contraseña del usuario");
 		PrimeFaces.current().dialog().closeDynamic(PrimeFaces.current().dialog());
@@ -223,13 +224,13 @@ public class UserBean implements Serializable
 	{
 		User elUsuario = (User) (listaUsuarios.getRowData());
 		UserDAO dao = new UserDAOImpl();
-		
+
 		if (elUsuario.getActive().equals("A"))
 		{
 			elUsuario.setActive("I");
-			
+
 		}
-		
+
 		else
 		{
 			elUsuario.setActive("A");
@@ -237,12 +238,12 @@ public class UserBean implements Serializable
 					usuario.getEmailAddress());
 			elUsuario.setAttemps(0);
 		}
-		
+
 		hacerAuditoria("Estado", elUsuario.getId(), "user");
 		logger.info("Se cambia el estado del usuario");
-		
+
 		dao.update(elUsuario);
-		
+
 		return "indexAdmin";
 	}
 	/**
@@ -252,9 +253,9 @@ public class UserBean implements Serializable
 	public String prepararAdicionarUsuario()
 	{
 		String respuesta = "registroUsuarios";
-		
+
 		nuevoUsuario();
-		
+
 		return respuesta;
 	}
 	/**
@@ -264,39 +265,39 @@ public class UserBean implements Serializable
 	public String adicionarUsuario()
 	{
 		String pagina = null;
-		
+
 		UserDAO dao = new UserDAOImpl();
-		
+
 		if(dao.userName(this.usuario.getUserName())) {
-		
-		dao.save(usuario);
-		
-		MissingsheetDAO ms = new MissingsheetDAOImpl();
-		
-		ms.save(usuario.getId());
-		
-		String contrasenia = asignarNuevaContrasenia();
-		
-		String nombre = usuario.getFullName();
-		String correo = usuario.getEmailAddress();
-		
-		UtilCorreo.enviarPrimeraContrasenia(nombre, contrasenia, correo);
-		
-		Util.darMensaje("Ha sido registrado", "Revise su correo para su contraseña");
-		
-		hacerAuditoria("Crear", usuario.getId(), "user");
-		logger.info("Se crea un nuevo usuario");
-		nuevoUsuario();
-		
-		pagina = "prime";
+
+			dao.save(usuario);
+
+			MissingsheetDAO ms = new MissingsheetDAOImpl();
+
+			ms.save(usuario.getId());
+
+			String contrasenia = asignarNuevaContrasenia();
+
+			String nombre = usuario.getFullName();
+			String correo = usuario.getEmailAddress();
+
+			UtilCorreo.enviarPrimeraContrasenia(nombre, contrasenia, correo);
+
+			Util.darMensaje("Ha sido registrado", "Revise su correo para su contraseña");
+
+			hacerAuditoria("Crear", usuario.getId(), "user");
+			logger.info("Se crea un nuevo usuario");
+			nuevoUsuario();
+
+			pagina = "prime";
 		}
-		
+
 		else {
-			
+
 			Util.darMensaje("Warning", "Nombre de usuario ya existe");
-			
+
 		}
-		
+
 		return pagina;
 	}
 	/**
@@ -336,79 +337,89 @@ public class UserBean implements Serializable
 		UserDAO dao = new UserDAOImpl();
 		String correo = usuario.getEmailAddress();
 		usuario = dao.getUsuario(correo);
-		
+
 		if (usuario != null)
 		{
 			String nombre = usuario.getFullName();
 			String contraseña = asignarNuevaContrasenia();
 			UtilCorreo.enviarNuevaContrasenia(nombre, contraseña, correo);
 		}
-		
+
 		logger.info("Se recupero la contraseña de un nuevo usuario");
 		nuevoUsuario();
 	}
-	
-	public void enviarSms() {
-		User usuTmp = (User) (listaUsuarios.getRowData());
+
+	public void enviarSms() 
+	{
+		String userName = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userName");
+
+		UserDAO dao = new UserDAOImpl();
+		User usuTmp = dao.getUsuario(userName);
 		UtilCorreo.enviarSMS(usuTmp.getPhoneNumber(), "Me contacto contigo mediante LaminasApp Mi usuario es: " + usuario.getUserName() +" Espero tu contacto");
+
 		logger.info("Se envio un mensaje por celular");
 	}
-	public void enviarCorreo() {
-		logger.info("Se envio correo");
-		System.out.println("Correo");
-		User usuTmp = (User) (listaUsuarios.getRowData());
-		String cuerpo = "Hola! Soy: "+usuario.getUserName()+" me pongo en contacto contigo mediante la aplicacion laminasApp para llegar un acuerdo, Espero tu respuesta a:" + usuario.getEmailAddress();
+
+	public void enviarCorreo() 
+	{
+		String userName = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userName");
+
+		UserDAO dao = new UserDAOImpl();
+		User usuTmp = dao.getUsuario(userName);
+
+		String cuerpo = "Hola! Soy: "+usuario.getUserName()+" me pongo en contacto contigo mediante la aplicacion laminasApp para llegar un acuerdo, Espero tu respuesta a: " + usuario.getEmailAddress();
 		UtilCorreo.enviarMensaje("Contacto mediante LaminasApp", cuerpo, usuTmp.getEmailAddress());
-		
+
+		logger.info("Se envio correo");
 	}
-	
+
 	public String getLogin()
 	{
 		return login;
 	}
-	
+
 	public void setLogin(String login)
 	{
 		this.login = login;
 	}
-	
+
 	public String getContra()
 	{
 		return contra;
 	}
-	
+
 	public void setContra(String contra)
 	{
 		this.contra = contra;
 	}
-	
+
 	public String darInicio()
 	{
 		return "prime";
 	}
-	
+
 	public User getUsuario()
 	{
 		return usuario;
 	}
-	
+
 	public void setUsuario(User usuario)
 	{
 		this.usuario = usuario;
 	}
-	
+
 	public DataModel<User> getListaUsuarios()
 	{
 		List<User> lista = new UserDAOImpl().list();
 		listaUsuarios = new ListDataModel<User>(lista);
 		return listaUsuarios;
 	}
-	
+
 	public User getUsuarioTemporal()
 	{
 		return usuarioTemporal;
 	}
-	
+
 	public void setUsuarioTemporal(User usuarioTemporal)
 	{
 		this.usuarioTemporal = usuarioTemporal;
